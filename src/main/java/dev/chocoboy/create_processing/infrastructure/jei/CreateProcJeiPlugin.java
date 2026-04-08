@@ -15,10 +15,7 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.createmod.catnip.gui.element.GuiGameElement;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 
 @JeiPlugin
@@ -38,26 +35,14 @@ public final class CreateProcJeiPlugin implements IModPlugin {
     public void registerCategories(IRecipeCategoryRegistration registration) {
         fanWitheringCategory = new CreateRecipeCategory.Builder<>(FanRecipe.class)
             .addTypedRecipes(CreateProcRecipeTypes.WITHERING)
-            .catalystStack(() -> {
-                ItemStack fan = AllBlocks.ENCASED_FAN.asStack();
-                fan.set(DataComponents.CUSTOM_NAME,
-                    Component.translatable("create_processing.recipe.fan_withering.fan")
-                        .withStyle(s -> s.withItalic(false)));
-                return fan;
-            })
+            .catalystStack(AllBlocks.ENCASED_FAN::asStack)
             .doubleItemIcon(AllItems.PROPELLER.get(), Blocks.WITHER_ROSE)
             .emptyBackground(178, 72)
             .build(CreateProc.asResource("fan_withering"), FanWitheringCategory::new);
 
         fanPurifyingCategory = new CreateRecipeCategory.Builder<>(FanRecipe.class)
             .addTypedRecipes(CreateProcRecipeTypes.PURIFYING)
-            .catalystStack(() -> {
-                ItemStack fan = AllBlocks.ENCASED_FAN.asStack();
-                fan.set(DataComponents.CUSTOM_NAME,
-                    Component.translatable("create_processing.recipe.fan_purifying.fan")
-                        .withStyle(s -> s.withItalic(false)));
-                return fan;
-            })
+            .catalystStack(AllBlocks.ENCASED_FAN::asStack)
             .doubleItemIcon(AllItems.PROPELLER.get(), Blocks.BEACON)
             .emptyBackground(178, 72)
             .build(CreateProc.asResource("fan_purifying"), FanPurifyingCategory::new);

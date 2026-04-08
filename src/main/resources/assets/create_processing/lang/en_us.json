@@ -1,7 +1,5 @@
 {
   "itemGroup.create_processing.base": "Create: Processing",
   "create_processing.recipe.fan_withering": "Bulk Withering",
-  "create_processing.recipe.fan_withering.fan": "Encased Fan",
-  "create_processing.recipe.fan_purifying": "Bulk Purifying",
-  "create_processing.recipe.fan_purifying.fan": "Encased Fan"
+  "create_processing.recipe.fan_purifying": "Bulk Purifying"
 }
