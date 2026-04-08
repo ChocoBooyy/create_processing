@@ -2,12 +2,11 @@ package dev.chocoboy.create_processing.content.fans.processing;
 
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
 import dev.chocoboy.create_processing.registry.CreateProcTags;
+import dev.chocoboy.create_processing.content.sound.ProcessingSounds;
 import net.createmod.catnip.theme.Color;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -69,8 +68,7 @@ public final class WitheringType extends AbstractFanProcessingType {
         } else if (entity instanceof WitherSkeleton witherSkeleton) {
             witherSkeleton.heal(1f);
         } else {
-            level.playSound(null, entity.blockPosition(),
-                SoundEvents.WITHER_SKELETON_AMBIENT, SoundSource.NEUTRAL, 0.25f, 1f);
+            ProcessingSounds.playWithering(level, entity.blockPosition());
         }
     }
 }

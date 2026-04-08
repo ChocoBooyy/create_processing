@@ -2,12 +2,11 @@ package dev.chocoboy.create_processing.content.fans.processing;
 
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
 import dev.chocoboy.create_processing.registry.CreateProcTags;
+import dev.chocoboy.create_processing.content.sound.ProcessingSounds;
 import net.createmod.catnip.theme.Color;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -67,9 +66,9 @@ public final class PurifyingType extends AbstractFanProcessingType {
         removed |= living.removeEffect(MobEffects.WEAKNESS);
         removed |= living.removeEffect(MobEffects.BLINDNESS);
 
-        if (removed) {
-            level.playSound(null, entity.blockPosition(),
-                SoundEvents.BEACON_POWER_SELECT, SoundSource.NEUTRAL, 0.25f, 1.2f);
+        // Keep a soft ambient cue even when no debuff is removed, so purifying is audible on its own.
+        if (removed || living.tickCount % 20 == 0) {
+            ProcessingSounds.playPurifying(level, entity.blockPosition());
         }
     }
 }

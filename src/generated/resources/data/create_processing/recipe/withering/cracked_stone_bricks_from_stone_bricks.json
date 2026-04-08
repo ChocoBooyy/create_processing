@@ -1,0 +1,13 @@
+{
+  "type": "create_processing:withering",
+  "ingredients": [
+    {
+      "item": "minecraft:stone_bricks"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:cracked_stone_bricks"
+    }
+  ]
+}

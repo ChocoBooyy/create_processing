@@ -1,0 +1,13 @@
+{
+  "type": "create_processing:withering",
+  "ingredients": [
+    {
+      "tag": "minecraft:saplings"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:dead_bush"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "create_processing:withering",
+  "ingredients": [
+    {
+      "item": "minecraft:deepslate_tiles"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:cracked_deepslate_tiles"
+    }
+  ]
+}

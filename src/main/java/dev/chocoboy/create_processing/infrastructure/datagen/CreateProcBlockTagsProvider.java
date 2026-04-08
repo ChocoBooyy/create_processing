@@ -1,5 +1,6 @@
 package dev.chocoboy.create_processing.infrastructure.datagen;
 
+import com.simibubi.create.AllTags;
 import com.simibubi.create.content.decoration.palettes.AllPaletteStoneTypes;
 import dev.chocoboy.create_processing.CreateProc;
 import dev.chocoboy.create_processing.registry.CreateProcTags;
@@ -27,5 +28,10 @@ public class CreateProcBlockTagsProvider extends BlockTagsProvider {
 
         tag(CreateProcTags.PETRIFYING_CATALYST_BLOCKS)
             .add(AllPaletteStoneTypes.LIMESTONE.baseBlock.get());
+
+        tag(AllTags.AllBlockTags.FAN_TRANSPARENT.tag)
+            .addTag(CreateProcTags.WITHERING_CATALYST_BLOCKS)
+            .addTag(CreateProcTags.PURIFYING_CATALYST_BLOCKS)
+            .addTag(CreateProcTags.PETRIFYING_CATALYST_BLOCKS);
     }
 }
