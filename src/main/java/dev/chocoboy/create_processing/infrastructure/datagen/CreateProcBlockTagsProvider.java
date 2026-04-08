@@ -19,9 +19,6 @@ public class CreateProcBlockTagsProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         tag(CreateProcTags.WITHERING_CATALYST_BLOCKS)
-            .add(Blocks.WITHER_ROSE)
-            .add(Blocks.SOUL_SAND)
-            .add(Blocks.SOUL_SOIL);
+            .add(Blocks.WITHER_ROSE);
     }
 }
-
