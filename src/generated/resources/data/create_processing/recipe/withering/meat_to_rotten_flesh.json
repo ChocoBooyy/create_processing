@@ -1,0 +1,13 @@
+{
+  "type": "create_processing:withering",
+  "ingredients": [
+    {
+      "tag": "create_processing:meat"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:rotten_flesh"
+    }
+  ]
+}
