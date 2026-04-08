@@ -1,0 +1,13 @@
+{
+  "type": "create_processing:petrifying",
+  "ingredients": [
+    {
+      "item": "minecraft:clay_ball"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:stone"
+    }
+  ]
+}

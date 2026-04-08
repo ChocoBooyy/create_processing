@@ -1,0 +1,13 @@
+{
+  "type": "create_processing:petrifying",
+  "ingredients": [
+    {
+      "item": "minecraft:sand"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:sandstone"
+    }
+  ]
+}

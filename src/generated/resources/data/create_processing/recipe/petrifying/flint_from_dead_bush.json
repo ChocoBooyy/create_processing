@@ -1,0 +1,13 @@
+{
+  "type": "create_processing:petrifying",
+  "ingredients": [
+    {
+      "item": "minecraft:dead_bush"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:flint"
+    }
+  ]
+}

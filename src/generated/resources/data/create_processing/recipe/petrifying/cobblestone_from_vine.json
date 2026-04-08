@@ -1,0 +1,13 @@
+{
+  "type": "create_processing:petrifying",
+  "ingredients": [
+    {
+      "item": "minecraft:vine"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:cobblestone"
+    }
+  ]
+}

@@ -15,16 +15,20 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.createmod.catnip.gui.element.GuiGameElement;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 @JeiPlugin
 public final class CreateProcJeiPlugin implements IModPlugin {
 
     private static final ResourceLocation PLUGIN_UID = CreateProc.asResource("jei_plugin");
+    private static final Block LIMESTONE = BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath("create", "limestone"));
 
     private CreateRecipeCategory<FanRecipe> fanWitheringCategory;
     private CreateRecipeCategory<FanRecipe> fanPurifyingCategory;
+    private CreateRecipeCategory<FanRecipe> fanPetrifyingCategory;
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -47,19 +51,28 @@ public final class CreateProcJeiPlugin implements IModPlugin {
             .emptyBackground(178, 72)
             .build(CreateProc.asResource("fan_purifying"), FanPurifyingCategory::new);
 
-        registration.addRecipeCategories(fanWitheringCategory, fanPurifyingCategory);
+        fanPetrifyingCategory = new CreateRecipeCategory.Builder<>(FanRecipe.class)
+            .addTypedRecipes(CreateProcRecipeTypes.PETRIFYING)
+            .catalystStack(AllBlocks.ENCASED_FAN::asStack)
+            .doubleItemIcon(AllItems.PROPELLER.get(), LIMESTONE)
+            .emptyBackground(178, 72)
+            .build(CreateProc.asResource("fan_petrifying"), FanPetrifyingCategory::new);
+
+        registration.addRecipeCategories(fanWitheringCategory, fanPurifyingCategory, fanPetrifyingCategory);
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         fanWitheringCategory.registerRecipes(registration);
         fanPurifyingCategory.registerRecipes(registration);
+        fanPetrifyingCategory.registerRecipes(registration);
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         fanWitheringCategory.registerCatalysts(registration);
         fanPurifyingCategory.registerCatalysts(registration);
+        fanPetrifyingCategory.registerCatalysts(registration);
     }
 
     private static final class FanWitheringCategory extends ProcessingViaFanCategory<FanRecipe> {
@@ -87,6 +100,22 @@ public final class CreateProcJeiPlugin implements IModPlugin {
         @Override
         protected void renderAttachedBlock(GuiGraphics graphics) {
             GuiGameElement.of(Blocks.BEACON.defaultBlockState())
+                .scale(SCALE)
+                .atLocal(0, 0, 2)
+                .lighting(AnimatedKinetics.DEFAULT_LIGHTING)
+                .render(graphics);
+        }
+    }
+
+    private static final class FanPetrifyingCategory extends ProcessingViaFanCategory<FanRecipe> {
+
+        private FanPetrifyingCategory(Info<FanRecipe> info) {
+            super(info);
+        }
+
+        @Override
+        protected void renderAttachedBlock(GuiGraphics graphics) {
+            GuiGameElement.of(LIMESTONE.defaultBlockState())
                 .scale(SCALE)
                 .atLocal(0, 0, 2)
                 .lighting(AnimatedKinetics.DEFAULT_LIGHTING)
