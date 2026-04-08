@@ -14,17 +14,28 @@ public class WitheringRecipeGen extends CreateProcRecipeGen<FanRecipe> {
 
     {
         create("meat_to_rotten_flesh", b -> b
-            .require(CreateProcTags.MEAT)
-            .output(Items.ROTTEN_FLESH));
+                .require(CreateProcTags.MEAT)
+                .output(Items.ROTTEN_FLESH));
 
         create("small_flowers_to_wither_rose", b -> b
-            .require(CreateProcTags.minecraftItemTag("small_flowers"))
-            .output(Items.WITHER_ROSE));
+                .require(CreateProcTags.minecraftItemTag("small_flowers"))
+                .output(Items.WITHER_ROSE));
 
         create("tall_flowers_to_dead_bush", b -> b
-            .require(CreateProcTags.minecraftItemTag("tall_flowers"))
-            .output(Items.DEAD_BUSH));
+                .require(CreateProcTags.minecraftItemTag("tall_flowers"))
+                .output(Items.DEAD_BUSH));
 
+        create("saplings_to_dead_bush", b -> b
+                .require(CreateProcTags.minecraftItemTag("saplings"))
+                .output(Items.DEAD_BUSH));
+
+        convert(Items.SPIDER_EYE, Items.FERMENTED_SPIDER_EYE);
+        convert(Items.STONE_BRICKS, Items.CRACKED_STONE_BRICKS);
+        convert(Items.DEEPSLATE_BRICKS, Items.CRACKED_DEEPSLATE_BRICKS);
+        convert(Items.DEEPSLATE_TILES, Items.CRACKED_DEEPSLATE_TILES);
+        convert(Items.NETHER_BRICKS, Items.CRACKED_NETHER_BRICKS);
+        convert(Items.FERN, Items.DEAD_BUSH);
+        convert(Items.CACTUS, Items.DEAD_BUSH);
         convert(Items.CHARCOAL, Items.COAL);
         convert(Items.POTATO, Items.POISONOUS_POTATO);
         convert(Items.COBBLESTONE, Items.COBBLED_DEEPSLATE);
