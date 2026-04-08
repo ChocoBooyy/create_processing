@@ -5,6 +5,7 @@ import com.simibubi.create.AllItems;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.compat.jei.category.ProcessingViaFanCategory;
 import com.simibubi.create.compat.jei.category.animations.AnimatedKinetics;
+import com.simibubi.create.content.decoration.palettes.AllPaletteStoneTypes;
 import dev.chocoboy.create_processing.CreateProc;
 import dev.chocoboy.create_processing.content.recipes.FanRecipe;
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
@@ -15,16 +16,13 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.createmod.catnip.gui.element.GuiGameElement;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 @JeiPlugin
 public final class CreateProcJeiPlugin implements IModPlugin {
 
     private static final ResourceLocation PLUGIN_UID = CreateProc.asResource("jei_plugin");
-    private static final Block LIMESTONE = BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath("create", "limestone"));
 
     private CreateRecipeCategory<FanRecipe> fanWitheringCategory;
     private CreateRecipeCategory<FanRecipe> fanPurifyingCategory;
@@ -54,7 +52,7 @@ public final class CreateProcJeiPlugin implements IModPlugin {
         fanPetrifyingCategory = new CreateRecipeCategory.Builder<>(FanRecipe.class)
             .addTypedRecipes(CreateProcRecipeTypes.PETRIFYING)
             .catalystStack(AllBlocks.ENCASED_FAN::asStack)
-            .doubleItemIcon(AllItems.PROPELLER.get(), LIMESTONE)
+            .doubleItemIcon(AllItems.PROPELLER.get(), AllPaletteStoneTypes.LIMESTONE.baseBlock.get())
             .emptyBackground(178, 72)
             .build(CreateProc.asResource("fan_petrifying"), FanPetrifyingCategory::new);
 
@@ -115,7 +113,7 @@ public final class CreateProcJeiPlugin implements IModPlugin {
 
         @Override
         protected void renderAttachedBlock(GuiGraphics graphics) {
-            GuiGameElement.of(LIMESTONE.defaultBlockState())
+            GuiGameElement.of(AllPaletteStoneTypes.LIMESTONE.baseBlock.get().defaultBlockState())
                 .scale(SCALE)
                 .atLocal(0, 0, 2)
                 .lighting(AnimatedKinetics.DEFAULT_LIGHTING)

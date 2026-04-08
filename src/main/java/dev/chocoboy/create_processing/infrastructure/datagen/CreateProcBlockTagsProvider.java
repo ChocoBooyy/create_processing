@@ -1,10 +1,10 @@
 package dev.chocoboy.create_processing.infrastructure.datagen;
 
+import com.simibubi.create.content.decoration.palettes.AllPaletteStoneTypes;
 import dev.chocoboy.create_processing.CreateProc;
 import dev.chocoboy.create_processing.registry.CreateProcTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -26,6 +26,6 @@ public class CreateProcBlockTagsProvider extends BlockTagsProvider {
             .add(Blocks.BEACON);
 
         tag(CreateProcTags.PETRIFYING_CATALYST_BLOCKS)
-            .addOptional(ResourceLocation.fromNamespaceAndPath("create", "limestone"));
+            .add(AllPaletteStoneTypes.LIMESTONE.baseBlock.get());
     }
 }

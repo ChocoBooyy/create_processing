@@ -1,8 +1,5 @@
 {
   "values": [
-    {
-      "id": "create:limestone",
-      "required": false
-    }
+    "create:limestone"
   ]
 }
