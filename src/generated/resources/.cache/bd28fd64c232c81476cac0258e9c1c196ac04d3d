@@ -1,2 +1,3 @@
-// 1.21.1	2026-04-07T20:57:38.5587551	Tags for minecraft:block mod id create_processing
-abecbb9b948d8b1befb7f9cd2ac7f4f092add689 data/create_processing/tags/block/fan_processing_catalysts/withering.json
+// 1.21.1	2026-04-08T16:57:44.8845468	Tags for minecraft:block mod id create_processing
+04ce5de11b482132517d63af08aae269d1055025 data/create_processing/tags/block/fan_processing_catalysts/purifying.json
+199f846e50e5c4bbc441db88bfe1214be3fe1683 data/create_processing/tags/block/fan_processing_catalysts/withering.json

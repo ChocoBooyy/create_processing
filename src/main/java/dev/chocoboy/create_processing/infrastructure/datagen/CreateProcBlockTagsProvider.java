@@ -20,5 +20,8 @@ public class CreateProcBlockTagsProvider extends BlockTagsProvider {
     protected void addTags(HolderLookup.Provider provider) {
         tag(CreateProcTags.WITHERING_CATALYST_BLOCKS)
             .add(Blocks.WITHER_ROSE);
+
+        tag(CreateProcTags.PURIFYING_CATALYST_BLOCKS)
+            .add(Blocks.BEACON);
     }
 }

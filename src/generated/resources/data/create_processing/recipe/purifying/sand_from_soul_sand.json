@@ -1,0 +1,13 @@
+{
+  "type": "create_processing:purifying",
+  "ingredients": [
+    {
+      "item": "minecraft:soul_sand"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:sand"
+    }
+  ]
+}

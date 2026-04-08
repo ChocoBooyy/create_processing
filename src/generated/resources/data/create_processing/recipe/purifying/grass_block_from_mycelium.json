@@ -1,0 +1,13 @@
+{
+  "type": "create_processing:purifying",
+  "ingredients": [
+    {
+      "item": "minecraft:mycelium"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:grass_block"
+    }
+  ]
+}

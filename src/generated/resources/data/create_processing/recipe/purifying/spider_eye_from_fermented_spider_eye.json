@@ -1,0 +1,13 @@
+{
+  "type": "create_processing:purifying",
+  "ingredients": [
+    {
+      "item": "minecraft:fermented_spider_eye"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:spider_eye"
+    }
+  ]
+}

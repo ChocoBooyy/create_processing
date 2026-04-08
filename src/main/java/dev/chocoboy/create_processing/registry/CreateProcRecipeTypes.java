@@ -29,9 +29,11 @@ public final class CreateProcRecipeTypes {
         DeferredRegister.create(Registries.RECIPE_TYPE, CreateProc.MOD_ID);
 
     public static RecipeTypeEntry WITHERING;
+    public static RecipeTypeEntry PURIFYING;
 
     static {
         WITHERING = registerStandard("withering", params -> new FanRecipe(WITHERING, params));
+        PURIFYING = registerStandard("purifying", params -> new FanRecipe(PURIFYING, params));
     }
 
     private CreateProcRecipeTypes() {}

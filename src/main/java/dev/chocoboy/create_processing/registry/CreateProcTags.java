@@ -17,6 +17,10 @@ public final class CreateProcTags {
         BlockTags.create(CreateProc.asResource("fan_processing_catalysts/withering"));
     public static final TagKey<Fluid> WITHERING_CATALYST_FLUIDS =
         FluidTags.create(CreateProc.asResource("fan_processing_catalysts/withering"));
+    public static final TagKey<Block> PURIFYING_CATALYST_BLOCKS =
+        BlockTags.create(CreateProc.asResource("fan_processing_catalysts/purifying"));
+    public static final TagKey<Fluid> PURIFYING_CATALYST_FLUIDS =
+        FluidTags.create(CreateProc.asResource("fan_processing_catalysts/purifying"));
     public static final TagKey<Item> MEAT =
         ItemTags.create(CreateProc.asResource("meat"));
 

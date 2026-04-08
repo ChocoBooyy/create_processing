@@ -27,6 +27,7 @@ public final class CreateProcJeiPlugin implements IModPlugin {
     private static final ResourceLocation PLUGIN_UID = CreateProc.asResource("jei_plugin");
 
     private CreateRecipeCategory<FanRecipe> fanWitheringCategory;
+    private CreateRecipeCategory<FanRecipe> fanPurifyingCategory;
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -48,17 +49,32 @@ public final class CreateProcJeiPlugin implements IModPlugin {
             .emptyBackground(178, 72)
             .build(CreateProc.asResource("fan_withering"), FanWitheringCategory::new);
 
-        registration.addRecipeCategories(fanWitheringCategory);
+        fanPurifyingCategory = new CreateRecipeCategory.Builder<>(FanRecipe.class)
+            .addTypedRecipes(CreateProcRecipeTypes.PURIFYING)
+            .catalystStack(() -> {
+                ItemStack fan = AllBlocks.ENCASED_FAN.asStack();
+                fan.set(DataComponents.CUSTOM_NAME,
+                    Component.translatable("create_processing.recipe.fan_purifying.fan")
+                        .withStyle(s -> s.withItalic(false)));
+                return fan;
+            })
+            .doubleItemIcon(AllItems.PROPELLER.get(), Blocks.BEACON)
+            .emptyBackground(178, 72)
+            .build(CreateProc.asResource("fan_purifying"), FanPurifyingCategory::new);
+
+        registration.addRecipeCategories(fanWitheringCategory, fanPurifyingCategory);
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         fanWitheringCategory.registerRecipes(registration);
+        fanPurifyingCategory.registerRecipes(registration);
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         fanWitheringCategory.registerCatalysts(registration);
+        fanPurifyingCategory.registerCatalysts(registration);
     }
 
     private static final class FanWitheringCategory extends ProcessingViaFanCategory<FanRecipe> {
@@ -70,6 +86,22 @@ public final class CreateProcJeiPlugin implements IModPlugin {
         @Override
         protected void renderAttachedBlock(GuiGraphics graphics) {
             GuiGameElement.of(Blocks.WITHER_ROSE.defaultBlockState())
+                .scale(SCALE)
+                .atLocal(0, 0, 2)
+                .lighting(AnimatedKinetics.DEFAULT_LIGHTING)
+                .render(graphics);
+        }
+    }
+
+    private static final class FanPurifyingCategory extends ProcessingViaFanCategory<FanRecipe> {
+
+        private FanPurifyingCategory(Info<FanRecipe> info) {
+            super(info);
+        }
+
+        @Override
+        protected void renderAttachedBlock(GuiGraphics graphics) {
+            GuiGameElement.of(Blocks.BEACON.defaultBlockState())
                 .scale(SCALE)
                 .atLocal(0, 0, 2)
                 .lighting(AnimatedKinetics.DEFAULT_LIGHTING)

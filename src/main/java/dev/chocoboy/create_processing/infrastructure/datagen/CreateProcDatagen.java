@@ -27,6 +27,7 @@ public final class CreateProcDatagen {
             generator.addProvider(true, new CreateProcBlockTagsProvider(output, lookupProvider, existingFileHelper));
             generator.addProvider(true, new CreateProcItemTagsProvider(output, lookupProvider, existingFileHelper));
             generator.addProvider(true, new WitheringRecipeGen(output, lookupProvider));
+            generator.addProvider(true, new PurifyingRecipeGen(output, lookupProvider));
         }
     }
 }
