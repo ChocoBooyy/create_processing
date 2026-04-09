@@ -39,6 +39,13 @@ public final class FanProcessingSounds {
             SoundEvents.PORTAL_TRAVEL, 0.05f, 0.98f, 1.12f);
     }
 
+    public static void playSanding(Level level, BlockPos pos) {
+        if (shouldNotPlayOnTick(level, pos, 16, 59)) return; // ~1.25 sounds/sec
+        playLayered(level, pos,
+            SoundEvents.SAND_BREAK, 0.09f, 0.92f, 1.05f,
+            SoundEvents.SAND_HIT, 0.06f, 0.98f, 1.12f);
+    }
+
     private static boolean shouldNotPlayOnTick(Level level, BlockPos pos, int interval, int salt) {
         long phaseSeed = pos.asLong() ^ salt;
         int phase = Math.floorMod(Long.hashCode(phaseSeed), interval);
@@ -62,4 +69,3 @@ public final class FanProcessingSounds {
             volume, minPitch + (level.random.nextFloat() * (maxPitch - minPitch)));
     }
 }
-

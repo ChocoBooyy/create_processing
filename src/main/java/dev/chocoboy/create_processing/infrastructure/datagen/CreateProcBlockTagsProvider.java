@@ -29,6 +29,10 @@ public class CreateProcBlockTagsProvider extends BlockTagsProvider {
         tag(CreateProcTags.PETRIFYING_CATALYST_BLOCKS)
             .add(AllPaletteStoneTypes.LIMESTONE.baseBlock.get());
 
+        tag(CreateProcTags.SANDING_CATALYST_BLOCKS)
+            .add(Blocks.SAND)
+            .add(Blocks.RED_SAND);
+
         tag(CreateProcTags.ENDERFYING_CATALYST_BLOCKS)
             .add(Blocks.CHORUS_FLOWER);
 
@@ -36,6 +40,7 @@ public class CreateProcBlockTagsProvider extends BlockTagsProvider {
             .addTag(CreateProcTags.WITHERING_CATALYST_BLOCKS)
             .addTag(CreateProcTags.PURIFYING_CATALYST_BLOCKS)
             .addTag(CreateProcTags.PETRIFYING_CATALYST_BLOCKS)
+            .addTag(CreateProcTags.SANDING_CATALYST_BLOCKS)
             .addTag(CreateProcTags.ENDERFYING_CATALYST_BLOCKS);
     }
 }

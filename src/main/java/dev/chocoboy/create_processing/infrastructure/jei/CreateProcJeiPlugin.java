@@ -5,6 +5,7 @@ import com.simibubi.create.AllItems;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.compat.jei.category.ProcessingViaFanCategory;
 import com.simibubi.create.compat.jei.category.animations.AnimatedKinetics;
+import dev.chocoboy.create_processing.content.fans.processing.SandingType;
 import com.simibubi.create.content.decoration.palettes.AllPaletteStoneTypes;
 import dev.chocoboy.create_processing.CreateProc;
 import dev.chocoboy.create_processing.content.recipes.FanRecipe;
@@ -15,9 +16,14 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.createmod.catnip.gui.element.GuiGameElement;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.Blocks;
+
+import java.util.Objects;
+import java.util.function.Consumer;
 
 @JeiPlugin
 public final class CreateProcJeiPlugin implements IModPlugin {
@@ -25,6 +31,7 @@ public final class CreateProcJeiPlugin implements IModPlugin {
     private static final ResourceLocation PLUGIN_UID = CreateProc.asResource("jei_plugin");
 
     private CreateRecipeCategory<FanRecipe> fanWitheringCategory;
+    private CreateRecipeCategory<FanRecipe> fanSandingCategory;
     private CreateRecipeCategory<FanRecipe> fanPurifyingCategory;
     private CreateRecipeCategory<FanRecipe> fanPetrifyingCategory;
     private CreateRecipeCategory<FanRecipe> fanEnderfyingCategory;
@@ -50,6 +57,22 @@ public final class CreateProcJeiPlugin implements IModPlugin {
             .emptyBackground(178, 72)
             .build(CreateProc.asResource("fan_purifying"), FanPurifyingCategory::new);
 
+        fanSandingCategory = new CreateRecipeCategory.Builder<>(FanRecipe.class)
+            .addTypedRecipes(CreateProcRecipeTypes.SANDING)
+            .addRecipeListConsumer(recipes -> consumeAllRecipes(recipeHolder -> {
+                if (!SandingType.isPolishProcessingRecipe(recipeHolder)) {
+                    return;
+                }
+
+                @SuppressWarnings({"unchecked", "rawtypes"})
+                RecipeHolder<FanRecipe> casted = (RecipeHolder) recipeHolder;
+                recipes.add(casted);
+            }))
+            .catalystStack(AllBlocks.ENCASED_FAN::asStack)
+            .doubleItemIcon(AllItems.PROPELLER.get(), Blocks.SAND)
+            .emptyBackground(178, 72)
+            .build(CreateProc.asResource("fan_sanding"), FanSandingCategory::new);
+
         fanPetrifyingCategory = new CreateRecipeCategory.Builder<>(FanRecipe.class)
             .addTypedRecipes(CreateProcRecipeTypes.PETRIFYING)
             .catalystStack(AllBlocks.ENCASED_FAN::asStack)
@@ -64,12 +87,13 @@ public final class CreateProcJeiPlugin implements IModPlugin {
             .emptyBackground(178, 72)
             .build(CreateProc.asResource("fan_enderfying"), FanEnderfyingCategory::new);
 
-        registration.addRecipeCategories(fanWitheringCategory, fanPurifyingCategory, fanPetrifyingCategory, fanEnderfyingCategory);
+        registration.addRecipeCategories(fanWitheringCategory, fanSandingCategory, fanPurifyingCategory, fanPetrifyingCategory, fanEnderfyingCategory);
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         fanWitheringCategory.registerRecipes(registration);
+        fanSandingCategory.registerRecipes(registration);
         fanPurifyingCategory.registerRecipes(registration);
         fanPetrifyingCategory.registerRecipes(registration);
         fanEnderfyingCategory.registerRecipes(registration);
@@ -78,6 +102,7 @@ public final class CreateProcJeiPlugin implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         fanWitheringCategory.registerCatalysts(registration);
+        fanSandingCategory.registerCatalysts(registration);
         fanPurifyingCategory.registerCatalysts(registration);
         fanPetrifyingCategory.registerCatalysts(registration);
         fanEnderfyingCategory.registerCatalysts(registration);
@@ -115,6 +140,22 @@ public final class CreateProcJeiPlugin implements IModPlugin {
         }
     }
 
+    private static final class FanSandingCategory extends ProcessingViaFanCategory.MultiOutput<FanRecipe> {
+
+        private FanSandingCategory(Info<FanRecipe> info) {
+            super(info);
+        }
+
+        @Override
+        protected void renderAttachedBlock(GuiGraphics graphics) {
+            GuiGameElement.of(Blocks.SAND.defaultBlockState())
+                .scale(SCALE)
+                .atLocal(0, 0, 2)
+                .lighting(AnimatedKinetics.DEFAULT_LIGHTING)
+                .render(graphics);
+        }
+    }
+
     private static final class FanPetrifyingCategory extends ProcessingViaFanCategory.MultiOutput<FanRecipe> {
 
         private FanPetrifyingCategory(Info<FanRecipe> info) {
@@ -145,5 +186,12 @@ public final class CreateProcJeiPlugin implements IModPlugin {
                 .lighting(AnimatedKinetics.DEFAULT_LIGHTING)
                 .render(graphics);
         }
+    }
+
+    private static void consumeAllRecipes(Consumer<RecipeHolder<?>> consumer) {
+        Objects.requireNonNull(Minecraft.getInstance().getConnection())
+            .getRecipeManager()
+            .getRecipes()
+            .forEach(consumer);
     }
 }

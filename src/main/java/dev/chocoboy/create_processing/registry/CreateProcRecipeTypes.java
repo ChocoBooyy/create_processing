@@ -29,12 +29,14 @@ public final class CreateProcRecipeTypes {
         DeferredRegister.create(Registries.RECIPE_TYPE, CreateProc.MOD_ID);
 
     public static RecipeTypeEntry WITHERING;
+    public static RecipeTypeEntry SANDING;
     public static RecipeTypeEntry PURIFYING;
     public static RecipeTypeEntry PETRIFYING;
     public static RecipeTypeEntry ENDERFYING;
 
     static {
         WITHERING = registerStandard("withering", params -> new FanRecipe(WITHERING, params));
+        SANDING = registerStandard("sanding", params -> new FanRecipe(SANDING, params));
         PURIFYING = registerStandard("purifying", params -> new FanRecipe(PURIFYING, params));
         PETRIFYING = registerStandard("petrifying", params -> new FanRecipe(PETRIFYING, params));
         ENDERFYING = registerStandard("enderfying", params -> new FanRecipe(ENDERFYING, params));
@@ -59,9 +61,9 @@ public final class CreateProcRecipeTypes {
     }
 
     public record RecipeTypeEntry(
-        ResourceLocation id,
-        DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>> serializer,
-        DeferredHolder<RecipeType<?>, RecipeType<?>> type
+            ResourceLocation id,
+            DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>> serializer,
+            DeferredHolder<RecipeType<?>, RecipeType<?>> type
     ) implements IRecipeTypeInfo {
 
         @Override
