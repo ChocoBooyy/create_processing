@@ -1,0 +1,13 @@
+{
+  "type": "create_processing:enderfying",
+  "ingredients": [
+    {
+      "item": "minecraft:potion"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:dragon_breath"
+    }
+  ]
+}

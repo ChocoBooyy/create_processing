@@ -25,9 +25,17 @@ public abstract class CreateProcRecipeGen<R extends StandardProcessingRecipe<?>>
         return convert(() -> Ingredient.of(input), () -> output);
     }
 
+    protected GeneratedRecipe convert(ItemLike input, ItemLike output, float chance) {
+        return convert(() -> Ingredient.of(input), () -> output, chance);
+    }
+
     protected GeneratedRecipe convert(Supplier<Ingredient> input, Supplier<ItemLike> output) {
+        return convert(input, output, 1f);
+    }
+
+    protected GeneratedRecipe convert(Supplier<Ingredient> input, Supplier<ItemLike> output, float chance) {
         return create(asResource(getPath(output) + "_from_" + getPath(() -> input.get().getItems()[0].getItem())),
-            builder -> builder.withItemIngredients(input.get()).output(output.get()));
+            builder -> builder.withItemIngredients(input.get()).output(chance, output.get()));
     }
 
     protected static String getPath(Supplier<ItemLike> itemLike) {

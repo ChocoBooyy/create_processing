@@ -1,0 +1,14 @@
+{
+  "type": "create_processing:enderfying",
+  "ingredients": [
+    {
+      "item": "minecraft:apple"
+    }
+  ],
+  "results": [
+    {
+      "chance": 0.5,
+      "id": "minecraft:chorus_fruit"
+    }
+  ]
+}

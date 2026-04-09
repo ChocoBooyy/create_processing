@@ -1,0 +1,79 @@
+package dev.chocoboy.create_processing.content.fans.processing;
+
+import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
+import dev.chocoboy.create_processing.registry.CreateProcTags;
+import net.createmod.catnip.theme.Color;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+
+public final class EnderfyingType extends AbstractFanProcessingType {
+
+    private static final int COLOR_LIGHT = 0x7D4CFF;
+    private static final int COLOR_DARK = 0x5A2BA8;
+
+    public EnderfyingType() {
+        super(CreateProcRecipeTypes.ENDERFYING);
+    }
+
+    @Override
+    public boolean isValidAt(Level level, BlockPos pos) {
+        return level.getBlockState(pos).is(CreateProcTags.ENDERFYING_CATALYST_BLOCKS);
+    }
+
+    @Override
+    public int getPriority() {
+        return 691350;
+    }
+
+    @Override
+    public void spawnProcessingParticles(Level level, Vec3 pos) {
+        if (level.random.nextInt(8) != 0) return;
+        level.addParticle(ParticleTypes.PORTAL,
+            pos.x + (level.random.nextFloat() - 0.5f) * 0.5f, pos.y + 0.5f,
+            pos.z + (level.random.nextFloat() - 0.5f) * 0.5f, 0, 1 / 8f, 0);
+    }
+
+    @Override
+    public void morphAirFlow(AirFlowParticleAccess particleAccess, RandomSource random) {
+        particleAccess.setColor(Color.mixColors(COLOR_LIGHT, COLOR_DARK, random.nextFloat()));
+        particleAccess.setAlpha(1f);
+        if (random.nextFloat() < 1 / 32f)
+            particleAccess.spawnExtraParticle(ParticleTypes.PORTAL, 0.125f);
+    }
+
+    @Override
+    public void affectEntity(Entity entity, Level level) {
+        if (level.isClientSide || !(entity instanceof LivingEntity)) return;
+
+        LivingEntity living = (LivingEntity) entity;
+        living.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40, 0, false, false));
+
+        // Keep enderfying useful but not oppressive: 0.5 heart once per second.
+        if (living.tickCount % 20 == 0) {
+            living.hurt(level.damageSources().magic(), 1.0f);
+
+            RandomSource rand = level.random;
+            for (int i = 0; i < 6; i++) {
+                level.addParticle(ParticleTypes.PORTAL,
+                    entity.getX() + (rand.nextDouble() - 0.5) * 1.5,
+                    entity.getY() + 0.3 + rand.nextDouble() * 1.2,
+                    entity.getZ() + (rand.nextDouble() - 0.5) * 1.5,
+                    0,
+                    0.02,
+                    0);
+            }
+        }
+
+        // Keep a persistent auditory cue so enderfying is always noticeable.
+        FanProcessingSounds.playEnderfying(level, entity.blockPosition());
+    }
+}
+
+

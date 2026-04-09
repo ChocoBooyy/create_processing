@@ -27,6 +27,7 @@ public final class CreateProcJeiPlugin implements IModPlugin {
     private CreateRecipeCategory<FanRecipe> fanWitheringCategory;
     private CreateRecipeCategory<FanRecipe> fanPurifyingCategory;
     private CreateRecipeCategory<FanRecipe> fanPetrifyingCategory;
+    private CreateRecipeCategory<FanRecipe> fanEnderfyingCategory;
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -56,7 +57,14 @@ public final class CreateProcJeiPlugin implements IModPlugin {
             .emptyBackground(178, 72)
             .build(CreateProc.asResource("fan_petrifying"), FanPetrifyingCategory::new);
 
-        registration.addRecipeCategories(fanWitheringCategory, fanPurifyingCategory, fanPetrifyingCategory);
+        fanEnderfyingCategory = new CreateRecipeCategory.Builder<>(FanRecipe.class)
+            .addTypedRecipes(CreateProcRecipeTypes.ENDERFYING)
+            .catalystStack(AllBlocks.ENCASED_FAN::asStack)
+            .doubleItemIcon(AllItems.PROPELLER.get(), Blocks.CHORUS_FLOWER)
+            .emptyBackground(178, 72)
+            .build(CreateProc.asResource("fan_enderfying"), FanEnderfyingCategory::new);
+
+        registration.addRecipeCategories(fanWitheringCategory, fanPurifyingCategory, fanPetrifyingCategory, fanEnderfyingCategory);
     }
 
     @Override
@@ -64,6 +72,7 @@ public final class CreateProcJeiPlugin implements IModPlugin {
         fanWitheringCategory.registerRecipes(registration);
         fanPurifyingCategory.registerRecipes(registration);
         fanPetrifyingCategory.registerRecipes(registration);
+        fanEnderfyingCategory.registerRecipes(registration);
     }
 
     @Override
@@ -71,9 +80,10 @@ public final class CreateProcJeiPlugin implements IModPlugin {
         fanWitheringCategory.registerCatalysts(registration);
         fanPurifyingCategory.registerCatalysts(registration);
         fanPetrifyingCategory.registerCatalysts(registration);
+        fanEnderfyingCategory.registerCatalysts(registration);
     }
 
-    private static final class FanWitheringCategory extends ProcessingViaFanCategory<FanRecipe> {
+    private static final class FanWitheringCategory extends ProcessingViaFanCategory.MultiOutput<FanRecipe> {
 
         private FanWitheringCategory(Info<FanRecipe> info) {
             super(info);
@@ -89,7 +99,7 @@ public final class CreateProcJeiPlugin implements IModPlugin {
         }
     }
 
-    private static final class FanPurifyingCategory extends ProcessingViaFanCategory<FanRecipe> {
+    private static final class FanPurifyingCategory extends ProcessingViaFanCategory.MultiOutput<FanRecipe> {
 
         private FanPurifyingCategory(Info<FanRecipe> info) {
             super(info);
@@ -105,7 +115,7 @@ public final class CreateProcJeiPlugin implements IModPlugin {
         }
     }
 
-    private static final class FanPetrifyingCategory extends ProcessingViaFanCategory<FanRecipe> {
+    private static final class FanPetrifyingCategory extends ProcessingViaFanCategory.MultiOutput<FanRecipe> {
 
         private FanPetrifyingCategory(Info<FanRecipe> info) {
             super(info);
@@ -114,6 +124,22 @@ public final class CreateProcJeiPlugin implements IModPlugin {
         @Override
         protected void renderAttachedBlock(GuiGraphics graphics) {
             GuiGameElement.of(AllPaletteStoneTypes.LIMESTONE.baseBlock.get().defaultBlockState())
+                .scale(SCALE)
+                .atLocal(0, 0, 2)
+                .lighting(AnimatedKinetics.DEFAULT_LIGHTING)
+                .render(graphics);
+        }
+    }
+
+    private static final class FanEnderfyingCategory extends ProcessingViaFanCategory.MultiOutput<FanRecipe> {
+
+        private FanEnderfyingCategory(Info<FanRecipe> info) {
+            super(info);
+        }
+
+        @Override
+        protected void renderAttachedBlock(GuiGraphics graphics) {
+            GuiGameElement.of(Blocks.CHORUS_FLOWER.defaultBlockState())
                 .scale(SCALE)
                 .atLocal(0, 0, 2)
                 .lighting(AnimatedKinetics.DEFAULT_LIGHTING)

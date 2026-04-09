@@ -2,7 +2,6 @@ package dev.chocoboy.create_processing.content.fans.processing;
 
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
 import dev.chocoboy.create_processing.registry.CreateProcTags;
-import dev.chocoboy.create_processing.content.sound.ProcessingSounds;
 import net.createmod.catnip.theme.Color;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -18,7 +17,7 @@ import org.joml.Vector3f;
 
 public final class PetrifyingType extends AbstractFanProcessingType {
 
-    private static final int COLOR_DARK  = 0x5a5a5a;
+    private static final int COLOR_DARK = 0x5a5a5a;
     private static final int COLOR_LIGHT = 0x9e9e9e;
 
     public PetrifyingType() {
@@ -59,6 +58,6 @@ public final class PetrifyingType extends AbstractFanProcessingType {
     public void affectEntity(Entity entity, Level level) {
         if (level.isClientSide || !(entity instanceof LivingEntity living)) return;
         living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 1, false, false));
-        ProcessingSounds.playPetrifying(level, entity.blockPosition());
+        FanProcessingSounds.playPetrifying(level, entity.blockPosition());
     }
 }

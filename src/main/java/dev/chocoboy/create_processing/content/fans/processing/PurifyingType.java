@@ -2,7 +2,6 @@ package dev.chocoboy.create_processing.content.fans.processing;
 
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
 import dev.chocoboy.create_processing.registry.CreateProcTags;
-import dev.chocoboy.create_processing.content.sound.ProcessingSounds;
 import net.createmod.catnip.theme.Color;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -68,7 +67,7 @@ public final class PurifyingType extends AbstractFanProcessingType {
 
         // Keep a soft ambient cue even when no debuff is removed, so purifying is audible on its own.
         if (removed || living.tickCount % 20 == 0) {
-            ProcessingSounds.playPurifying(level, entity.blockPosition());
+            FanProcessingSounds.playPurifying(level, entity.blockPosition());
         }
     }
 }

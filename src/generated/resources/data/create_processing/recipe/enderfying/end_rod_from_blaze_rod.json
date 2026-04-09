@@ -1,0 +1,13 @@
+{
+  "type": "create_processing:enderfying",
+  "ingredients": [
+    {
+      "item": "minecraft:blaze_rod"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:end_rod"
+    }
+  ]
+}

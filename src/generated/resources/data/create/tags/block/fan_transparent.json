@@ -2,6 +2,7 @@
   "values": [
     "#create_processing:fan_processing_catalysts/withering",
     "#create_processing:fan_processing_catalysts/purifying",
-    "#create_processing:fan_processing_catalysts/petrifying"
+    "#create_processing:fan_processing_catalysts/petrifying",
+    "#create_processing:fan_processing_catalysts/enderfying"
   ]
 }

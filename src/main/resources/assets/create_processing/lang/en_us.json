@@ -2,5 +2,6 @@
   "itemGroup.create_processing.base": "Create: Processing",
   "create_processing.recipe.fan_withering": "Bulk Withering",
   "create_processing.recipe.fan_purifying": "Bulk Purifying",
-  "create_processing.recipe.fan_petrifying": "Bulk Petrifying"
+  "create_processing.recipe.fan_petrifying": "Bulk Petrifying",
+  "create_processing.recipe.fan_enderfying": "Bulk Enderfying"
 }

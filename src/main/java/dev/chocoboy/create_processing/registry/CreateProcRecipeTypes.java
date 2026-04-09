@@ -31,11 +31,13 @@ public final class CreateProcRecipeTypes {
     public static RecipeTypeEntry WITHERING;
     public static RecipeTypeEntry PURIFYING;
     public static RecipeTypeEntry PETRIFYING;
+    public static RecipeTypeEntry ENDERFYING;
 
     static {
         WITHERING = registerStandard("withering", params -> new FanRecipe(WITHERING, params));
         PURIFYING = registerStandard("purifying", params -> new FanRecipe(PURIFYING, params));
         PETRIFYING = registerStandard("petrifying", params -> new FanRecipe(PETRIFYING, params));
+        ENDERFYING = registerStandard("enderfying", params -> new FanRecipe(ENDERFYING, params));
     }
 
     private CreateProcRecipeTypes() {}

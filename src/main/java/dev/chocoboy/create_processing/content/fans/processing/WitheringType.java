@@ -2,7 +2,6 @@ package dev.chocoboy.create_processing.content.fans.processing;
 
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
 import dev.chocoboy.create_processing.registry.CreateProcTags;
-import dev.chocoboy.create_processing.content.sound.ProcessingSounds;
 import net.createmod.catnip.theme.Color;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -20,7 +19,7 @@ import org.joml.Vector3f;
 
 public final class WitheringType extends AbstractFanProcessingType {
 
-    private static final int COLOR_DARK  = 0x180c30;
+    private static final int COLOR_DARK = 0x180c30;
     private static final int COLOR_LIGHT = 0x1e0f3d;
 
     public WitheringType() {
@@ -68,7 +67,7 @@ public final class WitheringType extends AbstractFanProcessingType {
         } else if (entity instanceof WitherSkeleton witherSkeleton) {
             witherSkeleton.heal(1f);
         } else {
-            ProcessingSounds.playWithering(level, entity.blockPosition());
+            FanProcessingSounds.playWithering(level, entity.blockPosition());
         }
     }
 }

@@ -29,9 +29,13 @@ public class CreateProcBlockTagsProvider extends BlockTagsProvider {
         tag(CreateProcTags.PETRIFYING_CATALYST_BLOCKS)
             .add(AllPaletteStoneTypes.LIMESTONE.baseBlock.get());
 
+        tag(CreateProcTags.ENDERFYING_CATALYST_BLOCKS)
+            .add(Blocks.CHORUS_FLOWER);
+
         tag(AllTags.AllBlockTags.FAN_TRANSPARENT.tag)
             .addTag(CreateProcTags.WITHERING_CATALYST_BLOCKS)
             .addTag(CreateProcTags.PURIFYING_CATALYST_BLOCKS)
-            .addTag(CreateProcTags.PETRIFYING_CATALYST_BLOCKS);
+            .addTag(CreateProcTags.PETRIFYING_CATALYST_BLOCKS)
+            .addTag(CreateProcTags.ENDERFYING_CATALYST_BLOCKS);
     }
 }

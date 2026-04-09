@@ -1,0 +1,14 @@
+{
+  "type": "create_processing:enderfying",
+  "ingredients": [
+    {
+      "item": "minecraft:magma_cream"
+    }
+  ],
+  "results": [
+    {
+      "chance": 0.15,
+      "id": "minecraft:ender_pearl"
+    }
+  ]
+}

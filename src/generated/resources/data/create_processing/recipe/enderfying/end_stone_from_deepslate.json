@@ -1,0 +1,13 @@
+{
+  "type": "create_processing:enderfying",
+  "ingredients": [
+    {
+      "item": "minecraft:deepslate"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:end_stone"
+    }
+  ]
+}
