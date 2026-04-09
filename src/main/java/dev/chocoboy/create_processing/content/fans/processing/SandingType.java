@@ -10,10 +10,12 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -33,6 +35,12 @@ public final class SandingType extends AbstractFanProcessingType {
 
     private static final int COLOR_LIGHT = 0xEDEBCB;
     private static final int COLOR_DARK = 0xE7E4BB;
+    private static final FanEntityTransformHelper.TransformationFeedback ZOMBIE_SANDING_FEEDBACK =
+        new FanEntityTransformHelper.TransformationFeedback(
+            SoundEvents.HUSK_AMBIENT,
+            SoundEvents.HUSK_CONVERTED_TO_ZOMBIE,
+            ParticleTypes.WHITE_ASH
+        );
 
     @Nullable
     private static RecipeManager cachedPolishManager;
@@ -170,6 +178,11 @@ public final class SandingType extends AbstractFanProcessingType {
     @Override
     public void affectEntity(Entity entity, Level level) {
         if (level.isClientSide || !(entity instanceof LivingEntity living)) return;
+
+        if (entity.getType() == EntityType.ZOMBIE
+                && FanEntityTransformHelper.transformMob(level, entity, EntityType.HUSK, ZOMBIE_SANDING_FEEDBACK)) {
+            return;
+        }
 
         living.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40, 0, false, false));
         if (living.tickCount % 60 == 0) {

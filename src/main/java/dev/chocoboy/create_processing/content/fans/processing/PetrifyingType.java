@@ -6,10 +6,12 @@ import net.createmod.catnip.theme.Color;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
@@ -22,6 +24,12 @@ public final class PetrifyingType extends AbstractFanProcessingType {
 
     private static final int COLOR_DARK = 0x5a5a5a;
     private static final int COLOR_LIGHT = 0x9e9e9e;
+    private static final FanEntityTransformHelper.TransformationFeedback SKELETON_PETRIFYING_FEEDBACK =
+        new FanEntityTransformHelper.TransformationFeedback(
+            SoundEvents.SKELETON_AMBIENT,
+            SoundEvents.SKELETON_STEP,
+            ParticleTypes.SMOKE
+        );
 
     public PetrifyingType() {
         super(CreateProcRecipeTypes.PETRIFYING);
@@ -61,9 +69,15 @@ public final class PetrifyingType extends AbstractFanProcessingType {
     public void affectEntity(Entity entity, Level level) {
         if (level.isClientSide || !(entity instanceof LivingEntity living)) return;
 
-        boolean resistant = living instanceof IronGolem
-            || living instanceof WitherBoss
-            || living instanceof EnderDragon;
+        if ((entity.getType() == EntityType.ZOMBIE
+                || entity.getType() == EntityType.HUSK
+                || entity.getType() == EntityType.DROWNED
+                || entity.getType() == EntityType.STRAY)
+                && FanEntityTransformHelper.transformMob(level, entity, EntityType.SKELETON, SKELETON_PETRIFYING_FEEDBACK)) {
+            return;
+        }
+
+        boolean resistant = living instanceof IronGolem || living instanceof WitherBoss || living instanceof EnderDragon;
         living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, resistant ? 0 : 1, false, false));
 
         if (!resistant) {

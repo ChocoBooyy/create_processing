@@ -6,10 +6,12 @@ import net.createmod.catnip.theme.Color;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.WitherSkeleton;
@@ -21,6 +23,12 @@ public final class WitheringType extends AbstractFanProcessingType {
 
     private static final int COLOR_DARK = 0x180c30;
     private static final int COLOR_LIGHT = 0x1e0f3d;
+    private static final FanEntityTransformHelper.TransformationFeedback SKELETON_WITHERING_FEEDBACK =
+        new FanEntityTransformHelper.TransformationFeedback(
+            SoundEvents.WITHER_SKELETON_AMBIENT,
+            SoundEvents.WITHER_SKELETON_STEP,
+            ParticleTypes.ASH
+        );
 
     public WitheringType() {
         super(CreateProcRecipeTypes.WITHERING);
@@ -61,6 +69,12 @@ public final class WitheringType extends AbstractFanProcessingType {
     @Override
     public void affectEntity(Entity entity, Level level) {
         if (level.isClientSide || !(entity instanceof LivingEntity living)) return;
+
+        if (entity.getType() == EntityType.SKELETON
+                && FanEntityTransformHelper.transformMob(level, entity, EntityType.WITHER_SKELETON, SKELETON_WITHERING_FEEDBACK)) {
+            return;
+        }
+
         living.addEffect(new MobEffectInstance(MobEffects.WITHER, 30, 0, false, false));
         if (entity instanceof WitherBoss witherBoss) {
             witherBoss.heal(2f);
