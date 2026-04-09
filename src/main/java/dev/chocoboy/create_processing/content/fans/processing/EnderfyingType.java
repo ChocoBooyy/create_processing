@@ -50,12 +50,12 @@ public final class EnderfyingType extends AbstractFanProcessingType {
 
     @Override
     public void affectEntity(Entity entity, Level level) {
-        if (level.isClientSide || !(entity instanceof LivingEntity)) return;
+        if (level.isClientSide || !(entity instanceof LivingEntity living)) return;
 
-        LivingEntity living = (LivingEntity) entity;
         living.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40, 0, false, false));
+        living.addEffect(new MobEffectInstance(MobEffects.GLOWING, 40, 0, false, false));
 
-        // Keep enderfying useful but not oppressive: 0.5 heart once per second.
+        // 0.5 heart per second while the entity stays in the stream
         if (living.tickCount % 20 == 0) {
             living.hurt(level.damageSources().magic(), 1.0f);
 
@@ -71,9 +71,10 @@ public final class EnderfyingType extends AbstractFanProcessingType {
             }
         }
 
-        // Keep a persistent auditory cue so enderfying is always noticeable.
+        if (living.tickCount % 80 == 0) {
+            living.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 10, 0, false, false));
+        }
+
         FanProcessingSounds.playEnderfying(level, entity.blockPosition());
     }
 }
-
-

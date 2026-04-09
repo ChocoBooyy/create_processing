@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -59,16 +60,16 @@ public final class PurifyingType extends AbstractFanProcessingType {
     public void affectEntity(Entity entity, Level level) {
         if (level.isClientSide || !(entity instanceof LivingEntity living)) return;
 
-        boolean removed = false;
-        removed |= living.removeEffect(MobEffects.WITHER);
-        removed |= living.removeEffect(MobEffects.POISON);
-        removed |= living.removeEffect(MobEffects.WEAKNESS);
-        removed |= living.removeEffect(MobEffects.BLINDNESS);
+        living.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 25, 0, false, false));
+        living.removeEffect(MobEffects.WITHER);
+        living.removeEffect(MobEffects.POISON);
+        living.removeEffect(MobEffects.WEAKNESS);
+        living.removeEffect(MobEffects.BLINDNESS);
+        living.removeEffect(MobEffects.HUNGER);
 
-        // Keep a soft ambient cue even when no debuff is removed, so purifying is audible on its own.
-        if (removed || living.tickCount % 20 == 0) {
+
+        if (living.tickCount % 20 == 0) {
             FanProcessingSounds.playPurifying(level, entity.blockPosition());
         }
     }
 }
-

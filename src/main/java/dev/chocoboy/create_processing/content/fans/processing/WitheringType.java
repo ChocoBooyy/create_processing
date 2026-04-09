@@ -61,7 +61,7 @@ public final class WitheringType extends AbstractFanProcessingType {
     @Override
     public void affectEntity(Entity entity, Level level) {
         if (level.isClientSide || !(entity instanceof LivingEntity living)) return;
-        living.addEffect(new MobEffectInstance(MobEffects.WITHER, 20, 0, false, false));
+        living.addEffect(new MobEffectInstance(MobEffects.WITHER, 30, 0, false, false));
         if (entity instanceof WitherBoss witherBoss) {
             witherBoss.heal(2f);
         } else if (entity instanceof WitherSkeleton witherSkeleton) {

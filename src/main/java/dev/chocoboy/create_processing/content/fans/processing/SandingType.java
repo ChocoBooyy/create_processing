@@ -11,7 +11,10 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -166,8 +169,13 @@ public final class SandingType extends AbstractFanProcessingType {
 
     @Override
     public void affectEntity(Entity entity, Level level) {
-        if (level.isClientSide) return;
+        if (level.isClientSide || !(entity instanceof LivingEntity living)) return;
+
+        living.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40, 0, false, false));
+        if (living.tickCount % 60 == 0) {
+            living.hurt(level.damageSources().generic(), 1.0f);
+        }
+
         FanProcessingSounds.playSanding(level, entity.blockPosition());
     }
 }
-

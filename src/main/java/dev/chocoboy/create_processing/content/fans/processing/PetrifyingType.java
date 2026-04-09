@@ -10,6 +10,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -57,7 +60,19 @@ public final class PetrifyingType extends AbstractFanProcessingType {
     @Override
     public void affectEntity(Entity entity, Level level) {
         if (level.isClientSide || !(entity instanceof LivingEntity living)) return;
-        living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 1, false, false));
+
+        boolean resistant = living instanceof IronGolem
+            || living instanceof WitherBoss
+            || living instanceof EnderDragon;
+        living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, resistant ? 0 : 1, false, false));
+
+        if (!resistant) {
+            living.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 40, 0, false, false));
+            if (living.tickCount % 40 == 0) {
+                living.hurt(level.damageSources().generic(), 1.0f);
+            }
+        }
+
         FanProcessingSounds.playPetrifying(level, entity.blockPosition());
     }
 }
