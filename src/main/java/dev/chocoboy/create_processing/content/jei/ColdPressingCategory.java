@@ -50,7 +50,7 @@ public final class ColdPressingCategory extends CreateRecipeCategory<ColdPressin
     @Override
     public void draw(ColdPressingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics,
             double mouseX, double mouseY) {
-        AllGuiTextures.JEI_SHADOW.render(graphics, 61, 41);
+        AllGuiTextures.JEI_SHADOW.render(graphics, 49, 41);
         AllGuiTextures.JEI_LONG_ARROW.render(graphics, 52, 54);
         press.draw(graphics, getBackground().getWidth() / 2 - 17, 22);
 
