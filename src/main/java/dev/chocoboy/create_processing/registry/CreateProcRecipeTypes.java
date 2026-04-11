@@ -4,6 +4,7 @@ import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import dev.chocoboy.create_processing.CreateProc;
 import dev.chocoboy.create_processing.content.recipes.FanRecipe;
+import dev.chocoboy.create_processing.content.recipes.ColdPressingRecipe;
 import dev.chocoboy.create_processing.content.recipes.HotPressingRecipe;
 import net.createmod.catnip.lang.Lang;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -35,6 +36,7 @@ public final class CreateProcRecipeTypes {
     public static RecipeTypeEntry PETRIFYING;
     public static RecipeTypeEntry ENDERFYING;
     public static RecipeTypeEntry HOT_PRESSING;
+    public static RecipeTypeEntry COLD_PRESSING;
 
     static {
         WITHERING = registerStandard("withering", params -> new FanRecipe(WITHERING, params));
@@ -43,6 +45,8 @@ public final class CreateProcRecipeTypes {
         PETRIFYING = registerStandard("petrifying", params -> new FanRecipe(PETRIFYING, params));
         ENDERFYING = registerStandard("enderfying", params -> new FanRecipe(ENDERFYING, params));
         HOT_PRESSING = registerStandard("hot_pressing", HotPressingRecipe::new);
+        COLD_PRESSING = registerWithSerializer("cold_pressing",
+            () -> ColdPressingRecipe.SERIALIZER);
     }
 
     private CreateProcRecipeTypes() {}
@@ -51,6 +55,17 @@ public final class CreateProcRecipeTypes {
         ShapedRecipePattern.setCraftingSize(9, 9);
         SERIALIZER_REGISTER.register(modEventBus);
         TYPE_REGISTER.register(modEventBus);
+    }
+
+    static RecipeTypeEntry registerWithSerializer(String name,
+            java.util.function.Supplier<RecipeSerializer<?>> serializerSupplier) {
+        String recipeName = Lang.asId(name);
+        ResourceLocation id = CreateProc.asResource(recipeName);
+        DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>> serializer =
+            SERIALIZER_REGISTER.register(recipeName, serializerSupplier);
+        DeferredHolder<RecipeType<?>, RecipeType<?>> type =
+            TYPE_REGISTER.register(recipeName, () -> RecipeType.simple(id));
+        return new RecipeTypeEntry(id, serializer, type);
     }
 
     static RecipeTypeEntry registerStandard(String name, StandardProcessingRecipe.Factory<?> factory) {
