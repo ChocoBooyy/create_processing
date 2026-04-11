@@ -65,6 +65,7 @@ public final class HotPressingCategory extends CreateRecipeCategory<HotPressingR
         press.draw(graphics, getBackground().getWidth() / 2 + 3, 22);
 
         HeatCondition heat = recipe.getRequiredHeat();
+        AllGuiTextures.JEI_SHADOW.render(graphics, 81, 66);
         heater.withHeat(heat.visualizeAsBlazeBurner())
                 .draw(graphics, getBackground().getWidth() / 2 + 3, 53);
 

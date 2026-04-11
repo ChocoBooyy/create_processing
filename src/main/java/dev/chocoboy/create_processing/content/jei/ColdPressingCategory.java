@@ -55,6 +55,7 @@ public final class ColdPressingCategory extends CreateRecipeCategory<ColdPressin
         press.draw(graphics, getBackground().getWidth() / 2 + 3, 22);
 
         int bx = getBackground().getWidth() / 2 + 3;
+        AllGuiTextures.JEI_SHADOW.render(graphics, 81, 66);
         graphics.pose().pushPose();
         graphics.pose().translate(bx, 53, 200.0f);
         graphics.pose().mulPose(Axis.XP.rotationDegrees(-15.5f));
