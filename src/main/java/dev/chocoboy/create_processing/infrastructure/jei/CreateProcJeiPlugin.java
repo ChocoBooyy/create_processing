@@ -68,7 +68,7 @@ public final class CreateProcJeiPlugin implements IModPlugin {
             builder -> builder
                 .addTypedRecipes(CreateProcRecipeTypes.HOT_PRESSING)
                 .catalystStack(AllBlocks.MECHANICAL_PRESS::asStack)
-                .doubleItemIcon(AllBlocks.MECHANICAL_PRESS.get(), AllItems.BLAZE_CAKE.get())
+                .doubleItemIcon(AllBlocks.MECHANICAL_PRESS.get(), AllBlocks.BLAZE_BURNER.get())
                 .emptyBackground(177, 100)
         ));
 
