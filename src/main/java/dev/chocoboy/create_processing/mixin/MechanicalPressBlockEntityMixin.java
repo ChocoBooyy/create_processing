@@ -196,6 +196,66 @@ public abstract class MechanicalPressBlockEntityMixin {
     }
 
     @Inject(method = "tryProcessInBasin", at = @At("HEAD"), cancellable = true, remap = false)
+    private void create_processing$tryColdPressingInBasin(boolean simulate,
+            CallbackInfoReturnable<Boolean> cir) {
+        MechanicalPressBlockEntity self = (MechanicalPressBlockEntity) (Object) this;
+        Level level = self.getLevel();
+        if (level == null) return;
+
+        BasinOperatingBlockEntityAccessor accessor = (BasinOperatingBlockEntityAccessor) this;
+        Optional<BasinBlockEntity> basinOpt = accessor.create_processing$getBasin();
+
+        Recipe<?> queued = accessor.create_processing$getCurrentRecipe();
+        if (queued instanceof ColdPressingRecipe) {
+            if (basinOpt.isEmpty() || !ColdSourceHelper.isColdSourceAt(
+                    level, basinOpt.get().getBlockPos().below())) {
+                cir.setReturnValue(false);
+                return;
+            }
+        }
+
+        if (basinOpt.isEmpty() || !ColdSourceHelper.isColdSourceAt(
+                level, basinOpt.get().getBlockPos().below())) return;
+        BasinBlockEntity basin = basinOpt.get();
+
+        var inv = basin.getInputInventory();
+        int matchSlot = -1;
+        RecipeHolder<ColdPressingRecipe> recipe = null;
+        for (int slot = 0; slot < inv.getSlots(); slot++) {
+            ItemStack stack = inv.getStackInSlot(slot);
+            if (stack.isEmpty()) continue;
+            Optional<RecipeHolder<ColdPressingRecipe>> found =
+                CreateProcRecipeTypes.COLD_PRESSING.find(new SingleRecipeInput(stack), level);
+            if (found.isPresent()) { matchSlot = slot; recipe = found.get(); break; }
+        }
+        if (recipe == null) return;
+
+        if (simulate) {
+            cir.setReturnValue(true);
+            return;
+        }
+
+        ItemStack input = inv.getStackInSlot(matchSlot);
+        pressingBehaviour.particleItems.add(input.copyWithCount(1));
+        List<ItemStack> results = RecipeApplier.applyRecipeOn(
+            level, input.copyWithCount(1), recipe.value(), true);
+        input.shrink(1);
+
+        if (basin.acceptOutputs(results, Collections.emptyList(), false)) {
+            for (ItemStack created : results) {
+                if (!created.isEmpty()) {
+                    onItemPressed(created);
+                    break;
+                }
+            }
+            cir.setReturnValue(true);
+        } else {
+            input.grow(1);
+            cir.setReturnValue(false);
+        }
+    }
+
+    @Inject(method = "tryProcessInBasin", at = @At("HEAD"), cancellable = true, remap = false)
     private void create_processing$tryHotPressingInBasin(boolean simulate,
             CallbackInfoReturnable<Boolean> cir) {
         MechanicalPressBlockEntity self = (MechanicalPressBlockEntity) (Object) this;
