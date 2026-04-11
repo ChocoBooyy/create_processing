@@ -41,7 +41,6 @@ public final class ColdPressingCategory extends CreateRecipeCategory<ColdPressin
                     .addRichTooltipCallback(addStochasticTooltip(output));
         }
 
-        // Cold condition indicator — ice block shown in the lower-right area
         builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 134, 81)
                 .addItemStack(new ItemStack(recipe.getColdCondition().getBlock()));
     }

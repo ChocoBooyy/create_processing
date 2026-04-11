@@ -36,10 +36,6 @@ public abstract class MechanicalPressBlockEntityMixin {
     @Shadow(remap = false) public abstract boolean canProcessInBulk();
     @Shadow(remap = false) public abstract void onItemPressed(ItemStack stack);
 
-    // Note: hot and cold pressing inject at HEAD of tryProcessInWorld/tryProcessOnBelt/tryProcessInBasin.
-    // Mixin 0.8.5 (in use) does not support @Inject priority — ordering is non-deterministic.
-    // In practice this is safe because isHeatSourceAt and isColdSourceAt are mutually exclusive
-    // (no block is both a heat source and a cold source). Upgrade to Mixin 0.8.7+ to add explicit ordering.
     @Inject(method = "tryProcessInWorld", at = @At("HEAD"), cancellable = true, remap = false)
     private void create_processing$tryHotPressingInWorld(ItemEntity itemEntity, boolean simulate,
             CallbackInfoReturnable<Boolean> cir) {
@@ -125,7 +121,6 @@ public abstract class MechanicalPressBlockEntityMixin {
         if (level == null) return;
 
         BlockPos coldPos = itemEntity.getOnPos().below();
-        // One block below the floor block the item rests on — mirrors hot pressing position logic.
         if (!ColdSourceHelper.isColdSourceAt(level, coldPos)) return;
 
         ItemStack item = itemEntity.getItem();

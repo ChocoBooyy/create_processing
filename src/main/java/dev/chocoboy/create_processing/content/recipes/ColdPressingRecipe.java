@@ -1,12 +1,15 @@
 package dev.chocoboy.create_processing.content.recipes;
 
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.MapLike;
+import com.mojang.serialization.RecordBuilder;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeParams;
 import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 
@@ -18,20 +21,11 @@ public class ColdPressingRecipe extends StandardProcessingRecipe<SingleRecipeInp
 
     private ColdCondition coldCondition;
 
-    /** Used by the base serializer delegate — defaults to CHILLING. */
     public ColdPressingRecipe(ProcessingRecipeParams params) {
         super(CreateProcRecipeTypes.COLD_PRESSING, params);
         this.coldCondition = ColdCondition.CHILLING;
     }
 
-    /**
-     * Sets coldCondition after base decode. Package-private; only for use by SERIALIZER.
-     *
-     * <p>Note: {@link com.simibubi.create.content.processing.recipe.ProcessingRecipe#validate}
-     * fires before this method is called during JSON decode, so validation always sees
-     * {@link ColdCondition#CHILLING} regardless of the actual JSON value. If future
-     * validation logic ever checks {@code coldCondition}, this ordering must be revisited.
-     */
     ColdPressingRecipe withColdCondition(ColdCondition condition) {
         this.coldCondition = condition;
         return this;
@@ -62,61 +56,59 @@ public class ColdPressingRecipe extends StandardProcessingRecipe<SingleRecipeInp
         return 4;
     }
 
-    // -------------------------------------------------------------------------
-    // Serializer
-    // -------------------------------------------------------------------------
+    public static final Serializer SERIALIZER = new Serializer();
 
-    public static final RecipeSerializer<ColdPressingRecipe> SERIALIZER = new RecipeSerializer<>() {
+    public static final class Serializer extends StandardProcessingRecipe.Serializer<ColdPressingRecipe> {
 
-        private static final StandardProcessingRecipe.Serializer<ColdPressingRecipe> DELEGATE =
-            new StandardProcessingRecipe.Serializer<>(ColdPressingRecipe::new);
-
-        // Default must match the constructor default in ColdPressingRecipe(ProcessingRecipeParams).
         private static final MapCodec<ColdCondition> CONDITION_CODEC =
             ColdCondition.CODEC.optionalFieldOf("cold_condition", ColdCondition.CHILLING);
 
-        private static final MapCodec<ColdPressingRecipe> CODEC = new MapCodec<>() {
-            @Override
-            public <T> Stream<T> keys(com.mojang.serialization.DynamicOps<T> ops) {
-                return Stream.concat(DELEGATE.codec().keys(ops), CONDITION_CODEC.keys(ops));
-            }
+        private final MapCodec<ColdPressingRecipe> coldCodec;
+        private final StreamCodec<RegistryFriendlyByteBuf, ColdPressingRecipe> coldStreamCodec;
 
-            @Override
-            public <T> com.mojang.serialization.DataResult<ColdPressingRecipe> decode(
-                    com.mojang.serialization.DynamicOps<T> ops,
-                    com.mojang.serialization.MapLike<T> input) {
-                return DELEGATE.codec().decode(ops, input)
-                    .flatMap(recipe -> CONDITION_CODEC.decode(ops, input)
-                        .map(recipe::withColdCondition));
-            }
+        private Serializer() {
+            super(ColdPressingRecipe::new);
+            MapCodec<ColdPressingRecipe> delegate = super.codec();
+            StreamCodec<RegistryFriendlyByteBuf, ColdPressingRecipe> delegateStream = super.streamCodec();
 
-            @Override
-            public <T> com.mojang.serialization.RecordBuilder<T> encode(
-                    ColdPressingRecipe recipe,
-                    com.mojang.serialization.DynamicOps<T> ops,
-                    com.mojang.serialization.RecordBuilder<T> prefix) {
-                prefix = DELEGATE.codec().encode(recipe, ops, prefix);
-                return CONDITION_CODEC.encode(recipe.getColdCondition(), ops, prefix);
-            }
-        };
+            this.coldCodec = new MapCodec<>() {
+                @Override
+                public <T> Stream<T> keys(DynamicOps<T> ops) {
+                    return Stream.concat(delegate.keys(ops), CONDITION_CODEC.keys(ops));
+                }
 
-        private static final StreamCodec<RegistryFriendlyByteBuf, ColdPressingRecipe> STREAM_CODEC =
-            StreamCodec.composite(
-                DELEGATE.streamCodec(),
+                @Override
+                public <T> DataResult<ColdPressingRecipe> decode(DynamicOps<T> ops, MapLike<T> input) {
+                    return delegate.decode(ops, input)
+                        .flatMap(recipe -> CONDITION_CODEC.decode(ops, input)
+                            .map(recipe::withColdCondition));
+                }
+
+                @Override
+                public <T> RecordBuilder<T> encode(ColdPressingRecipe recipe, DynamicOps<T> ops,
+                        RecordBuilder<T> prefix) {
+                    prefix = delegate.encode(recipe, ops, prefix);
+                    return CONDITION_CODEC.encode(recipe.getColdCondition(), ops, prefix);
+                }
+            };
+
+            this.coldStreamCodec = StreamCodec.composite(
+                delegateStream,
                 r -> r,
                 ColdCondition.STREAM_CODEC.cast(),
                 ColdPressingRecipe::getColdCondition,
                 ColdPressingRecipe::withColdCondition
             );
+        }
 
         @Override
         public MapCodec<ColdPressingRecipe> codec() {
-            return CODEC;
+            return coldCodec;
         }
 
         @Override
         public StreamCodec<RegistryFriendlyByteBuf, ColdPressingRecipe> streamCodec() {
-            return STREAM_CODEC;
+            return coldStreamCodec;
         }
-    };
+    }
 }
