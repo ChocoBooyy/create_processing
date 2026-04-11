@@ -121,6 +121,7 @@ public abstract class MechanicalPressBlockEntityMixin {
         if (level == null) return;
 
         BlockPos coldPos = itemEntity.getOnPos().below();
+        // One block below the floor block the item rests on — mirrors hot pressing position logic.
         if (!ColdSourceHelper.isColdSourceAt(level, coldPos)) return;
 
         ItemStack item = itemEntity.getItem();
