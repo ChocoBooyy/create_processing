@@ -1,6 +1,8 @@
 package dev.chocoboy.create_processing.content.jei;
 
+import com.mojang.math.Axis;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
+import com.simibubi.create.compat.jei.category.animations.AnimatedKinetics;
 import com.simibubi.create.compat.jei.category.animations.AnimatedPress;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
@@ -51,6 +53,17 @@ public final class ColdPressingCategory extends CreateRecipeCategory<ColdPressin
         AllGuiTextures.JEI_SHADOW.render(graphics, 61, 41);
         AllGuiTextures.JEI_LONG_ARROW.render(graphics, 52, 54);
         press.draw(graphics, getBackground().getWidth() / 2 - 17, 22);
+
+        int bx = getBackground().getWidth() / 2 - 17;
+        graphics.pose().pushPose();
+        graphics.pose().translate(bx, 53, 200.0f);
+        graphics.pose().mulPose(Axis.XP.rotationDegrees(-15.5f));
+        graphics.pose().mulPose(Axis.YP.rotationDegrees(22.5f));
+        AnimatedKinetics.defaultBlockElement(recipe.getColdCondition().getBlock().defaultBlockState())
+                .atLocal(0, 1.65, 0)
+                .scale(23)
+                .render(graphics);
+        graphics.pose().popPose();
 
         AllGuiTextures.JEI_HEAT_BAR.render(graphics, 4, 80);
         Component label = Component.translatable(
