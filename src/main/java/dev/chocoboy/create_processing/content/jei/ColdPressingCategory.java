@@ -52,9 +52,9 @@ public final class ColdPressingCategory extends CreateRecipeCategory<ColdPressin
         AllGuiTextures.JEI_LONG_ARROW.render(graphics, 52, 54);
         press.draw(graphics, getBackground().getWidth() / 2 - 17, 22);
 
-        // Cold condition label below the ice block indicator
+        AllGuiTextures.JEI_HEAT_BAR.render(graphics, 4, 80);
         Component label = Component.translatable(
                 "create_processing.cold_condition." + recipe.getColdCondition().getSerializedName());
-        graphics.drawString(Minecraft.getInstance().font, label, 153, 86, 0x5BC0EB, false);
+        graphics.drawString(Minecraft.getInstance().font, label, 9, 86, 0x5BC0EB, false);
     }
 }
