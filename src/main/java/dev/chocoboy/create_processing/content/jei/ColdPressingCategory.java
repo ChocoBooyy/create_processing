@@ -54,8 +54,10 @@ public final class ColdPressingCategory extends CreateRecipeCategory<ColdPressin
         AllGuiTextures.JEI_LONG_ARROW.render(graphics, 52, 54);
         press.draw(graphics, getBackground().getWidth() / 2 + 3, 22);
 
+        AllGuiTextures.JEI_HEAT_BAR.render(graphics, 4, 80);
+
         int bx = getBackground().getWidth() / 2 + 3;
-        AllGuiTextures.JEI_SHADOW.render(graphics, 81, 66);
+        AllGuiTextures.JEI_SHADOW.render(graphics, 81, 83);
         graphics.pose().pushPose();
         graphics.pose().translate(bx, 53, 200.0f);
         graphics.pose().mulPose(Axis.XP.rotationDegrees(-15.5f));
@@ -65,8 +67,6 @@ public final class ColdPressingCategory extends CreateRecipeCategory<ColdPressin
                 .scale(23)
                 .render(graphics);
         graphics.pose().popPose();
-
-        AllGuiTextures.JEI_HEAT_BAR.render(graphics, 4, 80);
         Component label = Component.translatable(
                 "create_processing.cold_condition." + recipe.getColdCondition().getSerializedName());
         graphics.drawString(Minecraft.getInstance().font, label, 9, 86, 0x5BC0EB, false);
