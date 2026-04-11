@@ -24,7 +24,14 @@ public class ColdPressingRecipe extends StandardProcessingRecipe<SingleRecipeInp
         this.coldCondition = ColdCondition.CHILLING;
     }
 
-    /** Sets coldCondition after base decode. Package-private; only for use by SERIALIZER. */
+    /**
+     * Sets coldCondition after base decode. Package-private; only for use by SERIALIZER.
+     *
+     * <p>Note: {@link com.simibubi.create.content.processing.recipe.ProcessingRecipe#validate}
+     * fires before this method is called during JSON decode, so validation always sees
+     * {@link ColdCondition#CHILLING} regardless of the actual JSON value. If future
+     * validation logic ever checks {@code coldCondition}, this ordering must be revisited.
+     */
     ColdPressingRecipe withColdCondition(ColdCondition condition) {
         this.coldCondition = condition;
         return this;
@@ -64,6 +71,7 @@ public class ColdPressingRecipe extends StandardProcessingRecipe<SingleRecipeInp
         private static final StandardProcessingRecipe.Serializer<ColdPressingRecipe> DELEGATE =
             new StandardProcessingRecipe.Serializer<>(ColdPressingRecipe::new);
 
+        // Default must match the constructor default in ColdPressingRecipe(ProcessingRecipeParams).
         private static final MapCodec<ColdCondition> CONDITION_CODEC =
             ColdCondition.CODEC.optionalFieldOf("cold_condition", ColdCondition.CHILLING);
 
@@ -98,7 +106,7 @@ public class ColdPressingRecipe extends StandardProcessingRecipe<SingleRecipeInp
                 r -> r,
                 ColdCondition.STREAM_CODEC.cast(),
                 ColdPressingRecipe::getColdCondition,
-                (recipe, condition) -> recipe.withColdCondition(condition)
+                ColdPressingRecipe::withColdCondition
             );
 
         @Override
