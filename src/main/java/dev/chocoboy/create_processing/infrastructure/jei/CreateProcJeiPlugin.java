@@ -69,7 +69,7 @@ public final class CreateProcJeiPlugin implements IModPlugin {
                 .addTypedRecipes(CreateProcRecipeTypes.HOT_PRESSING)
                 .catalystStack(AllBlocks.MECHANICAL_PRESS::asStack)
                 .doubleItemIcon(AllBlocks.MECHANICAL_PRESS.get(), AllItems.BLAZE_CAKE.get())
-                .emptyBackground(185, 100)
+                .emptyBackground(177, 100)
         ));
 
         categories.add(buildCategory(
@@ -80,7 +80,7 @@ public final class CreateProcJeiPlugin implements IModPlugin {
                 .addTypedRecipes(CreateProcRecipeTypes.COLD_PRESSING)
                 .catalystStack(AllBlocks.MECHANICAL_PRESS::asStack)
                 .doubleItemIcon(AllBlocks.MECHANICAL_PRESS.get(), Blocks.PACKED_ICE)
-                .emptyBackground(185, 100)
+                .emptyBackground(177, 100)
         ));
 
         registration.addRecipeCategories(categories.toArray(CreateRecipeCategory[]::new));

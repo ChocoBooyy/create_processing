@@ -62,11 +62,11 @@ public final class HotPressingCategory extends CreateRecipeCategory<HotPressingR
     public void draw(HotPressingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
         AllGuiTextures.JEI_SHADOW.render(graphics, 61, 41);
         AllGuiTextures.JEI_LONG_ARROW.render(graphics, 52, 54);
-        press.draw(graphics, getBackground().getWidth() / 2 - 17, 22);
+        press.draw(graphics, getBackground().getWidth() / 2 + 3, 22);
 
         HeatCondition heat = recipe.getRequiredHeat();
         heater.withHeat(heat.visualizeAsBlazeBurner())
-                .draw(graphics, getBackground().getWidth() / 2 - 17, 53);
+                .draw(graphics, getBackground().getWidth() / 2 + 3, 53);
 
         AllGuiTextures.JEI_HEAT_BAR.render(graphics, 4, 80);
         graphics.drawString(Minecraft.getInstance().font,
