@@ -3,12 +3,12 @@
   "heat_requirement": "heated",
   "ingredients": [
     {
-      "item": "minecraft:raw_iron"
+      "item": "minecraft:red_sand"
     }
   ],
   "results": [
     {
-      "id": "minecraft:iron_ingot"
+      "id": "minecraft:glass"
     }
   ]
 }

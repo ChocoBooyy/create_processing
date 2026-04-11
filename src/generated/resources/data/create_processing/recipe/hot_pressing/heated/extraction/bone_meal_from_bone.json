@@ -1,0 +1,15 @@
+{
+  "type": "create_processing:hot_pressing",
+  "heat_requirement": "heated",
+  "ingredients": [
+    {
+      "item": "minecraft:bone"
+    }
+  ],
+  "results": [
+    {
+      "count": 4,
+      "id": "minecraft:bone_meal"
+    }
+  ]
+}

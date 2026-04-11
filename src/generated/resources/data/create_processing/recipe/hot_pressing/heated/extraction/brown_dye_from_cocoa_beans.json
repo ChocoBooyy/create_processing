@@ -1,0 +1,15 @@
+{
+  "type": "create_processing:hot_pressing",
+  "heat_requirement": "heated",
+  "ingredients": [
+    {
+      "item": "minecraft:cocoa_beans"
+    }
+  ],
+  "results": [
+    {
+      "count": 2,
+      "id": "minecraft:brown_dye"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "create_processing:hot_pressing",
+  "heat_requirement": "heated",
+  "ingredients": [
+    {
+      "item": "minecraft:basalt"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:smooth_basalt"
+    }
+  ]
+}

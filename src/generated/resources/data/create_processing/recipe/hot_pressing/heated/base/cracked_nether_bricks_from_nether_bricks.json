@@ -1,0 +1,14 @@
+{
+  "type": "create_processing:hot_pressing",
+  "heat_requirement": "heated",
+  "ingredients": [
+    {
+      "item": "minecraft:nether_bricks"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:cracked_nether_bricks"
+    }
+  ]
+}

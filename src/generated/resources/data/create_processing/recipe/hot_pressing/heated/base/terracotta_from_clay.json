@@ -3,12 +3,12 @@
   "heat_requirement": "heated",
   "ingredients": [
     {
-      "item": "minecraft:raw_copper"
+      "item": "minecraft:clay"
     }
   ],
   "results": [
     {
-      "id": "minecraft:copper_ingot"
+      "id": "minecraft:terracotta"
     }
   ]
 }

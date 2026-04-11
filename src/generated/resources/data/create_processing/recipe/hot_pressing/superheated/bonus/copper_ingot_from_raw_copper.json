@@ -1,0 +1,18 @@
+{
+  "type": "create_processing:hot_pressing",
+  "heat_requirement": "superheated",
+  "ingredients": [
+    {
+      "item": "minecraft:raw_copper"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:copper_ingot"
+    },
+    {
+      "chance": 0.15,
+      "id": "minecraft:copper_ingot"
+    }
+  ]
+}

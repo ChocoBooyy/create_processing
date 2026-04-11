@@ -1,0 +1,15 @@
+{
+  "type": "create_processing:hot_pressing",
+  "heat_requirement": "heated",
+  "ingredients": [
+    {
+      "item": "minecraft:beetroot"
+    }
+  ],
+  "results": [
+    {
+      "count": 2,
+      "id": "minecraft:red_dye"
+    }
+  ]
+}

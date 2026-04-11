@@ -3,12 +3,12 @@
   "heat_requirement": "heated",
   "ingredients": [
     {
-      "item": "minecraft:raw_gold"
+      "item": "minecraft:red_sandstone"
     }
   ],
   "results": [
     {
-      "id": "minecraft:gold_ingot"
+      "id": "minecraft:smooth_red_sandstone"
     }
   ]
 }
