@@ -3,13 +3,9 @@ package dev.chocoboy.create_processing.mixin;
 import com.simibubi.create.content.kinetics.press.MechanicalPressBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
-import dev.chocoboy.create_processing.content.recipes.HotPressingRecipe;
-import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
 import dev.chocoboy.create_processing.util.HeatSourceHelper;
-import net.minecraft.world.item.ItemStack;
+import dev.chocoboy.create_processing.util.HotPressingHelper;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -38,18 +34,10 @@ public abstract class BasinOperatingBlockEntityMixin {
 
         if (!HeatSourceHelper.isBasinHeated(basin)) return;
 
-        var inv = basin.getInputInventory();
-        for (int slot = 0; slot < inv.getSlots(); slot++) {
-            ItemStack stack = inv.getStackInSlot(slot);
-            if (stack.isEmpty()) continue;
-            Optional<RecipeHolder<HotPressingRecipe>> recipe =
-                CreateProcRecipeTypes.HOT_PRESSING.find(new SingleRecipeInput(stack), level);
-            if (recipe.isPresent()) {
-                List<Recipe<?>> result = new ArrayList<>(cir.getReturnValue());
-                result.add(0, recipe.get().value());
-                cir.setReturnValue(result);
-                return;
-            }
-        }
+        HotPressingHelper.findInBasin(basin, level).ifPresent(recipe -> {
+            List<Recipe<?>> result = new ArrayList<>(cir.getReturnValue());
+            result.add(0, recipe.value());
+            cir.setReturnValue(result);
+        });
     }
 }

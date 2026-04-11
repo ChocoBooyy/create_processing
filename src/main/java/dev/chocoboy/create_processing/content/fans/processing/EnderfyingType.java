@@ -2,14 +2,12 @@ package dev.chocoboy.create_processing.content.fans.processing;
 
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
 import dev.chocoboy.create_processing.registry.CreateProcTags;
-import net.createmod.catnip.theme.Color;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -19,6 +17,7 @@ public final class EnderfyingType extends AbstractFanProcessingType {
 
     private static final int COLOR_LIGHT = 0x7D4CFF;
     private static final int COLOR_DARK = 0x5A2BA8;
+
     private static final FanEntityTransformHelper.TransformationFeedback SILVERFISH_ENDERFYING_FEEDBACK =
         new FanEntityTransformHelper.TransformationFeedback(
             SoundEvents.ENDERMITE_AMBIENT,
@@ -32,7 +31,7 @@ public final class EnderfyingType extends AbstractFanProcessingType {
 
     @Override
     public boolean isValidAt(Level level, BlockPos pos) {
-        return level.getBlockState(pos).is(CreateProcTags.ENDERFYING_CATALYST_BLOCKS);
+        return isValidAtBlockTag(level, pos, CreateProcTags.ENDERFYING_CATALYST_BLOCKS);
     }
 
     @Override
@@ -44,24 +43,19 @@ public final class EnderfyingType extends AbstractFanProcessingType {
     public void spawnProcessingParticles(Level level, Vec3 pos) {
         if (level.random.nextInt(8) != 0) return;
         level.addParticle(ParticleTypes.PORTAL,
-            pos.x + (level.random.nextFloat() - 0.5f) * 0.5f, pos.y + 0.5f,
-            pos.z + (level.random.nextFloat() - 0.5f) * 0.5f, 0, 1 / 8f, 0);
+                pos.x + (level.random.nextFloat() - 0.5f) * 0.5f, pos.y + 0.5f,
+                pos.z + (level.random.nextFloat() - 0.5f) * 0.5f, 0, 1 / 8f, 0);
     }
 
     @Override
     public void morphAirFlow(AirFlowParticleAccess particleAccess, RandomSource random) {
-        particleAccess.setColor(Color.mixColors(COLOR_LIGHT, COLOR_DARK, random.nextFloat()));
-        particleAccess.setAlpha(1f);
-        if (random.nextFloat() < 1 / 32f)
-            particleAccess.spawnExtraParticle(ParticleTypes.PORTAL, 0.125f);
+        morphStandardAirFlow(particleAccess, random, COLOR_DARK, COLOR_LIGHT, 1 / 32f, ParticleTypes.PORTAL);
     }
 
     @Override
-    public void affectEntity(Entity entity, Level level) {
-        if (level.isClientSide || !(entity instanceof LivingEntity living)) return;
-
-        if (entity.getType() == EntityType.SILVERFISH
-                && FanEntityTransformHelper.transformMob(level, entity, EntityType.ENDERMITE, SILVERFISH_ENDERFYING_FEEDBACK)) {
+    protected void affectLivingEntity(LivingEntity living, Level level) {
+        if (living.getType() == EntityType.SILVERFISH
+                && FanEntityTransformHelper.transformMob(level, living, EntityType.ENDERMITE, SILVERFISH_ENDERFYING_FEEDBACK)) {
             return;
         }
 
@@ -75,12 +69,10 @@ public final class EnderfyingType extends AbstractFanProcessingType {
             RandomSource rand = level.random;
             for (int i = 0; i < 6; i++) {
                 level.addParticle(ParticleTypes.PORTAL,
-                    entity.getX() + (rand.nextDouble() - 0.5) * 1.5,
-                    entity.getY() + 0.3 + rand.nextDouble() * 1.2,
-                    entity.getZ() + (rand.nextDouble() - 0.5) * 1.5,
-                    0,
-                    0.02,
-                    0);
+                        living.getX() + (rand.nextDouble() - 0.5) * 1.5,
+                        living.getY() + 0.3 + rand.nextDouble() * 1.2,
+                        living.getZ() + (rand.nextDouble() - 0.5) * 1.5,
+                        0, 0.02, 0);
             }
         }
 
@@ -88,6 +80,6 @@ public final class EnderfyingType extends AbstractFanProcessingType {
             living.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 10, 0, false, false));
         }
 
-        FanProcessingSounds.playEnderfying(level, entity.blockPosition());
+        FanProcessingSounds.playEnderfying(level, living.blockPosition());
     }
 }
