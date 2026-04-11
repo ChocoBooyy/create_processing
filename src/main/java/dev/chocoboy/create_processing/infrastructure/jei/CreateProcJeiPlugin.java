@@ -8,7 +8,9 @@ import com.simibubi.create.compat.jei.category.animations.AnimatedKinetics;
 import com.simibubi.create.content.decoration.palettes.AllPaletteStoneTypes;
 import dev.chocoboy.create_processing.CreateProc;
 import dev.chocoboy.create_processing.content.fans.processing.SandingType;
+import dev.chocoboy.create_processing.content.jei.ColdPressingCategory;
 import dev.chocoboy.create_processing.content.jei.HotPressingCategory;
+import dev.chocoboy.create_processing.content.recipes.ColdPressingRecipe;
 import dev.chocoboy.create_processing.content.recipes.FanRecipe;
 import dev.chocoboy.create_processing.content.recipes.HotPressingRecipe;
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
@@ -67,6 +69,17 @@ public final class CreateProcJeiPlugin implements IModPlugin {
                 .addTypedRecipes(CreateProcRecipeTypes.HOT_PRESSING)
                 .catalystStack(AllBlocks.MECHANICAL_PRESS::asStack)
                 .doubleItemIcon(AllBlocks.MECHANICAL_PRESS.get(), AllItems.BLAZE_CAKE.get())
+                .emptyBackground(185, 100)
+        ));
+
+        categories.add(buildCategory(
+            ColdPressingRecipe.class,
+            "cold_pressing",
+            ColdPressingCategory::new,
+            builder -> builder
+                .addTypedRecipes(CreateProcRecipeTypes.COLD_PRESSING)
+                .catalystStack(AllBlocks.MECHANICAL_PRESS::asStack)
+                .doubleItemIcon(AllBlocks.MECHANICAL_PRESS.get(), Blocks.PACKED_ICE)
                 .emptyBackground(185, 100)
         ));
 
