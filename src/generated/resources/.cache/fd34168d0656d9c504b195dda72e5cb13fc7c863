@@ -1,0 +1,4 @@
+// 1.21.1	2026-04-10T22:39:58.8926452	create_processing's processing recipes: hot_pressing
+1194405ffe8948a3264fdfe1271932f56429fcb4 data/create_processing/recipe/hot_pressing/copper_ingot_from_raw_copper.json
+0b79a85cf5b4be0c8e5d905f1dc19c5a68cba480 data/create_processing/recipe/hot_pressing/gold_ingot_from_raw_gold.json
+800ebd248ad749d77a742d8f836e6ef4c21a3ae8 data/create_processing/recipe/hot_pressing/iron_ingot_from_raw_iron.json

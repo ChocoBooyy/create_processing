@@ -4,6 +4,7 @@ import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import dev.chocoboy.create_processing.CreateProc;
 import dev.chocoboy.create_processing.content.recipes.FanRecipe;
+import dev.chocoboy.create_processing.content.recipes.HotPressingRecipe;
 import net.createmod.catnip.lang.Lang;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -33,6 +34,7 @@ public final class CreateProcRecipeTypes {
     public static RecipeTypeEntry PURIFYING;
     public static RecipeTypeEntry PETRIFYING;
     public static RecipeTypeEntry ENDERFYING;
+    public static RecipeTypeEntry HOT_PRESSING;
 
     static {
         WITHERING = registerStandard("withering", params -> new FanRecipe(WITHERING, params));
@@ -40,6 +42,7 @@ public final class CreateProcRecipeTypes {
         PURIFYING = registerStandard("purifying", params -> new FanRecipe(PURIFYING, params));
         PETRIFYING = registerStandard("petrifying", params -> new FanRecipe(PETRIFYING, params));
         ENDERFYING = registerStandard("enderfying", params -> new FanRecipe(ENDERFYING, params));
+        HOT_PRESSING = registerStandard("hot_pressing", HotPressingRecipe::new);
     }
 
     private CreateProcRecipeTypes() {}

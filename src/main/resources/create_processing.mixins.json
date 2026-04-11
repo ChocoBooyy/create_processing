@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.chocoboy.create_processing.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "BasinOperatingBlockEntityAccessor",
+    "BasinOperatingBlockEntityMixin",
+    "MechanicalPressBlockEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "create_processing:hot_pressing",
+  "heat_requirement": "heated",
+  "ingredients": [
+    {
+      "item": "minecraft:raw_gold"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:gold_ingot"
+    }
+  ]
+}

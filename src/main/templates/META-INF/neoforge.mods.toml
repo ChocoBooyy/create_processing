@@ -1,6 +1,8 @@
 modLoader="javafml"
 loaderVersion="${loader_version_range}"
 license="${mod_license}"
+[[mixins]]
+config="create_processing.mixins.json"
 
 [[mods]]
 modId="${mod_id}"

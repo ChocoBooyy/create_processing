@@ -31,6 +31,7 @@ public final class CreateProcDatagen {
             generator.addProvider(true, new PetrifyingRecipeGen(output, lookupProvider));
             generator.addProvider(true, new EnderfyingRecipeGen(output, lookupProvider));
             generator.addProvider(true, new SandingRecipeGen(output, lookupProvider));
+            generator.addProvider(true, new HotPressingRecipeGen(output, lookupProvider));
         }
     }
 }

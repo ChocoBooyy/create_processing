@@ -4,5 +4,6 @@
   "create_processing.recipe.fan_sanding": "Bulk Sanding",
   "create_processing.recipe.fan_purifying": "Bulk Purifying",
   "create_processing.recipe.fan_petrifying": "Bulk Petrifying",
-  "create_processing.recipe.fan_enderfying": "Bulk Enderfying"
+  "create_processing.recipe.fan_enderfying": "Bulk Enderfying",
+  "create_processing.recipe.hot_pressing": "Hot Pressing"
 }
