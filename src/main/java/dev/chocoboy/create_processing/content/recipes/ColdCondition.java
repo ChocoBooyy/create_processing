@@ -1,28 +1,32 @@
 package dev.chocoboy.create_processing.content.recipes;
 
 import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
+import net.createmod.catnip.codecs.stream.CatnipStreamCodecBuilders;
+import net.createmod.catnip.lang.Lang;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 public enum ColdCondition implements StringRepresentable {
-    CHILLING("chilling", Blocks.PACKED_ICE),
-    FREEZING("freezing", Blocks.BLUE_ICE);
+    CHILLING(Blocks.PACKED_ICE),
+    FREEZING(Blocks.BLUE_ICE);
 
     public static final Codec<ColdCondition> CODEC =
         StringRepresentable.fromEnum(ColdCondition::values);
+    public static final StreamCodec<ByteBuf, ColdCondition> STREAM_CODEC =
+        CatnipStreamCodecBuilders.ofEnum(ColdCondition.class);
 
-    private final String name;
     private final Block block;
 
-    ColdCondition(String name, Block block) {
-        this.name = name;
+    ColdCondition(Block block) {
         this.block = block;
     }
 
     @Override
     public String getSerializedName() {
-        return name;
+        return Lang.asId(name());
     }
 
     public Block getBlock() {
