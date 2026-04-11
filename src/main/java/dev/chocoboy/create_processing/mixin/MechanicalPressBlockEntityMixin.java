@@ -36,7 +36,7 @@ public abstract class MechanicalPressBlockEntityMixin {
     @Shadow(remap = false) public abstract boolean canProcessInBulk();
     @Shadow(remap = false) public abstract void onItemPressed(ItemStack stack);
 
-    // Note: hot and cold pressing both inject at HEAD of tryProcessInWorld/tryProcessOnBelt.
+    // Note: hot and cold pressing inject at HEAD of tryProcessInWorld/tryProcessOnBelt/tryProcessInBasin.
     // Mixin 0.8.5 (in use) does not support @Inject priority — ordering is non-deterministic.
     // In practice this is safe because isHeatSourceAt and isColdSourceAt are mutually exclusive
     // (no block is both a heat source and a cold source). Upgrade to Mixin 0.8.7+ to add explicit ordering.
@@ -204,19 +204,18 @@ public abstract class MechanicalPressBlockEntityMixin {
 
         BasinOperatingBlockEntityAccessor accessor = (BasinOperatingBlockEntityAccessor) this;
         Optional<BasinBlockEntity> basinOpt = accessor.create_processing$getBasin();
+        if (basinOpt.isEmpty()) return;
+        BasinBlockEntity basin = basinOpt.get();
 
         Recipe<?> queued = accessor.create_processing$getCurrentRecipe();
         if (queued instanceof ColdPressingRecipe) {
-            if (basinOpt.isEmpty() || !ColdSourceHelper.isColdSourceAt(
-                    level, basinOpt.get().getBlockPos().below())) {
+            if (!ColdSourceHelper.isColdSourceAt(level, basin.getBlockPos().below())) {
                 cir.setReturnValue(false);
                 return;
             }
         }
 
-        if (basinOpt.isEmpty() || !ColdSourceHelper.isColdSourceAt(
-                level, basinOpt.get().getBlockPos().below())) return;
-        BasinBlockEntity basin = basinOpt.get();
+        if (!ColdSourceHelper.isColdSourceAt(level, basin.getBlockPos().below())) return;
 
         var inv = basin.getInputInventory();
         int matchSlot = -1;

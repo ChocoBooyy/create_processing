@@ -24,6 +24,9 @@ public abstract class BasinOperatingBlockEntityMixin {
 
     @Shadow(remap = false) protected abstract Optional<BasinBlockEntity> getBasin();
 
+    // Both injects target RETURN and call cir.setReturnValue — Mixin chains RETURN injects so both run
+    // regardless of setReturnValue calls. Each inject reads cir.getReturnValue() to build on the prior result,
+    // so hot pressing candidates and cold pressing candidates are both prepended correctly.
     @Inject(method = "getMatchingRecipes", at = @At("RETURN"), cancellable = true, remap = false)
     private void create_processing$addHotPressingCandidates(CallbackInfoReturnable<List<Recipe<?>>> cir) {
         if (!(((Object) this) instanceof MechanicalPressBlockEntity press)) return;
