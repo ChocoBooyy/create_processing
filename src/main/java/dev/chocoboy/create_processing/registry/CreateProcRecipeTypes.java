@@ -3,6 +3,7 @@ package dev.chocoboy.create_processing.registry;
 import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import dev.chocoboy.create_processing.CreateProc;
+import dev.chocoboy.create_processing.content.recipes.ColdMixingRecipe;
 import dev.chocoboy.create_processing.content.recipes.ColdPressingRecipe;
 import dev.chocoboy.create_processing.content.recipes.FanRecipe;
 import dev.chocoboy.create_processing.content.recipes.HotPressingRecipe;
@@ -37,6 +38,7 @@ public final class CreateProcRecipeTypes {
     public static RecipeTypeEntry ENDERFYING;
     public static RecipeTypeEntry HOT_PRESSING;
     public static RecipeTypeEntry COLD_PRESSING;
+    public static RecipeTypeEntry COLD_MIXING;
 
     static {
         WITHERING = registerStandard("withering", params -> new FanRecipe(WITHERING, params));
@@ -47,6 +49,7 @@ public final class CreateProcRecipeTypes {
         HOT_PRESSING = registerStandard("hot_pressing", HotPressingRecipe::new);
         COLD_PRESSING = registerWithSerializer("cold_pressing",
             () -> ColdPressingRecipe.SERIALIZER);
+        COLD_MIXING = registerWithSerializer("cold_mixing", () -> ColdMixingRecipe.SERIALIZER);
     }
 
     private CreateProcRecipeTypes() {}
