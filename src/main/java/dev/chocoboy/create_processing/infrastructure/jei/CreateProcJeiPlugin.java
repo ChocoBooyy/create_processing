@@ -10,6 +10,7 @@ import dev.chocoboy.create_processing.CreateProc;
 import dev.chocoboy.create_processing.content.fans.processing.SandingType;
 import dev.chocoboy.create_processing.content.jei.ColdPressingCategory;
 import dev.chocoboy.create_processing.content.jei.HotPressingCategory;
+import dev.chocoboy.create_processing.content.recipes.ColdCondition;
 import dev.chocoboy.create_processing.content.recipes.ColdPressingRecipe;
 import dev.chocoboy.create_processing.content.recipes.FanRecipe;
 import dev.chocoboy.create_processing.content.recipes.HotPressingRecipe;
@@ -24,6 +25,7 @@ import net.createmod.catnip.gui.element.GuiGameElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.Block;
@@ -72,16 +74,8 @@ public final class CreateProcJeiPlugin implements IModPlugin {
                 .emptyBackground(177, 100)
         ));
 
-        categories.add(buildCategory(
-            ColdPressingRecipe.class,
-            "cold_pressing",
-            ColdPressingCategory::new,
-            builder -> builder
-                .addTypedRecipes(CreateProcRecipeTypes.COLD_PRESSING)
-                .catalystStack(AllBlocks.MECHANICAL_PRESS::asStack)
-                .doubleItemIcon(AllBlocks.MECHANICAL_PRESS.get(), Blocks.PACKED_ICE)
-                .emptyBackground(177, 100)
-        ));
+        categories.add(buildColdPressingCategory(ColdCondition.CHILLING));
+        categories.add(buildColdPressingCategory(ColdCondition.FREEZING));
 
         registration.addRecipeCategories(categories.toArray(CreateRecipeCategory[]::new));
     }
@@ -113,6 +107,27 @@ public final class CreateProcJeiPlugin implements IModPlugin {
                             .emptyBackground(178, 72);
                     config.accept(builder);
                 }
+        );
+    }
+
+    private static CreateRecipeCategory<ColdPressingRecipe> buildColdPressingCategory(ColdCondition condition) {
+        Block ice = condition.getBlock();
+        return buildCategory(
+            ColdPressingRecipe.class,
+            "cold_pressing_" + condition.getSerializedName(),
+            ColdPressingCategory::new,
+            builder -> builder
+                .addRecipeListConsumer(recipes -> consumeAllRecipes(holder -> {
+                    if (holder.value() instanceof ColdPressingRecipe r && r.getColdCondition() == condition) {
+                        @SuppressWarnings({"unchecked", "rawtypes"})
+                        RecipeHolder<ColdPressingRecipe> casted = (RecipeHolder) holder;
+                        recipes.add(casted);
+                    }
+                }))
+                .catalystStack(AllBlocks.MECHANICAL_PRESS::asStack)
+                .catalystStack(() -> new ItemStack(ice))
+                .doubleItemIcon(AllBlocks.MECHANICAL_PRESS.get(), ice)
+                .emptyBackground(177, 100)
         );
     }
 
