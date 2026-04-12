@@ -7,6 +7,7 @@
   "create_processing.recipe.fan_enderfying": "Bulk Enderfying",
   "create_processing.recipe.hot_pressing": "Hot Pressing",
   "create_processing.recipe.cold_pressing": "Cold Pressing",
+  "create_processing.recipe.cold_mixing": "Cold Mixing",
   "create_processing.cold_condition.chilling": "Chilling",
   "create_processing.cold_condition.freezing": "Freezing"
 }

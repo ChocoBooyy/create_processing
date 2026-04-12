@@ -8,8 +8,10 @@ import com.simibubi.create.compat.jei.category.animations.AnimatedKinetics;
 import com.simibubi.create.content.decoration.palettes.AllPaletteStoneTypes;
 import dev.chocoboy.create_processing.CreateProc;
 import dev.chocoboy.create_processing.content.fans.processing.SandingType;
+import dev.chocoboy.create_processing.content.jei.ColdMixingCategory;
 import dev.chocoboy.create_processing.content.jei.ColdPressingCategory;
 import dev.chocoboy.create_processing.content.jei.HotPressingCategory;
+import dev.chocoboy.create_processing.content.recipes.ColdMixingRecipe;
 import dev.chocoboy.create_processing.content.recipes.ColdPressingRecipe;
 import dev.chocoboy.create_processing.content.recipes.FanRecipe;
 import dev.chocoboy.create_processing.content.recipes.HotPressingRecipe;
@@ -81,6 +83,17 @@ public final class CreateProcJeiPlugin implements IModPlugin {
                 .catalystStack(AllBlocks.MECHANICAL_PRESS::asStack)
                 .doubleItemIcon(AllBlocks.MECHANICAL_PRESS.get(), Blocks.PACKED_ICE)
                 .emptyBackground(177, 100)
+        ));
+
+        categories.add(buildCategory(
+            ColdMixingRecipe.class,
+            "cold_mixing",
+            ColdMixingCategory::new,
+            builder -> builder
+                .addTypedRecipes(CreateProcRecipeTypes.COLD_MIXING)
+                .catalystStack(AllBlocks.MECHANICAL_MIXER::asStack)
+                .doubleItemIcon(AllBlocks.MECHANICAL_MIXER.get(), Blocks.PACKED_ICE)
+                .emptyBackground(177, 120)
         ));
 
         registration.addRecipeCategories(categories.toArray(CreateRecipeCategory[]::new));
