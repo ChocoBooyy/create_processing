@@ -1,0 +1,26 @@
+{
+  "type": "create_processing:cold_mixing",
+  "cold_condition": "freezing",
+  "ingredients": [
+    {
+      "item": "minecraft:snow_block"
+    },
+    {
+      "item": "minecraft:snow_block"
+    },
+    {
+      "item": "minecraft:snow_block"
+    },
+    {
+      "item": "minecraft:snow_block"
+    },
+    {
+      "item": "minecraft:ice"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:blue_ice"
+    }
+  ]
+}
