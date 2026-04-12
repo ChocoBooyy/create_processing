@@ -1,0 +1,15 @@
+{
+  "type": "create_processing:cold_pressing",
+  "cold_condition": "freezing",
+  "ingredients": [
+    {
+      "item": "minecraft:snow_block"
+    }
+  ],
+  "results": [
+    {
+      "count": 4,
+      "id": "minecraft:snowball"
+    }
+  ]
+}

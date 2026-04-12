@@ -1,13 +1,14 @@
 {
   "type": "create_processing:cold_pressing",
+  "cold_condition": "freezing",
   "ingredients": [
     {
-      "item": "minecraft:water_bucket"
+      "item": "minecraft:packed_ice"
     }
   ],
   "results": [
     {
-      "id": "minecraft:ice"
+      "id": "minecraft:blue_ice"
     }
   ]
 }

@@ -1,0 +1,14 @@
+{
+  "type": "create_processing:cold_pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:melon"
+    }
+  ],
+  "results": [
+    {
+      "count": 9,
+      "id": "minecraft:melon_slice"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "create_processing:cold_pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:vine"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:string"
+    }
+  ]
+}

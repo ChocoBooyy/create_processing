@@ -1,0 +1,15 @@
+{
+  "type": "create_processing:cold_pressing",
+  "cold_condition": "freezing",
+  "ingredients": [
+    {
+      "item": "minecraft:prismarine_shard"
+    }
+  ],
+  "results": [
+    {
+      "count": 2,
+      "id": "minecraft:prismarine_crystals"
+    }
+  ]
+}

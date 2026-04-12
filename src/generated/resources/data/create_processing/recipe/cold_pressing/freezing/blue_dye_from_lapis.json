@@ -1,0 +1,15 @@
+{
+  "type": "create_processing:cold_pressing",
+  "cold_condition": "freezing",
+  "ingredients": [
+    {
+      "item": "minecraft:lapis_lazuli"
+    }
+  ],
+  "results": [
+    {
+      "count": 4,
+      "id": "minecraft:blue_dye"
+    }
+  ]
+}

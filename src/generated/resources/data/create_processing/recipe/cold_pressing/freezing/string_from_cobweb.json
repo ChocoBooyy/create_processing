@@ -1,0 +1,15 @@
+{
+  "type": "create_processing:cold_pressing",
+  "cold_condition": "freezing",
+  "ingredients": [
+    {
+      "item": "minecraft:cobweb"
+    }
+  ],
+  "results": [
+    {
+      "count": 9,
+      "id": "minecraft:string"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "create_processing:cold_pressing",
+  "cold_condition": "freezing",
+  "ingredients": [
+    {
+      "item": "minecraft:crying_obsidian"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:obsidian"
+    }
+  ]
+}

@@ -26,7 +26,7 @@ public class ColdPressingRecipe extends StandardProcessingRecipe<SingleRecipeInp
         this.coldCondition = ColdCondition.CHILLING;
     }
 
-    ColdPressingRecipe withColdCondition(ColdCondition condition) {
+    public ColdPressingRecipe withColdCondition(ColdCondition condition) {
         this.coldCondition = condition;
         return this;
     }

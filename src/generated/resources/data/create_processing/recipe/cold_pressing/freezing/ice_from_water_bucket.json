@@ -1,0 +1,18 @@
+{
+  "type": "create_processing:cold_pressing",
+  "cold_condition": "freezing",
+  "ingredients": [
+    {
+      "item": "minecraft:water_bucket"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:ice"
+    },
+    {
+      "chance": 0.25,
+      "id": "minecraft:packed_ice"
+    }
+  ]
+}

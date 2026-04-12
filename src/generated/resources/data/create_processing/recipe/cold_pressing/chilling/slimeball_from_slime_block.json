@@ -1,0 +1,14 @@
+{
+  "type": "create_processing:cold_pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:slime_block"
+    }
+  ],
+  "results": [
+    {
+      "count": 9,
+      "id": "minecraft:slime_ball"
+    }
+  ]
+}

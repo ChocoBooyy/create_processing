@@ -1,0 +1,17 @@
+{
+  "type": "create_processing:cold_pressing",
+  "cold_condition": "freezing",
+  "ingredients": [
+    {
+      "item": "minecraft:magma_cream"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:blaze_powder"
+    },
+    {
+      "id": "minecraft:slime_ball"
+    }
+  ]
+}

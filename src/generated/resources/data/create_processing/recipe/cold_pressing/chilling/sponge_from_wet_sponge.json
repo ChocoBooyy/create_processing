@@ -1,0 +1,13 @@
+{
+  "type": "create_processing:cold_pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:wet_sponge"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:sponge"
+    }
+  ]
+}
