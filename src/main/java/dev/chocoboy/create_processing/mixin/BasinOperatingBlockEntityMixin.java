@@ -3,6 +3,8 @@ package dev.chocoboy.create_processing.mixin;
 import com.simibubi.create.content.kinetics.press.MechanicalPressBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlock.HeatLevel;
+import dev.chocoboy.create_processing.content.recipes.ColdCondition;
 import dev.chocoboy.create_processing.util.ColdPressingHelper;
 import dev.chocoboy.create_processing.util.ColdSourceHelper;
 import dev.chocoboy.create_processing.util.HeatSourceHelper;
@@ -34,11 +36,12 @@ public abstract class BasinOperatingBlockEntityMixin {
         if (basinOpt.isEmpty()) return;
         BasinBlockEntity basin = basinOpt.get();
 
-        if (!HeatSourceHelper.isBasinHeated(basin)) return;
+        HeatLevel basinHeatLevel = HeatSourceHelper.getBasinHeatLevel(basin);
+        if (!HeatSourceHelper.isActiveHeatLevel(basinHeatLevel)) return;
 
-        HotPressingHelper.findInBasin(basin, level).ifPresent(recipe -> {
+        HotPressingHelper.findInBasin(basin, level, basinHeatLevel).ifPresent(entry -> {
             List<Recipe<?>> result = new ArrayList<>(cir.getReturnValue());
-            result.add(0, recipe.value());
+            result.add(0, entry.getValue().value());
             cir.setReturnValue(result);
         });
     }
@@ -53,11 +56,12 @@ public abstract class BasinOperatingBlockEntityMixin {
         if (basinOpt.isEmpty()) return;
         BasinBlockEntity basin = basinOpt.get();
 
-        if (!ColdSourceHelper.isColdSourceAt(level, basin.getBlockPos().below())) return;
+        ColdCondition coldSourceLevel = ColdSourceHelper.getColdConditionAt(level, basin.getBlockPos().below());
+        if (coldSourceLevel == null) return;
 
-        ColdPressingHelper.findInBasin(basin, level).ifPresent(recipe -> {
+        ColdPressingHelper.findInBasin(basin, level, coldSourceLevel).ifPresent(entry -> {
             List<Recipe<?>> result = new ArrayList<>(cir.getReturnValue());
-            result.add(0, recipe.value());
+            result.add(0, entry.getValue().value());
             cir.setReturnValue(result);
         });
     }

@@ -4,12 +4,16 @@ import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.content.kinetics.press.MechanicalPressBlockEntity;
 import com.simibubi.create.content.kinetics.press.PressingBehaviour;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlock.HeatLevel;
 import com.simibubi.create.foundation.recipe.RecipeApplier;
+import dev.chocoboy.create_processing.content.recipes.ColdCondition;
 import dev.chocoboy.create_processing.content.recipes.ColdPressingRecipe;
 import dev.chocoboy.create_processing.content.recipes.HotPressingRecipe;
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
+import dev.chocoboy.create_processing.util.ColdPressingHelper;
 import dev.chocoboy.create_processing.util.ColdSourceHelper;
 import dev.chocoboy.create_processing.util.HeatSourceHelper;
+import dev.chocoboy.create_processing.util.HotPressingHelper;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -44,12 +48,14 @@ public abstract class MechanicalPressBlockEntityMixin {
         if (level == null) return;
 
         BlockPos heatPos = itemEntity.getOnPos().below();
-        if (!HeatSourceHelper.isHeatSourceAt(level, heatPos)) return;
+        HeatLevel heatLevel = HeatSourceHelper.getHeatLevelAt(level, heatPos);
+        if (!HeatSourceHelper.isActiveHeatLevel(heatLevel)) return;
 
         ItemStack item = itemEntity.getItem();
         Optional<RecipeHolder<HotPressingRecipe>> recipe =
             CreateProcRecipeTypes.HOT_PRESSING.find(new SingleRecipeInput(item), level);
         if (recipe.isEmpty()) return;
+        if (!recipe.get().value().getRequiredHeat().testBlazeBurner(heatLevel)) return;
 
         if (simulate) {
             cir.setReturnValue(true);
@@ -88,12 +94,14 @@ public abstract class MechanicalPressBlockEntityMixin {
 
         // press -> air -> belt/depot -> heat (3 blocks below press)
         BlockPos heatPos = self.getBlockPos().below(3);
-        if (!HeatSourceHelper.isHeatSourceAt(level, heatPos)) return;
+        HeatLevel heatLevel = HeatSourceHelper.getHeatLevelAt(level, heatPos);
+        if (!HeatSourceHelper.isActiveHeatLevel(heatLevel)) return;
 
         ItemStack item = input.stack;
         Optional<RecipeHolder<HotPressingRecipe>> recipe =
             CreateProcRecipeTypes.HOT_PRESSING.find(new SingleRecipeInput(item), level);
         if (recipe.isEmpty()) return;
+        if (!recipe.get().value().getRequiredHeat().testBlazeBurner(heatLevel)) return;
 
         if (simulate) {
             cir.setReturnValue(true);
@@ -121,12 +129,14 @@ public abstract class MechanicalPressBlockEntityMixin {
         if (level == null) return;
 
         BlockPos coldPos = itemEntity.getOnPos().below();
-        if (!ColdSourceHelper.isColdSourceAt(level, coldPos)) return;
+        ColdCondition sourceLevel = ColdSourceHelper.getColdConditionAt(level, coldPos);
+        if (sourceLevel == null) return;
 
         ItemStack item = itemEntity.getItem();
         Optional<RecipeHolder<ColdPressingRecipe>> recipe =
             CreateProcRecipeTypes.COLD_PRESSING.find(new SingleRecipeInput(item), level);
         if (recipe.isEmpty()) return;
+        if (!sourceLevel.satisfies(recipe.get().value().getColdCondition())) return;
 
         if (simulate) {
             cir.setReturnValue(true);
@@ -165,12 +175,14 @@ public abstract class MechanicalPressBlockEntityMixin {
 
         // press -> air -> belt/depot -> cold source (3 blocks below press)
         BlockPos coldPos = self.getBlockPos().below(3);
-        if (!ColdSourceHelper.isColdSourceAt(level, coldPos)) return;
+        ColdCondition sourceLevel = ColdSourceHelper.getColdConditionAt(level, coldPos);
+        if (sourceLevel == null) return;
 
         ItemStack item = input.stack;
         Optional<RecipeHolder<ColdPressingRecipe>> recipe =
             CreateProcRecipeTypes.COLD_PRESSING.find(new SingleRecipeInput(item), level);
         if (recipe.isEmpty()) return;
+        if (!sourceLevel.satisfies(recipe.get().value().getColdCondition())) return;
 
         if (simulate) {
             cir.setReturnValue(true);
@@ -202,33 +214,29 @@ public abstract class MechanicalPressBlockEntityMixin {
         if (basinOpt.isEmpty()) return;
         BasinBlockEntity basin = basinOpt.get();
 
+        ColdCondition coldSourceLevel = ColdSourceHelper.getColdConditionAt(level, basin.getBlockPos().below());
+
         Recipe<?> queued = accessor.create_processing$getCurrentRecipe();
-        if (queued instanceof ColdPressingRecipe) {
-            if (!ColdSourceHelper.isColdSourceAt(level, basin.getBlockPos().below())) {
+        if (queued instanceof ColdPressingRecipe coldRecipe) {
+            if (coldSourceLevel == null || !coldSourceLevel.satisfies(coldRecipe.getColdCondition())) {
                 cir.setReturnValue(false);
                 return;
             }
         }
 
-        if (!ColdSourceHelper.isColdSourceAt(level, basin.getBlockPos().below())) return;
+        if (coldSourceLevel == null) return;
 
-        var inv = basin.getInputInventory();
-        int matchSlot = -1;
-        RecipeHolder<ColdPressingRecipe> recipe = null;
-        for (int slot = 0; slot < inv.getSlots(); slot++) {
-            ItemStack stack = inv.getStackInSlot(slot);
-            if (stack.isEmpty()) continue;
-            Optional<RecipeHolder<ColdPressingRecipe>> found =
-                CreateProcRecipeTypes.COLD_PRESSING.find(new SingleRecipeInput(stack), level);
-            if (found.isPresent()) { matchSlot = slot; recipe = found.get(); break; }
-        }
-        if (recipe == null) return;
+        var match = ColdPressingHelper.findInBasin(basin, level, coldSourceLevel);
+        if (match.isEmpty()) return;
+        int matchSlot = match.get().getKey();
+        RecipeHolder<ColdPressingRecipe> recipe = match.get().getValue();
 
         if (simulate) {
             cir.setReturnValue(true);
             return;
         }
 
+        var inv = basin.getInputInventory();
         ItemStack input = inv.getStackInSlot(matchSlot);
         pressingBehaviour.particleItems.add(input.copyWithCount(1));
         List<ItemStack> results = RecipeApplier.applyRecipeOn(
@@ -259,34 +267,30 @@ public abstract class MechanicalPressBlockEntityMixin {
         BasinOperatingBlockEntityAccessor accessor = (BasinOperatingBlockEntityAccessor) this;
         Optional<BasinBlockEntity> basinOpt = accessor.create_processing$getBasin();
 
+        HeatLevel basinHeatLevel = basinOpt.map(HeatSourceHelper::getBasinHeatLevel).orElse(HeatLevel.NONE);
+
         Recipe<?> queued = accessor.create_processing$getCurrentRecipe();
-        if (queued instanceof HotPressingRecipe) {
-            if (basinOpt.isEmpty() || !HeatSourceHelper.isBasinHeated(basinOpt.get())) {
+        if (queued instanceof HotPressingRecipe hotRecipe) {
+            if (basinOpt.isEmpty() || !HeatSourceHelper.isActiveHeatLevel(basinHeatLevel) || !hotRecipe.getRequiredHeat().testBlazeBurner(basinHeatLevel)) {
                 cir.setReturnValue(false);
                 return;
             }
         }
 
-        if (basinOpt.isEmpty() || !HeatSourceHelper.isBasinHeated(basinOpt.get())) return;
+        if (basinOpt.isEmpty() || !HeatSourceHelper.isActiveHeatLevel(basinHeatLevel)) return;
         BasinBlockEntity basin = basinOpt.get();
 
-        var inv = basin.getInputInventory();
-        int matchSlot = -1;
-        RecipeHolder<HotPressingRecipe> recipe = null;
-        for (int slot = 0; slot < inv.getSlots(); slot++) {
-            ItemStack stack = inv.getStackInSlot(slot);
-            if (stack.isEmpty()) continue;
-            Optional<RecipeHolder<HotPressingRecipe>> found =
-                CreateProcRecipeTypes.HOT_PRESSING.find(new SingleRecipeInput(stack), level);
-            if (found.isPresent()) { matchSlot = slot; recipe = found.get(); break; }
-        }
-        if (recipe == null) return;
+        var match = HotPressingHelper.findInBasin(basin, level, basinHeatLevel);
+        if (match.isEmpty()) return;
+        int matchSlot = match.get().getKey();
+        RecipeHolder<HotPressingRecipe> recipe = match.get().getValue();
 
         if (simulate) {
             cir.setReturnValue(true);
             return;
         }
 
+        var inv = basin.getInputInventory();
         ItemStack input = inv.getStackInSlot(matchSlot);
         pressingBehaviour.particleItems.add(input.copyWithCount(1));
         List<ItemStack> results = RecipeApplier.applyRecipeOn(

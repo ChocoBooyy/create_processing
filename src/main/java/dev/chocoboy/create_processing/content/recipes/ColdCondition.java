@@ -32,4 +32,8 @@ public enum ColdCondition implements StringRepresentable {
     public Block getBlock() {
         return block;
     }
+
+    public boolean satisfies(ColdCondition required) {
+        return this.ordinal() >= required.ordinal();
+    }
 }

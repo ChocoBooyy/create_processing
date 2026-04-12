@@ -13,21 +13,24 @@ public final class HeatSourceHelper {
 
     private HeatSourceHelper() {}
 
-    public static boolean isHeatSourceAt(Level level, BlockPos pos) {
+    public static HeatLevel getHeatLevelAt(Level level, BlockPos pos) {
         BlockState state = level.getBlockState(pos);
-        if (state.is(Blocks.FIRE) || state.is(Blocks.SOUL_FIRE)) return true;
-        if (state.getFluidState().is(FluidTags.LAVA)) return true;
+        if (state.is(Blocks.FIRE) || state.is(Blocks.SOUL_FIRE)) return HeatLevel.KINDLED;
+        if (state.getFluidState().is(FluidTags.LAVA)) return HeatLevel.SEETHING;
         if (state.hasProperty(BlazeBurnerBlock.HEAT_LEVEL)) {
-            HeatLevel heat = state.getValue(BlazeBurnerBlock.HEAT_LEVEL);
-            return heat != HeatLevel.NONE && heat != HeatLevel.SMOULDERING;
+            return state.getValue(BlazeBurnerBlock.HEAT_LEVEL);
         }
-        return false;
+        return HeatLevel.NONE;
     }
 
-    public static boolean isBasinHeated(BasinBlockEntity basin) {
-        Level level = basin.getLevel();
-        if (level == null) return false;
-        HeatLevel heat = BasinBlockEntity.getHeatLevelOf(level.getBlockState(basin.getBlockPos().below()));
-        return heat != HeatLevel.NONE && heat != HeatLevel.SMOULDERING;
+    public static boolean isActiveHeatLevel(HeatLevel level) {
+        return level != HeatLevel.NONE && level != HeatLevel.SMOULDERING;
     }
+
+    public static HeatLevel getBasinHeatLevel(BasinBlockEntity basin) {
+        Level level = basin.getLevel();
+        if (level == null) return HeatLevel.NONE;
+        return BasinBlockEntity.getHeatLevelOf(level.getBlockState(basin.getBlockPos().below()));
+    }
+
 }
