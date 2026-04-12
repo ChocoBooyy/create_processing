@@ -1,6 +1,7 @@
 package dev.chocoboy.create_processing.util;
 
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
 import dev.chocoboy.create_processing.content.recipes.ColdCondition;
 import dev.chocoboy.create_processing.content.recipes.ColdPressingRecipe;
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
@@ -24,8 +25,13 @@ public final class ColdPressingHelper {
             if (stack.isEmpty()) continue;
             Optional<RecipeHolder<ColdPressingRecipe>> recipe =
                 CreateProcRecipeTypes.COLD_PRESSING.find(new SingleRecipeInput(stack), level);
-            if (recipe.isPresent() && sourceLevel.satisfies(recipe.get().value().getColdCondition()))
+            if (recipe.isPresent() && sourceLevel.satisfies(recipe.get().value().getColdCondition())) {
+                FilteringBehaviour filter = basin.getFilter();
+                var results = recipe.get().value().getRollableResults();
+                if (filter != null && !results.isEmpty() && !filter.test(results.get(0).getStack()))
+                    continue;
                 return Optional.of(Map.entry(slot, recipe.get()));
+            }
         }
         return Optional.empty();
     }
