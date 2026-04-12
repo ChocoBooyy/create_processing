@@ -11,8 +11,7 @@
       "id": "minecraft:ice"
     },
     {
-      "chance": 0.25,
-      "id": "minecraft:packed_ice"
+      "id": "minecraft:bucket"
     }
   ]
 }

@@ -2,12 +2,13 @@
   "type": "create_processing:cold_pressing",
   "ingredients": [
     {
-      "item": "minecraft:wet_sponge"
+      "item": "minecraft:gravel"
     }
   ],
   "results": [
     {
-      "id": "minecraft:sponge"
+      "count": 2,
+      "id": "minecraft:flint"
     }
   ]
 }

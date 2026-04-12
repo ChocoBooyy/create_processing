@@ -1,15 +1,14 @@
 {
   "type": "create_processing:cold_pressing",
-  "cold_condition": "freezing",
   "ingredients": [
     {
-      "item": "minecraft:lapis_lazuli"
+      "item": "minecraft:beetroot"
     }
   ],
   "results": [
     {
       "count": 2,
-      "id": "minecraft:blue_dye"
+      "id": "minecraft:red_dye"
     }
   ]
 }

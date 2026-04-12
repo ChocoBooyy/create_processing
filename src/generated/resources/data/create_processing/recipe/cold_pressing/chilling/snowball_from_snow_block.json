@@ -2,13 +2,13 @@
   "type": "create_processing:cold_pressing",
   "ingredients": [
     {
-      "item": "minecraft:leather"
+      "item": "minecraft:snow_block"
     }
   ],
   "results": [
     {
-      "count": 2,
-      "id": "minecraft:rabbit_hide"
+      "count": 4,
+      "id": "minecraft:snowball"
     }
   ]
 }
