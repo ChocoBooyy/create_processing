@@ -92,7 +92,7 @@ public final class ColdMixingCategory extends CreateRecipeCategory<ColdMixingRec
         if (vRows <= 2)
             AllGuiTextures.JEI_DOWN_ARROW.render(graphics, 136, -19 * (vRows - 1) + 32);
 
-        AllGuiTextures.JEI_SHADOW.render(graphics, 81, 68);
+        AllGuiTextures.JEI_SHADOW.render(graphics, 81, 86);
         AllGuiTextures.JEI_HEAT_BAR.render(graphics, 4, 80);
 
         int bx = getBackground().getWidth() / 2 + 3;
