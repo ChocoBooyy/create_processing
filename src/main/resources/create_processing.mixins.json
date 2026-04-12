@@ -4,6 +4,7 @@
   "package": "dev.chocoboy.create_processing.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "BasinBlockEntityMixin",
     "BasinOperatingBlockEntityAccessor",
     "BasinOperatingBlockEntityMixin",
     "MechanicalPressBlockEntityMixin"
