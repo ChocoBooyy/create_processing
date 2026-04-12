@@ -6,8 +6,7 @@
   "create_processing.recipe.fan_petrifying": "Bulk Petrifying",
   "create_processing.recipe.fan_enderfying": "Bulk Enderfying",
   "create_processing.recipe.hot_pressing": "Hot Pressing",
-  "create_processing.recipe.cold_pressing_chilling": "Cold Pressing (Chilling)",
-  "create_processing.recipe.cold_pressing_freezing": "Cold Pressing (Freezing)",
+  "create_processing.recipe.cold_pressing": "Cold Pressing",
   "create_processing.cold_condition.chilling": "Chilling",
   "create_processing.cold_condition.freezing": "Freezing"
 }
