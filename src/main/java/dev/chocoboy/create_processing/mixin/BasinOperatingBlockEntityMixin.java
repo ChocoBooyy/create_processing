@@ -6,6 +6,7 @@ import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock.HeatLevel;
 import dev.chocoboy.create_processing.content.recipes.ColdCondition;
+import dev.chocoboy.create_processing.content.recipes.ColdMixingRecipe;
 import dev.chocoboy.create_processing.util.ColdMixingHelper;
 import dev.chocoboy.create_processing.util.ColdPressingHelper;
 import dev.chocoboy.create_processing.util.ColdSourceHelper;
@@ -17,6 +18,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
@@ -86,5 +88,27 @@ public abstract class BasinOperatingBlockEntityMixin {
             result.add(0, holder.value());
             cir.setReturnValue(result);
         });
+    }
+
+    @Inject(method = "applyBasinRecipe", at = @At("HEAD"), cancellable = true, remap = false)
+    private void create_processing$checkColdMixingCatalyst(CallbackInfo ci) {
+        if (!(((Object) this) instanceof MechanicalMixerBlockEntity mixer)) return;
+        Level level = mixer.getLevel();
+        if (level == null) return;
+
+        BasinOperatingBlockEntityAccessor accessor = (BasinOperatingBlockEntityAccessor) this;
+        Recipe<?> queued = accessor.create_processing$getCurrentRecipe();
+        if (!(queued instanceof ColdMixingRecipe coldRecipe)) return;
+
+        Optional<BasinBlockEntity> basinOpt = getBasin();
+        if (basinOpt.isEmpty()) return;
+        BasinBlockEntity basin = basinOpt.get();
+
+        ColdCondition coldSource = ColdSourceHelper.getColdConditionAt(level, basin.getBlockPos().below());
+        if (coldSource != null && coldSource.satisfies(coldRecipe.getColdCondition())) return;
+
+        accessor.create_processing$setCurrentRecipe(null);
+        basin.notifyChangeOfContents();
+        ci.cancel();
     }
 }

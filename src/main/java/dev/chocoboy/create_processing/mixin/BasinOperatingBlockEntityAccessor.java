@@ -17,4 +17,7 @@ public interface BasinOperatingBlockEntityAccessor {
 
     @Accessor("currentRecipe")
     Recipe<?> create_processing$getCurrentRecipe();
+
+    @Accessor("currentRecipe")
+    void create_processing$setCurrentRecipe(Recipe<?> recipe);
 }
