@@ -5,7 +5,7 @@
       "item": "minecraft:nether_gold_ore"
     }
   ],
-  "magnetic_condition": "exposed",
+  "magnetic_condition": "magnetic",
   "results": [
     {
       "count": 6,

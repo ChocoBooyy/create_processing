@@ -143,14 +143,13 @@ public abstract class BasinOperatingBlockEntityMixin {
         Level level = mixer.getLevel();
         if (level == null || level.isClientSide) return;
 
-        SpeedCondition speedLevel = SpeedCondition.fromSpeed(mixer.getSpeed());
-        if (speedLevel == null) return;
+        if (SpeedCondition.fromMachineSpeed(mixer.getSpeed()) == null) return;
 
         Optional<BasinBlockEntity> basinOpt = getBasin();
         if (basinOpt.isEmpty()) return;
         BasinBlockEntity basin = basinOpt.get();
 
-        SpeedProcessingHelper.findMixing(basin, level, speedLevel).ifPresent(holder -> {
+        SpeedProcessingHelper.findMixing(basin, level, mixer.getSpeed()).ifPresent(holder -> {
             List<Recipe<?>> result = new ArrayList<>(cir.getReturnValue());
             result.add(0, holder.value());
             cir.setReturnValue(result);
@@ -192,8 +191,7 @@ public abstract class BasinOperatingBlockEntityMixin {
         if (basinOpt.isEmpty()) return;
         BasinBlockEntity basin = basinOpt.get();
 
-        SpeedCondition speedLevel = SpeedCondition.fromSpeed(mixer.getSpeed());
-        if (speedLevel != null && speedLevel.satisfies(speedRecipe.getSpeedCondition())) return;
+        if (speedRecipe.getSpeedCondition().isMetByMachineSpeed(mixer.getSpeed())) return;
 
         accessor.create_processing$setCurrentRecipe(null);
         basin.notifyChangeOfContents();

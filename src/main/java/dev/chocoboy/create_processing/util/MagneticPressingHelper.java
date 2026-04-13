@@ -25,7 +25,7 @@ public final class MagneticPressingHelper {
             if (stack.isEmpty()) continue;
             Optional<RecipeHolder<MagneticPressingRecipe>> recipe =
                 CreateProcRecipeTypes.MAGNETIC_PRESSING.find(new SingleRecipeInput(stack), level);
-            if (recipe.isPresent() && sourceLevel.satisfies(recipe.get().value().getMagneticCondition())) {
+            if (recipe.isPresent()) {
                 FilteringBehaviour filter = basin.getFilter();
                 var results = recipe.get().value().getRollableResults();
                 if (filter != null && !results.isEmpty() && !filter.test(results.get(0).getStack()))

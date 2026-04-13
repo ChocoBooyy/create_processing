@@ -10,9 +10,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 public enum MagneticCondition implements StringRepresentable {
-    EXPOSED(Blocks.EXPOSED_COPPER),
-    WEATHERED(Blocks.WEATHERED_COPPER),
-    OXIDIZED(Blocks.OXIDIZED_COPPER),
     MAGNETIC(Blocks.LODESTONE);
 
     public static final Codec<MagneticCondition> CODEC =
@@ -33,9 +30,5 @@ public enum MagneticCondition implements StringRepresentable {
 
     public Block getBlock() {
         return block;
-    }
-
-    public boolean satisfies(MagneticCondition required) {
-        return this.ordinal() >= required.ordinal();
     }
 }

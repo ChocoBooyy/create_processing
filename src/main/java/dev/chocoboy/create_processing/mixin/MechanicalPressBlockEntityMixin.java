@@ -279,7 +279,6 @@ public abstract class MechanicalPressBlockEntityMixin {
         Optional<RecipeHolder<MagneticPressingRecipe>> recipe =
             CreateProcRecipeTypes.MAGNETIC_PRESSING.find(new SingleRecipeInput(item), level);
         if (recipe.isEmpty()) return;
-        if (!sourceLevel.satisfies(recipe.get().value().getMagneticCondition())) return;
 
         if (simulate) {
             cir.setReturnValue(true);
@@ -324,7 +323,6 @@ public abstract class MechanicalPressBlockEntityMixin {
         Optional<RecipeHolder<MagneticPressingRecipe>> recipe =
             CreateProcRecipeTypes.MAGNETIC_PRESSING.find(new SingleRecipeInput(item), level);
         if (recipe.isEmpty()) return;
-        if (!sourceLevel.satisfies(recipe.get().value().getMagneticCondition())) return;
 
         if (simulate) {
             cir.setReturnValue(true);
@@ -360,7 +358,7 @@ public abstract class MechanicalPressBlockEntityMixin {
 
         Recipe<?> queued = accessor.create_processing$getCurrentRecipe();
         if (queued instanceof MagneticPressingRecipe magnetRecipe) {
-            if (magnetSourceLevel == null || !magnetSourceLevel.satisfies(magnetRecipe.getMagneticCondition())) {
+            if (magnetSourceLevel == null) {
                 cir.setReturnValue(false);
                 return;
             }
@@ -406,12 +404,11 @@ public abstract class MechanicalPressBlockEntityMixin {
         Level level = self.getLevel();
         if (level == null) return;
 
-        SpeedCondition speedLevel = SpeedCondition.fromSpeed(self.getSpeed());
-        if (speedLevel == null) return;
+        if (SpeedCondition.fromMachineSpeed(self.getSpeed()) == null) return;
 
         ItemStack item = itemEntity.getItem();
         Optional<RecipeHolder<SpeedPressingRecipe>> recipe =
-            SpeedProcessingHelper.findPressing(item, level, speedLevel);
+            SpeedProcessingHelper.findPressing(item, level, self.getSpeed());
         if (recipe.isEmpty()) return;
 
         if (simulate) {
@@ -449,12 +446,11 @@ public abstract class MechanicalPressBlockEntityMixin {
         Level level = self.getLevel();
         if (level == null) return;
 
-        SpeedCondition speedLevel = SpeedCondition.fromSpeed(self.getSpeed());
-        if (speedLevel == null) return;
+        if (SpeedCondition.fromMachineSpeed(self.getSpeed()) == null) return;
 
         ItemStack item = input.stack;
         Optional<RecipeHolder<SpeedPressingRecipe>> recipe =
-            SpeedProcessingHelper.findPressing(item, level, speedLevel);
+            SpeedProcessingHelper.findPressing(item, level, self.getSpeed());
         if (recipe.isEmpty()) return;
 
         if (simulate) {
@@ -482,8 +478,7 @@ public abstract class MechanicalPressBlockEntityMixin {
         Level level = self.getLevel();
         if (level == null) return;
 
-        SpeedCondition speedLevel = SpeedCondition.fromSpeed(self.getSpeed());
-        if (speedLevel == null) return;
+        if (SpeedCondition.fromMachineSpeed(self.getSpeed()) == null) return;
 
         BasinOperatingBlockEntityAccessor accessor = (BasinOperatingBlockEntityAccessor) this;
         Optional<BasinBlockEntity> basinOpt = accessor.create_processing$getBasin();
@@ -492,13 +487,13 @@ public abstract class MechanicalPressBlockEntityMixin {
 
         Recipe<?> queued = accessor.create_processing$getCurrentRecipe();
         if (queued instanceof SpeedPressingRecipe speedRecipe) {
-            if (!speedLevel.satisfies(speedRecipe.getSpeedCondition())) {
+            if (!speedRecipe.getSpeedCondition().isMetByMachineSpeed(self.getSpeed())) {
                 cir.setReturnValue(false);
                 return;
             }
         }
 
-        var match = SpeedProcessingHelper.findPressingInBasin(basin, level, speedLevel);
+        var match = SpeedProcessingHelper.findPressingInBasin(basin, level, self.getSpeed());
         if (match.isEmpty()) return;
         int matchSlot = match.get().getKey();
         RecipeHolder<SpeedPressingRecipe> recipe = match.get().getValue();

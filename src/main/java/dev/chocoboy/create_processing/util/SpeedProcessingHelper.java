@@ -3,7 +3,6 @@ package dev.chocoboy.create_processing.util;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinRecipe;
 import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
-import dev.chocoboy.create_processing.content.recipes.SpeedCondition;
 import dev.chocoboy.create_processing.content.recipes.SpeedMixingRecipe;
 import dev.chocoboy.create_processing.content.recipes.SpeedPressingRecipe;
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
@@ -22,20 +21,18 @@ public final class SpeedProcessingHelper {
 
     @SuppressWarnings("unchecked")
     public static Optional<RecipeHolder<SpeedPressingRecipe>> findPressing(ItemStack stack, Level level,
-            SpeedCondition machineSpeed) {
-        if (machineSpeed == null) return Optional.empty();
+            float machineSpeed) {
         return level.getRecipeManager()
             .getAllRecipesFor(CreateProcRecipeTypes.SPEED_PRESSING.getType())
             .stream()
             .map(holder -> (RecipeHolder<SpeedPressingRecipe>) (RecipeHolder<?>) holder)
-            .filter(holder -> machineSpeed.satisfies(holder.value().getSpeedCondition()))
+            .filter(holder -> holder.value().getSpeedCondition().isMetByMachineSpeed(machineSpeed))
             .filter(holder -> holder.value().matches(new SingleRecipeInput(stack), level))
-            .max(Comparator.comparingInt(holder -> holder.value().getSpeedCondition().ordinal()));
+            .max(Comparator.comparingInt(holder -> holder.value().getSpeedCondition().getMinimumSpeed()));
     }
 
     public static Optional<Map.Entry<Integer, RecipeHolder<SpeedPressingRecipe>>> findPressingInBasin(
-            BasinBlockEntity basin, Level level, SpeedCondition machineSpeed) {
-        if (machineSpeed == null) return Optional.empty();
+            BasinBlockEntity basin, Level level, float machineSpeed) {
 
         var inv = basin.getInputInventory();
         for (int slot = 0; slot < inv.getSlots(); slot++) {
@@ -55,15 +52,13 @@ public final class SpeedProcessingHelper {
 
     @SuppressWarnings("unchecked")
     public static Optional<RecipeHolder<SpeedMixingRecipe>> findMixing(BasinBlockEntity basin, Level level,
-            SpeedCondition machineSpeed) {
-        if (machineSpeed == null) return Optional.empty();
+            float machineSpeed) {
         return level.getRecipeManager()
             .getAllRecipesFor(CreateProcRecipeTypes.SPEED_MIXING.getType())
             .stream()
             .map(holder -> (RecipeHolder<SpeedMixingRecipe>) (RecipeHolder<?>) holder)
-            .filter(holder -> machineSpeed.satisfies(holder.value().getSpeedCondition()))
+            .filter(holder -> holder.value().getSpeedCondition().isMetByMachineSpeed(machineSpeed))
             .filter(holder -> BasinRecipe.match(basin, holder.value()))
-            .max(Comparator.comparingInt(holder -> holder.value().getSpeedCondition().ordinal()));
+            .max(Comparator.comparingInt(holder -> holder.value().getSpeedCondition().getMinimumSpeed()));
     }
 }
-

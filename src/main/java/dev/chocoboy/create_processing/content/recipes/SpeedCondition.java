@@ -43,16 +43,15 @@ public enum SpeedCondition implements StringRepresentable {
         return minimumSpeed >= required.minimumSpeed;
     }
 
-    public boolean satisfies(float speed) {
-        return Math.abs(speed) >= minimumSpeed;
+    public boolean isMetByMachineSpeed(float machineSpeed) {
+        return Math.abs(machineSpeed) >= minimumSpeed;
     }
 
     @Nullable
-    public static SpeedCondition fromSpeed(float speed) {
-        float absSpeed = Math.abs(speed);
+    public static SpeedCondition fromMachineSpeed(float machineSpeed) {
+        float absSpeed = Math.abs(machineSpeed);
         if (absSpeed >= OVERDRIVE.minimumSpeed) return OVERDRIVE;
         if (absSpeed >= FAST.minimumSpeed) return FAST;
         return null;
     }
 }
-

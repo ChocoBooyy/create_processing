@@ -5,7 +5,7 @@
       "tag": "c:plates/brass"
     }
   ],
-  "magnetic_condition": "oxidized",
+  "magnetic_condition": "magnetic",
   "results": [
     {
       "id": "create:brass_ingot"
