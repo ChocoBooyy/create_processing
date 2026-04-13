@@ -6,6 +6,8 @@ import dev.chocoboy.create_processing.CreateProc;
 import dev.chocoboy.create_processing.content.recipes.ColdMixingRecipe;
 import dev.chocoboy.create_processing.content.recipes.ColdPressingRecipe;
 import dev.chocoboy.create_processing.content.recipes.MagneticPressingRecipe;
+import dev.chocoboy.create_processing.content.recipes.SpeedMixingRecipe;
+import dev.chocoboy.create_processing.content.recipes.SpeedPressingRecipe;
 import dev.chocoboy.create_processing.content.recipes.ResonanceMixingRecipe;
 import dev.chocoboy.create_processing.content.recipes.FanRecipe;
 import dev.chocoboy.create_processing.content.recipes.HotPressingRecipe;
@@ -43,6 +45,8 @@ public final class CreateProcRecipeTypes {
     public static RecipeTypeEntry COLD_MIXING;
     public static RecipeTypeEntry RESONANCE_MIXING;
     public static RecipeTypeEntry MAGNETIC_PRESSING;
+    public static RecipeTypeEntry SPEED_PRESSING;
+    public static RecipeTypeEntry SPEED_MIXING;
 
     static {
         WITHERING = registerStandard("withering", params -> new FanRecipe(WITHERING, params));
@@ -57,6 +61,10 @@ public final class CreateProcRecipeTypes {
         RESONANCE_MIXING = registerStandard("resonance_mixing", ResonanceMixingRecipe::new);
         MAGNETIC_PRESSING = registerWithSerializer("magnetic_pressing",
             () -> MagneticPressingRecipe.SERIALIZER);
+        SPEED_PRESSING = registerWithSerializer("speed_pressing",
+            () -> SpeedPressingRecipe.SERIALIZER);
+        SPEED_MIXING = registerWithSerializer("speed_mixing",
+            () -> SpeedMixingRecipe.SERIALIZER);
     }
 
     private CreateProcRecipeTypes() {}

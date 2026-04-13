@@ -8,6 +8,8 @@ import com.simibubi.create.content.processing.burner.BlazeBurnerBlock.HeatLevel;
 import dev.chocoboy.create_processing.content.recipes.ColdCondition;
 import dev.chocoboy.create_processing.content.recipes.ColdMixingRecipe;
 import dev.chocoboy.create_processing.content.recipes.ResonanceMixingRecipe;
+import dev.chocoboy.create_processing.content.recipes.SpeedCondition;
+import dev.chocoboy.create_processing.content.recipes.SpeedMixingRecipe;
 import dev.chocoboy.create_processing.util.AmethystSourceHelper;
 import dev.chocoboy.create_processing.util.ColdMixingHelper;
 import dev.chocoboy.create_processing.util.ColdPressingHelper;
@@ -15,6 +17,7 @@ import dev.chocoboy.create_processing.util.ColdSourceHelper;
 import dev.chocoboy.create_processing.util.HeatSourceHelper;
 import dev.chocoboy.create_processing.util.HotPressingHelper;
 import dev.chocoboy.create_processing.util.ResonanceMixingHelper;
+import dev.chocoboy.create_processing.util.SpeedProcessingHelper;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
@@ -134,6 +137,26 @@ public abstract class BasinOperatingBlockEntityMixin {
         });
     }
 
+    @Inject(method = "getMatchingRecipes", at = @At("RETURN"), cancellable = true, remap = false)
+    private void create_processing$addSpeedMixingCandidates(CallbackInfoReturnable<List<Recipe<?>>> cir) {
+        if (!(((Object) this) instanceof MechanicalMixerBlockEntity mixer)) return;
+        Level level = mixer.getLevel();
+        if (level == null || level.isClientSide) return;
+
+        SpeedCondition speedLevel = SpeedCondition.fromSpeed(mixer.getSpeed());
+        if (speedLevel == null) return;
+
+        Optional<BasinBlockEntity> basinOpt = getBasin();
+        if (basinOpt.isEmpty()) return;
+        BasinBlockEntity basin = basinOpt.get();
+
+        SpeedProcessingHelper.findMixing(basin, level, speedLevel).ifPresent(holder -> {
+            List<Recipe<?>> result = new ArrayList<>(cir.getReturnValue());
+            result.add(0, holder.value());
+            cir.setReturnValue(result);
+        });
+    }
+
     @Inject(method = "applyBasinRecipe", at = @At("HEAD"), cancellable = true, remap = false)
     private void create_processing$checkResonanceMixingCatalyst(CallbackInfo ci) {
         if (!(((Object) this) instanceof MechanicalMixerBlockEntity mixer)) return;
@@ -149,6 +172,28 @@ public abstract class BasinOperatingBlockEntityMixin {
         BasinBlockEntity basin = basinOpt.get();
 
         if (AmethystSourceHelper.isResonantAt(level, basin.getBlockPos().below())) return;
+
+        accessor.create_processing$setCurrentRecipe(null);
+        basin.notifyChangeOfContents();
+        ci.cancel();
+    }
+
+    @Inject(method = "applyBasinRecipe", at = @At("HEAD"), cancellable = true, remap = false)
+    private void create_processing$checkSpeedMixingCatalyst(CallbackInfo ci) {
+        if (!(((Object) this) instanceof MechanicalMixerBlockEntity mixer)) return;
+        Level level = mixer.getLevel();
+        if (level == null) return;
+
+        BasinOperatingBlockEntityAccessor accessor = (BasinOperatingBlockEntityAccessor) this;
+        Recipe<?> queued = accessor.create_processing$getCurrentRecipe();
+        if (!(queued instanceof SpeedMixingRecipe speedRecipe)) return;
+
+        Optional<BasinBlockEntity> basinOpt = getBasin();
+        if (basinOpt.isEmpty()) return;
+        BasinBlockEntity basin = basinOpt.get();
+
+        SpeedCondition speedLevel = SpeedCondition.fromSpeed(mixer.getSpeed());
+        if (speedLevel != null && speedLevel.satisfies(speedRecipe.getSpeedCondition())) return;
 
         accessor.create_processing$setCurrentRecipe(null);
         basin.notifyChangeOfContents();

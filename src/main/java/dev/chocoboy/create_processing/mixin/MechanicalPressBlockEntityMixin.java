@@ -11,6 +11,8 @@ import dev.chocoboy.create_processing.content.recipes.ColdPressingRecipe;
 import dev.chocoboy.create_processing.content.recipes.HotPressingRecipe;
 import dev.chocoboy.create_processing.content.recipes.MagneticCondition;
 import dev.chocoboy.create_processing.content.recipes.MagneticPressingRecipe;
+import dev.chocoboy.create_processing.content.recipes.SpeedCondition;
+import dev.chocoboy.create_processing.content.recipes.SpeedPressingRecipe;
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
 import dev.chocoboy.create_processing.util.ColdPressingHelper;
 import dev.chocoboy.create_processing.util.ColdSourceHelper;
@@ -18,6 +20,7 @@ import dev.chocoboy.create_processing.util.HeatSourceHelper;
 import dev.chocoboy.create_processing.util.HotPressingHelper;
 import dev.chocoboy.create_processing.util.MagneticPressingHelper;
 import dev.chocoboy.create_processing.util.MagneticSourceHelper;
+import dev.chocoboy.create_processing.util.SpeedProcessingHelper;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -369,6 +372,136 @@ public abstract class MechanicalPressBlockEntityMixin {
         if (match.isEmpty()) return;
         int matchSlot = match.get().getKey();
         RecipeHolder<MagneticPressingRecipe> recipe = match.get().getValue();
+
+        if (simulate) {
+            cir.setReturnValue(true);
+            return;
+        }
+
+        var inv = basin.getInputInventory();
+        ItemStack inputStack = inv.getStackInSlot(matchSlot);
+        pressingBehaviour.particleItems.add(inputStack.copyWithCount(1));
+        List<ItemStack> results = RecipeApplier.applyRecipeOn(
+            level, inputStack.copyWithCount(1), recipe.value(), true);
+        inputStack.shrink(1);
+
+        if (basin.acceptOutputs(results, Collections.emptyList(), false)) {
+            for (ItemStack created : results) {
+                if (!created.isEmpty()) {
+                    onItemPressed(created);
+                    break;
+                }
+            }
+            cir.setReturnValue(true);
+        } else {
+            inputStack.grow(1);
+            cir.setReturnValue(false);
+        }
+    }
+
+    @Inject(method = "tryProcessInWorld", at = @At("HEAD"), cancellable = true, remap = false)
+    private void create_processing$trySpeedPressingInWorld(ItemEntity itemEntity, boolean simulate,
+            CallbackInfoReturnable<Boolean> cir) {
+        MechanicalPressBlockEntity self = (MechanicalPressBlockEntity) (Object) this;
+        Level level = self.getLevel();
+        if (level == null) return;
+
+        SpeedCondition speedLevel = SpeedCondition.fromSpeed(self.getSpeed());
+        if (speedLevel == null) return;
+
+        ItemStack item = itemEntity.getItem();
+        Optional<RecipeHolder<SpeedPressingRecipe>> recipe =
+            SpeedProcessingHelper.findPressing(item, level, speedLevel);
+        if (recipe.isEmpty()) return;
+
+        if (simulate) {
+            cir.setReturnValue(true);
+            return;
+        }
+
+        pressingBehaviour.particleItems.add(item);
+        ItemStack itemCreated = ItemStack.EMPTY;
+        if (canProcessInBulk() || item.getCount() == 1) {
+            RecipeApplier.applyRecipeOn(itemEntity, recipe.get().value(), true);
+            itemCreated = itemEntity.getItem().copy();
+        } else {
+            List<ItemStack> results = RecipeApplier.applyRecipeOn(
+                level, item.copyWithCount(1), recipe.get().value(), true);
+            for (ItemStack result : results) {
+                if (itemCreated.isEmpty()) itemCreated = result.copy();
+                ItemEntity created = new ItemEntity(
+                    level, itemEntity.getX(), itemEntity.getY(), itemEntity.getZ(), result);
+                created.setDefaultPickUpDelay();
+                created.setDeltaMovement(VecHelper.offsetRandomly(Vec3.ZERO, level.random, .05f));
+                level.addFreshEntity(created);
+            }
+            item.shrink(1);
+        }
+
+        if (!itemCreated.isEmpty()) onItemPressed(itemCreated);
+        cir.setReturnValue(true);
+    }
+
+    @Inject(method = "tryProcessOnBelt", at = @At("HEAD"), cancellable = true, remap = false)
+    private void create_processing$trySpeedPressingOnBelt(TransportedItemStack input, List<ItemStack> outputList,
+            boolean simulate, CallbackInfoReturnable<Boolean> cir) {
+        MechanicalPressBlockEntity self = (MechanicalPressBlockEntity) (Object) this;
+        Level level = self.getLevel();
+        if (level == null) return;
+
+        SpeedCondition speedLevel = SpeedCondition.fromSpeed(self.getSpeed());
+        if (speedLevel == null) return;
+
+        ItemStack item = input.stack;
+        Optional<RecipeHolder<SpeedPressingRecipe>> recipe =
+            SpeedProcessingHelper.findPressing(item, level, speedLevel);
+        if (recipe.isEmpty()) return;
+
+        if (simulate) {
+            cir.setReturnValue(true);
+            return;
+        }
+
+        pressingBehaviour.particleItems.add(item);
+        List<ItemStack> results = RecipeApplier.applyRecipeOn(level,
+            canProcessInBulk() ? item : item.copyWithCount(1), recipe.get().value(), true);
+        for (ItemStack created : results) {
+            if (!created.isEmpty()) {
+                onItemPressed(created);
+                break;
+            }
+        }
+        outputList.addAll(results);
+        cir.setReturnValue(true);
+    }
+
+    @Inject(method = "tryProcessInBasin", at = @At("HEAD"), cancellable = true, remap = false)
+    private void create_processing$trySpeedPressingInBasin(boolean simulate,
+            CallbackInfoReturnable<Boolean> cir) {
+        MechanicalPressBlockEntity self = (MechanicalPressBlockEntity) (Object) this;
+        Level level = self.getLevel();
+        if (level == null) return;
+
+        SpeedCondition speedLevel = SpeedCondition.fromSpeed(self.getSpeed());
+        if (speedLevel == null) return;
+
+        BasinOperatingBlockEntityAccessor accessor = (BasinOperatingBlockEntityAccessor) this;
+        Optional<BasinBlockEntity> basinOpt = accessor.create_processing$getBasin();
+        if (basinOpt.isEmpty()) return;
+        BasinBlockEntity basin = basinOpt.get();
+
+        Recipe<?> queued = accessor.create_processing$getCurrentRecipe();
+        if (queued instanceof SpeedPressingRecipe speedRecipe) {
+            if (!speedLevel.satisfies(speedRecipe.getSpeedCondition())) {
+                cir.setReturnValue(false);
+                return;
+            }
+        }
+
+        var match = SpeedProcessingHelper.findPressingInBasin(basin, level, speedLevel);
+        if (match.isEmpty()) return;
+        int matchSlot = match.get().getKey();
+        RecipeHolder<SpeedPressingRecipe> recipe = match.get().getValue();
 
         if (simulate) {
             cir.setReturnValue(true);
