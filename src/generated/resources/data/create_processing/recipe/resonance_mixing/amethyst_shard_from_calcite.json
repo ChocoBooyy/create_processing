@@ -1,0 +1,17 @@
+{
+  "type": "create_processing:resonance_mixing",
+  "ingredients": [
+    {
+      "item": "minecraft:calcite"
+    },
+    {
+      "item": "minecraft:calcite"
+    }
+  ],
+  "results": [
+    {
+      "count": 2,
+      "id": "minecraft:amethyst_shard"
+    }
+  ]
+}

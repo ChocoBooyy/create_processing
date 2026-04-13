@@ -1,0 +1,22 @@
+{
+  "type": "create_processing:resonance_mixing",
+  "ingredients": [
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:amethyst_block"
+    }
+  ]
+}

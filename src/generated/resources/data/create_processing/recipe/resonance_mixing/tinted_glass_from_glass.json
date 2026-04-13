@@ -1,0 +1,16 @@
+{
+  "type": "create_processing:resonance_mixing",
+  "ingredients": [
+    {
+      "item": "minecraft:glass"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:tinted_glass"
+    }
+  ]
+}

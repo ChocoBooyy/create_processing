@@ -1,0 +1,17 @@
+{
+  "type": "create_processing:resonance_mixing",
+  "ingredients": [
+    {
+      "item": "minecraft:smooth_basalt"
+    },
+    {
+      "item": "minecraft:smooth_basalt"
+    }
+  ],
+  "results": [
+    {
+      "count": 2,
+      "id": "minecraft:calcite"
+    }
+  ]
+}
