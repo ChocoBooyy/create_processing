@@ -11,11 +11,13 @@ import dev.chocoboy.create_processing.content.fans.processing.SandingType;
 import dev.chocoboy.create_processing.content.jei.ColdMixingCategory;
 import dev.chocoboy.create_processing.content.jei.ColdPressingCategory;
 import dev.chocoboy.create_processing.content.jei.HotPressingCategory;
+import dev.chocoboy.create_processing.content.jei.MagneticPressingCategory;
 import dev.chocoboy.create_processing.content.jei.ResonanceMixingCategory;
 import dev.chocoboy.create_processing.content.recipes.ColdMixingRecipe;
 import dev.chocoboy.create_processing.content.recipes.ColdPressingRecipe;
 import dev.chocoboy.create_processing.content.recipes.FanRecipe;
 import dev.chocoboy.create_processing.content.recipes.HotPressingRecipe;
+import dev.chocoboy.create_processing.content.recipes.MagneticPressingRecipe;
 import dev.chocoboy.create_processing.content.recipes.ResonanceMixingRecipe;
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
@@ -107,6 +109,17 @@ public final class CreateProcJeiPlugin implements IModPlugin {
                 .catalystStack(AllBlocks.MECHANICAL_MIXER::asStack)
                 .doubleItemIcon(AllBlocks.MECHANICAL_MIXER.get(), Blocks.AMETHYST_BLOCK)
                 .emptyBackground(177, 120)
+        ));
+
+        categories.add(buildCategory(
+            MagneticPressingRecipe.class,
+            "magnetic_pressing",
+            MagneticPressingCategory::new,
+            builder -> builder
+                .addTypedRecipes(CreateProcRecipeTypes.MAGNETIC_PRESSING)
+                .catalystStack(AllBlocks.MECHANICAL_PRESS::asStack)
+                .doubleItemIcon(AllBlocks.MECHANICAL_PRESS.get(), Blocks.EXPOSED_COPPER)
+                .emptyBackground(177, 100)
         ));
 
         registration.addRecipeCategories(categories.toArray(CreateRecipeCategory[]::new));
