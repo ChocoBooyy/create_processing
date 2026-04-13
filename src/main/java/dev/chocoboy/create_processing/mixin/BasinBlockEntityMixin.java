@@ -26,16 +26,20 @@ public class BasinBlockEntityMixin {
         Level level = self.getLevel();
         if (level == null || level.isClientSide) return;
 
+        boolean changed = false;
+
         ColdCondition current = ColdSourceHelper.getColdConditionAt(level, self.getBlockPos().below());
         if (current != create_processing$prevColdCondition) {
             create_processing$prevColdCondition = current;
-            self.notifyChangeOfContents();
+            changed = true;
         }
 
         boolean amethystNow = AmethystSourceHelper.isResonantAt(level, self.getBlockPos().below());
         if (amethystNow != create_processing$prevAmethystPresent) {
             create_processing$prevAmethystPresent = amethystNow;
-            self.notifyChangeOfContents();
+            changed = true;
         }
+
+        if (changed) self.notifyChangeOfContents();
     }
 }
