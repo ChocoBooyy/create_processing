@@ -111,7 +111,6 @@ public final class MagneticPressingRecipeGen extends CreateProcRecipeGen<Magneti
         return group + "/" + name;
     }
 
-    // ...existing code...
     private void magneticPressing(String name,
             UnaryOperator<StandardProcessingRecipe.Builder<MagneticPressingRecipe>> builderOp,
             MagneticCondition cond) {

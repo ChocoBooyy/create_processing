@@ -33,6 +33,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -118,8 +119,8 @@ public final class CreateProcJeiPlugin implements IModPlugin {
             MagneticPressingCategory::new,
             builder -> builder
                 .addTypedRecipes(CreateProcRecipeTypes.MAGNETIC_PRESSING)
-                .catalystStack(AllBlocks.MECHANICAL_PRESS::asStack)
-                .doubleItemIcon(AllBlocks.MECHANICAL_PRESS.get(), Blocks.EXPOSED_COPPER)
+                .catalystStack(() -> new ItemStack(Blocks.LODESTONE.asItem()))
+                .doubleItemIcon(Blocks.LODESTONE, Blocks.LODESTONE)
                 .emptyBackground(177, 100)
                 .addRecipeListConsumer(recipes -> recipes.sort((a, b) -> {
                     MagneticCondition condA = a.value().getMagneticCondition();
