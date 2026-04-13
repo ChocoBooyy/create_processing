@@ -1,0 +1,14 @@
+{
+  "type": "create_processing:speed_pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:crying_obsidian"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:obsidian"
+    }
+  ],
+  "speed_condition": "overdrive"
+}

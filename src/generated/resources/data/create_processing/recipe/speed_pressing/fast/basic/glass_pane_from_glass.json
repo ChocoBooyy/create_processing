@@ -1,0 +1,14 @@
+{
+  "type": "create_processing:speed_pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:glass"
+    }
+  ],
+  "results": [
+    {
+      "count": 2,
+      "id": "minecraft:glass_pane"
+    }
+  ]
+}

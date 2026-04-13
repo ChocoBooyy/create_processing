@@ -1,0 +1,14 @@
+{
+  "type": "create_processing:speed_pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:bone_block"
+    }
+  ],
+  "results": [
+    {
+      "count": 9,
+      "id": "minecraft:bone_meal"
+    }
+  ]
+}

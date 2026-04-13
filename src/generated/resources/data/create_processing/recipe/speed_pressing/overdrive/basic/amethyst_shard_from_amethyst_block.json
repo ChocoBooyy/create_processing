@@ -1,0 +1,15 @@
+{
+  "type": "create_processing:speed_pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:amethyst_block"
+    }
+  ],
+  "results": [
+    {
+      "count": 4,
+      "id": "minecraft:amethyst_shard"
+    }
+  ],
+  "speed_condition": "overdrive"
+}
