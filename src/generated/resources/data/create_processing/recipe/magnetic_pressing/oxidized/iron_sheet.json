@@ -1,0 +1,14 @@
+{
+  "type": "create_processing:magnetic_pressing",
+  "ingredients": [
+    {
+      "item": "create:iron_sheet"
+    }
+  ],
+  "magnetic_condition": "oxidized",
+  "results": [
+    {
+      "id": "minecraft:iron_ingot"
+    }
+  ]
+}

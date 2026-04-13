@@ -1,0 +1,14 @@
+{
+  "type": "create_processing:magnetic_pressing",
+  "ingredients": [
+    {
+      "item": "create:copper_sheet"
+    }
+  ],
+  "magnetic_condition": "oxidized",
+  "results": [
+    {
+      "id": "minecraft:copper_ingot"
+    }
+  ]
+}
