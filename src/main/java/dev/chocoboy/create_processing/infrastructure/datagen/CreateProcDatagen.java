@@ -35,6 +35,7 @@ public final class CreateProcDatagen {
             generator.addProvider(true, new ColdPressingRecipeGen(output, lookupProvider));
             generator.addProvider(true, new ColdMixingRecipeGen(output, lookupProvider));
             generator.addProvider(true, new ResonanceMixingRecipeGen(output, lookupProvider));
+            generator.addProvider(true, new MagneticPressingRecipeGen(output, lookupProvider));
         }
     }
 }

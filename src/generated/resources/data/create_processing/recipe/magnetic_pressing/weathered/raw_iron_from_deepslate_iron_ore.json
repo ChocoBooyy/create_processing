@@ -1,0 +1,17 @@
+{
+  "type": "create_processing:magnetic_pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:deepslate_iron_ore"
+    }
+  ],
+  "magnetic_condition": "weathered",
+  "results": [
+    {
+      "id": "minecraft:raw_iron"
+    },
+    {
+      "id": "minecraft:iron_nugget"
+    }
+  ]
+}

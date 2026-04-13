@@ -1,0 +1,15 @@
+{
+  "type": "create_processing:magnetic_pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:red_sand"
+    }
+  ],
+  "magnetic_condition": "weathered",
+  "results": [
+    {
+      "count": 3,
+      "id": "minecraft:iron_nugget"
+    }
+  ]
+}

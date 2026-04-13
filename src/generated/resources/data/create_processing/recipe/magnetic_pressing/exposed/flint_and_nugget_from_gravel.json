@@ -1,0 +1,16 @@
+{
+  "type": "create_processing:magnetic_pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:gravel"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:flint"
+    },
+    {
+      "id": "minecraft:iron_nugget"
+    }
+  ]
+}

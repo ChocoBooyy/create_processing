@@ -1,0 +1,16 @@
+{
+  "type": "create_processing:magnetic_pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:coarse_dirt"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:dirt"
+    },
+    {
+      "id": "minecraft:iron_nugget"
+    }
+  ]
+}

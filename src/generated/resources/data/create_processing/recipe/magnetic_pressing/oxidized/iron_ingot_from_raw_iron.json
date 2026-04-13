@@ -1,0 +1,14 @@
+{
+  "type": "create_processing:magnetic_pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:raw_iron"
+    }
+  ],
+  "magnetic_condition": "oxidized",
+  "results": [
+    {
+      "id": "minecraft:iron_ingot"
+    }
+  ]
+}
