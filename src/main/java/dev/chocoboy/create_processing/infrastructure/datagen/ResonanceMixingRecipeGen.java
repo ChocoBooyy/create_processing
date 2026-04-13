@@ -9,6 +9,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.material.Fluids;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.UnaryOperator;
@@ -23,6 +24,26 @@ public final class ResonanceMixingRecipeGen extends CreateProcRecipeGen<Resonanc
         resonanceMixing("smooth_basalt_from_basalt", Items.BASALT, 2, Items.SMOOTH_BASALT, 2);
         resonanceMixing("echo_shard_from_amethyst", b -> b.require(Items.AMETHYST_SHARD).require(Items.AMETHYST_SHARD).require(Items.AMETHYST_SHARD).require(Items.AMETHYST_SHARD).require(Items.ECHO_SHARD).output(Items.ECHO_SHARD, 2));
         resonanceMixing("quartz_from_calcite", Items.CALCITE, Items.AMETHYST_SHARD, Items.QUARTZ, 4);
+
+        resonanceMixing("glowstone_from_dust", Items.GLOWSTONE_DUST, 4, Items.GLOWSTONE);
+        resonanceMixing("dripstone_block_from_pointed_dripstone", Items.POINTED_DRIPSTONE, 4, Items.DRIPSTONE_BLOCK);
+        resonanceMixing("prismarine_from_shards", Items.PRISMARINE_SHARD, 4, Items.PRISMARINE);
+        resonanceMixing("sea_lantern_from_components", b -> b
+                .require(Items.PRISMARINE_CRYSTALS).require(Items.PRISMARINE_CRYSTALS)
+                .require(Items.PRISMARINE_CRYSTALS).require(Items.PRISMARINE_CRYSTALS)
+                .require(Items.PRISMARINE_SHARD).require(Items.PRISMARINE_SHARD)
+                .require(Items.PRISMARINE_SHARD).require(Items.PRISMARINE_SHARD)
+                .output(Items.SEA_LANTERN, 2));
+        resonanceMixing("end_stone_bricks_from_end_stone", Items.END_STONE, Items.AMETHYST_SHARD, Items.END_STONE_BRICKS, 4);
+        resonanceMixing("purpur_block_from_popped_chorus_fruit", Items.POPPED_CHORUS_FRUIT, 4, Items.PURPUR_BLOCK);
+        resonanceMixing("spyglass_from_copper_and_amethyst", b -> b
+                .require(Items.COPPER_INGOT).require(Items.COPPER_INGOT)
+                .require(Items.AMETHYST_SHARD)
+                .output(Items.SPYGLASS));
+        resonanceMixing("lapis_from_water_and_calcite", b -> b
+                .require(Fluids.WATER, 500)
+                .require(Items.CALCITE).require(Items.CALCITE)
+                .output(Items.LAPIS_LAZULI, 4));
     }
 
     public ResonanceMixingRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
