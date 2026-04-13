@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.Blocks;
 public enum MagneticCondition implements StringRepresentable {
     EXPOSED(Blocks.EXPOSED_COPPER),
     WEATHERED(Blocks.WEATHERED_COPPER),
-    OXIDIZED(Blocks.OXIDIZED_COPPER);
+    OXIDIZED(Blocks.LODESTONE);
 
     public static final Codec<MagneticCondition> CODEC =
         StringRepresentable.fromEnum(MagneticCondition::values);
