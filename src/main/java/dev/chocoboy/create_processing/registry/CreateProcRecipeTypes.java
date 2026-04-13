@@ -5,6 +5,7 @@ import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import dev.chocoboy.create_processing.CreateProc;
 import dev.chocoboy.create_processing.content.recipes.ColdMixingRecipe;
 import dev.chocoboy.create_processing.content.recipes.ColdPressingRecipe;
+import dev.chocoboy.create_processing.content.recipes.MagneticPressingRecipe;
 import dev.chocoboy.create_processing.content.recipes.ResonanceMixingRecipe;
 import dev.chocoboy.create_processing.content.recipes.FanRecipe;
 import dev.chocoboy.create_processing.content.recipes.HotPressingRecipe;
@@ -41,6 +42,7 @@ public final class CreateProcRecipeTypes {
     public static RecipeTypeEntry COLD_PRESSING;
     public static RecipeTypeEntry COLD_MIXING;
     public static RecipeTypeEntry RESONANCE_MIXING;
+    public static RecipeTypeEntry MAGNETIC_PRESSING;
 
     static {
         WITHERING = registerStandard("withering", params -> new FanRecipe(WITHERING, params));
@@ -53,6 +55,8 @@ public final class CreateProcRecipeTypes {
             () -> ColdPressingRecipe.SERIALIZER);
         COLD_MIXING = registerWithSerializer("cold_mixing", () -> ColdMixingRecipe.SERIALIZER);
         RESONANCE_MIXING = registerStandard("resonance_mixing", ResonanceMixingRecipe::new);
+        MAGNETIC_PRESSING = registerWithSerializer("magnetic_pressing",
+            () -> MagneticPressingRecipe.SERIALIZER);
     }
 
     private CreateProcRecipeTypes() {}
