@@ -15,6 +15,8 @@ public final class MagneticSourceHelper {
     public static MagneticCondition getMagneticConditionAt(Level level, BlockPos pos) {
         var state = level.getBlockState(pos);
         if (state.is(Blocks.LODESTONE)) return MagneticCondition.OXIDIZED;
+        if (state.is(Blocks.WEATHERED_COPPER)) return MagneticCondition.WEATHERED;
+        if (state.is(Blocks.EXPOSED_COPPER)) return MagneticCondition.EXPOSED;
         return null;
     }
 }
