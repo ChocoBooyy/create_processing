@@ -2,17 +2,14 @@
   "type": "create_processing:magnetic_pressing",
   "ingredients": [
     {
-      "item": "minecraft:iron_ore"
+      "item": "create:deepslate_zinc_ore"
     }
   ],
   "magnetic_condition": "weathered",
   "results": [
     {
-      "id": "minecraft:raw_iron"
-    },
-    {
-      "count": 2,
-      "id": "minecraft:iron_nugget"
+      "count": 4,
+      "id": "create:crushed_raw_zinc"
     }
   ]
 }

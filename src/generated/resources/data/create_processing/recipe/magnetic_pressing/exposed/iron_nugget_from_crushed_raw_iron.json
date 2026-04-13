@@ -2,16 +2,13 @@
   "type": "create_processing:magnetic_pressing",
   "ingredients": [
     {
-      "item": "minecraft:iron_ore"
+      "item": "create:crushed_raw_iron"
     }
   ],
-  "magnetic_condition": "weathered",
+  "magnetic_condition": "exposed",
   "results": [
     {
-      "id": "minecraft:raw_iron"
-    },
-    {
-      "count": 2,
+      "count": 4,
       "id": "minecraft:iron_nugget"
     }
   ]

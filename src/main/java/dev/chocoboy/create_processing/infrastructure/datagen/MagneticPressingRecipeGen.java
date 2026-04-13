@@ -1,5 +1,7 @@
 package dev.chocoboy.create_processing.infrastructure.datagen;
 
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllItems;
 import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import dev.chocoboy.create_processing.CreateProc;
@@ -20,15 +22,19 @@ public final class MagneticPressingRecipeGen extends CreateProcRecipeGen<Magneti
     {
         magneticPressingExposed("iron_nugget_from_gravel", Items.GRAVEL, Items.IRON_NUGGET, 2);
         magneticPressingExposed("iron_nugget_from_red_sand", Items.RED_SAND, Items.IRON_NUGGET, 3);
-        magneticPressingExposed("iron_nugget_from_iron_ore", Items.IRON_ORE, Items.IRON_NUGGET, 4);
+        magneticPressingExposed("iron_nugget_from_crushed_raw_iron", AllItems.CRUSHED_IRON.get(), Items.IRON_NUGGET, 4);
+        magneticPressingExposed("iron_nugget_from_andesite_alloy", AllItems.ANDESITE_ALLOY.get(), Items.IRON_NUGGET, 2);
 
-        magneticPressingWeathered("raw_iron_from_iron_ore", Items.IRON_ORE, Items.RAW_IRON, 2);
-        magneticPressingWeathered("raw_iron_from_deepslate_iron_ore", b -> b.require(Items.DEEPSLATE_IRON_ORE).output(Items.RAW_IRON, 2).output(Items.IRON_NUGGET, 2));
+        magneticPressingWeathered("raw_iron_from_iron_ore", b -> b.require(Items.IRON_ORE).output(Items.RAW_IRON, 1).output(Items.IRON_NUGGET, 2));
+        magneticPressingWeathered("raw_iron_from_deepslate_iron_ore", b -> b.require(Items.DEEPSLATE_IRON_ORE).output(Items.RAW_IRON, 1).output(Items.IRON_NUGGET, 5));
         magneticPressingWeathered("gold_nugget_from_nether_gold_ore", Items.NETHER_GOLD_ORE, Items.GOLD_NUGGET, 6);
+        magneticPressingWeathered("crushed_zinc_from_zinc_ore", AllBlocks.ZINC_ORE.get(), AllItems.CRUSHED_ZINC.get(), 2);
+        magneticPressingWeathered("crushed_zinc_from_deepslate_zinc_ore", AllBlocks.DEEPSLATE_ZINC_ORE.get(), AllItems.CRUSHED_ZINC.get(), 4);
+        magneticPressingWeathered("zinc_nugget_from_crushed_raw_zinc", AllItems.CRUSHED_ZINC.get(), AllItems.ZINC_NUGGET.get(), 4);
 
-        magneticPressingOxidized("iron_ingot_from_raw_iron", Items.RAW_IRON, Items.IRON_INGOT);
-        magneticPressingOxidized("gold_ingot_from_raw_gold", Items.RAW_GOLD, Items.GOLD_INGOT);
         magneticPressingOxidized("compass_from_lodestone", Items.LODESTONE, Items.COMPASS, 4);
+        magneticPressingOxidized("brass_ingot_from_brass_sheet", AllItems.BRASS_SHEET.get(), AllItems.BRASS_INGOT.get());
+        magneticPressingOxidized("components_from_electron_tube", b -> b.require(AllItems.ELECTRON_TUBE.get()).output(Items.IRON_NUGGET, 4).output(AllItems.COPPER_NUGGET.get(), 2));
     }
 
     public MagneticPressingRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
@@ -59,6 +65,11 @@ public final class MagneticPressingRecipeGen extends CreateProcRecipeGen<Magneti
 
     private void magneticPressingOxidized(String name, ItemLike input, ItemLike output, int count) {
         magneticPressing(name, b -> b.require(input).output(output, count), MagneticCondition.OXIDIZED);
+    }
+
+    private void magneticPressingOxidized(String name,
+            UnaryOperator<StandardProcessingRecipe.Builder<MagneticPressingRecipe>> builderOp) {
+        magneticPressing(name, builderOp, MagneticCondition.OXIDIZED);
     }
 
     private void magneticPressing(String name,
