@@ -49,8 +49,9 @@ public final class ColdMixingRecipeGen extends CreateProcRecipeGen<ColdMixingRec
 
     private void coldMixingChilling(String name, ItemLike input, int times, ItemLike output) {
         coldMixingChilling(name, b -> {
-            for (int i = 0; i < times; i++) b.require(input);
-            return b.output(output);
+            var builder = b;
+            for (int i = 0; i < times; i++) builder = builder.require(input);
+            return builder.output(output);
         });
     }
 
@@ -61,15 +62,17 @@ public final class ColdMixingRecipeGen extends CreateProcRecipeGen<ColdMixingRec
 
     private void coldMixingFreezing(String name, ItemLike input, int times, ItemLike extra, ItemLike output) {
         coldMixingFreezing(name, b -> {
-            for (int i = 0; i < times; i++) b.require(input);
-            return b.require(extra).output(output);
+            var builder = b;
+            for (int i = 0; i < times; i++) builder = builder.require(input);
+            return builder.require(extra).output(output);
         });
     }
 
     private void coldMixingFreezing(String name, ItemLike input, int times, ItemLike output) {
         coldMixingFreezing(name, b -> {
-            for (int i = 0; i < times; i++) b.require(input);
-            return b.output(output);
+            var builder = b;
+            for (int i = 0; i < times; i++) builder = builder.require(input);
+            return builder.output(output);
         });
     }
 
