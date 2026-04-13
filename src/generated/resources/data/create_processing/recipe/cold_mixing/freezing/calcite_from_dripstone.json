@@ -1,0 +1,24 @@
+{
+  "type": "create_processing:cold_mixing",
+  "cold_condition": "freezing",
+  "ingredients": [
+    {
+      "item": "minecraft:pointed_dripstone"
+    },
+    {
+      "item": "minecraft:pointed_dripstone"
+    },
+    {
+      "item": "minecraft:water_bucket"
+    }
+  ],
+  "results": [
+    {
+      "count": 2,
+      "id": "minecraft:calcite"
+    },
+    {
+      "id": "minecraft:bucket"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "type": "create_processing:cold_mixing",
+  "cold_condition": "freezing",
+  "ingredients": [
+    {
+      "item": "minecraft:water_bucket"
+    },
+    {
+      "item": "minecraft:snow_block"
+    }
+  ],
+  "results": [
+    {
+      "count": 2,
+      "id": "minecraft:ice"
+    },
+    {
+      "id": "minecraft:bucket"
+    }
+  ]
+}
