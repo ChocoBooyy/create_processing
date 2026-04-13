@@ -2,7 +2,7 @@
   "type": "create_processing:magnetic_pressing",
   "ingredients": [
     {
-      "item": "create:brass_sheet"
+      "tag": "c:plates/brass"
     }
   ],
   "magnetic_condition": "oxidized",

@@ -3,15 +3,16 @@ package dev.chocoboy.create_processing.infrastructure.datagen;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
+import com.simibubi.create.foundation.data.recipe.CommonMetal;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import dev.chocoboy.create_processing.CreateProc;
 import dev.chocoboy.create_processing.content.recipes.MagneticCondition;
 import dev.chocoboy.create_processing.content.recipes.MagneticPressingRecipe;
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
@@ -37,10 +38,11 @@ public final class MagneticPressingRecipeGen extends CreateProcRecipeGen<Magneti
         magneticPressingOxidized("compass_from_lodestone", Items.LODESTONE, Items.COMPASS, 4);
         magneticPressingOxidized("components_from_electron_tube", b -> b.require(AllItems.ELECTRON_TUBE.get()).output(Items.IRON_NUGGET, 4).output(AllItems.COPPER_NUGGET.get(), 2));
 
-        sheetToIngot(AllItems.IRON_SHEET.get(), Items.IRON_INGOT);
-        sheetToIngot(AllItems.COPPER_SHEET.get(), Items.COPPER_INGOT);
-        sheetToIngot(AllItems.BRASS_SHEET.get(), AllItems.BRASS_INGOT.get());
-        sheetToIngot(AllItems.GOLDEN_SHEET.get(), Items.GOLD_INGOT);
+        sheetToIngot(CommonMetal.IRON.plates, Items.IRON_INGOT);
+        sheetToIngot(CommonMetal.COPPER.plates, Items.COPPER_INGOT);
+        sheetToIngot(CommonMetal.BRASS.plates, AllItems.BRASS_INGOT.get());
+        sheetToIngot(CommonMetal.GOLD.plates, Items.GOLD_INGOT);
+        sheetToIngot(CommonMetal.ZINC.plates, AllItems.ZINC_INGOT.get());
     }
 
     public MagneticPressingRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
@@ -78,9 +80,9 @@ public final class MagneticPressingRecipeGen extends CreateProcRecipeGen<Magneti
         magneticPressing(name, builderOp, MagneticCondition.OXIDIZED);
     }
 
-    private void sheetToIngot(Item sheet, ItemLike ingot) {
-        String sheetName = BuiltInRegistries.ITEM.getKey(sheet).getPath();
-        magneticPressingOxidized(sheetName, sheet, ingot);
+    private void sheetToIngot(TagKey<Item> plateTag, ItemLike ingot) {
+        String name = plateTag.location().getPath().replace('/', '_');
+        magneticPressingOxidized(name, b -> b.require(plateTag).output(ingot));
     }
 
     private void magneticPressing(String name,

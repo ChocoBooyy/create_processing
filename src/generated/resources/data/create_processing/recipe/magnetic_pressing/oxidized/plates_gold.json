@@ -1,0 +1,14 @@
+{
+  "type": "create_processing:magnetic_pressing",
+  "ingredients": [
+    {
+      "tag": "c:plates/gold"
+    }
+  ],
+  "magnetic_condition": "oxidized",
+  "results": [
+    {
+      "id": "minecraft:gold_ingot"
+    }
+  ]
+}
