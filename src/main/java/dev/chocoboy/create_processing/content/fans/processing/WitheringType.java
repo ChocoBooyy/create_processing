@@ -1,5 +1,6 @@
 package dev.chocoboy.create_processing.content.fans.processing;
 
+import dev.chocoboy.create_processing.infrastructure.config.ModConfig;
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
 import dev.chocoboy.create_processing.registry.CreateProcTags;
 import net.minecraft.core.BlockPos;
@@ -32,7 +33,13 @@ public final class WitheringType extends AbstractFanProcessingType {
     }
 
     @Override
+    protected boolean isFanProcessingEnabled() {
+        return ModConfig.COMMON.enableWitheringFan.get();
+    }
+
+    @Override
     public boolean isValidAt(Level level, BlockPos pos) {
+        if (!isFanProcessingEnabled()) return false;
         return isValidAtTags(level, pos,
             CreateProcTags.WITHERING_CATALYST_FLUIDS,
             CreateProcTags.WITHERING_CATALYST_BLOCKS);

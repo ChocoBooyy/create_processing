@@ -1,5 +1,6 @@
 package dev.chocoboy.create_processing.content.fans.processing;
 
+import dev.chocoboy.create_processing.infrastructure.config.ModConfig;
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
 import dev.chocoboy.create_processing.registry.CreateProcTags;
 import net.minecraft.core.BlockPos;
@@ -33,7 +34,13 @@ public final class PetrifyingType extends AbstractFanProcessingType {
     }
 
     @Override
+    protected boolean isFanProcessingEnabled() {
+        return ModConfig.COMMON.enablePetrifyingFan.get();
+    }
+
+    @Override
     public boolean isValidAt(Level level, BlockPos pos) {
+        if (!isFanProcessingEnabled()) return false;
         return isValidAtBlockTag(level, pos, CreateProcTags.PETRIFYING_CATALYST_BLOCKS);
     }
 

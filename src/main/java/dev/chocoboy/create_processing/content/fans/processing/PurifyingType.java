@@ -1,5 +1,6 @@
 package dev.chocoboy.create_processing.content.fans.processing;
 
+import dev.chocoboy.create_processing.infrastructure.config.ModConfig;
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
 import dev.chocoboy.create_processing.registry.CreateProcTags;
 import net.minecraft.core.BlockPos;
@@ -30,7 +31,13 @@ public final class PurifyingType extends AbstractFanProcessingType {
     }
 
     @Override
+    protected boolean isFanProcessingEnabled() {
+        return ModConfig.COMMON.enablePurifyingFan.get();
+    }
+
+    @Override
     public boolean isValidAt(Level level, BlockPos pos) {
+        if (!isFanProcessingEnabled()) return false;
         return isValidAtTags(level, pos,
                 CreateProcTags.PURIFYING_CATALYST_FLUIDS,
                 CreateProcTags.PURIFYING_CATALYST_BLOCKS);

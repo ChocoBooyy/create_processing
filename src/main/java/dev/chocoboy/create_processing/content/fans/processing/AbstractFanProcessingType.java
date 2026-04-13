@@ -30,14 +30,18 @@ public abstract class AbstractFanProcessingType implements FanProcessingType {
         this.recipeType = recipeType;
     }
 
+    protected abstract boolean isFanProcessingEnabled();
+
     @Override
     public boolean canProcess(ItemStack stack, Level level) {
+        if (!isFanProcessingEnabled()) return false;
         return recipeType.find(new SingleRecipeInput(stack), level).isPresent();
     }
 
     @Override
     @Nullable
     public List<ItemStack> process(ItemStack stack, Level level) {
+        if (!isFanProcessingEnabled()) return null;
         return recipeType.find(new SingleRecipeInput(stack), level)
             .map(holder -> RecipeApplier.applyRecipeOn(level, stack, holder.value(), false))
             .orElse(null);
@@ -45,6 +49,7 @@ public abstract class AbstractFanProcessingType implements FanProcessingType {
 
     @Override
     public final void affectEntity(Entity entity, Level level) {
+        if (!isFanProcessingEnabled()) return;
         if (level.isClientSide || !(entity instanceof LivingEntity living)) return;
         affectLivingEntity(living, level);
     }

@@ -2,6 +2,7 @@ package dev.chocoboy.create_processing.content.fans.processing;
 
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.foundation.recipe.RecipeApplier;
+import dev.chocoboy.create_processing.infrastructure.config.ModConfig;
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
 import dev.chocoboy.create_processing.registry.CreateProcTags;
 import net.minecraft.core.BlockPos;
@@ -46,6 +47,11 @@ public final class SandingType extends AbstractFanProcessingType {
         super(CreateProcRecipeTypes.SANDING);
     }
 
+    @Override
+    protected boolean isFanProcessingEnabled() {
+        return ModConfig.COMMON.enableSandingFan.get();
+    }
+
     public static boolean isPolishProcessingRecipe(Recipe<?> recipe) {
         if (!(recipe instanceof ProcessingRecipe<?, ?> processingRecipe)) return false;
         ResourceLocation serializerId = BuiltInRegistries.RECIPE_SERIALIZER.getKey(processingRecipe.getSerializer());
@@ -76,6 +82,7 @@ public final class SandingType extends AbstractFanProcessingType {
 
     @Override
     public boolean isValidAt(Level level, BlockPos pos) {
+        if (!isFanProcessingEnabled()) return false;
         return isValidAtBlockTag(level, pos, CreateProcTags.SANDING_CATALYST_BLOCKS);
     }
 

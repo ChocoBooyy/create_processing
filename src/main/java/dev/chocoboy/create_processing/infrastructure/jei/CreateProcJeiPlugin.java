@@ -37,7 +37,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -62,17 +61,31 @@ public final class CreateProcJeiPlugin implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
-        categories.add(buildFanCategory("fan_withering", CreateProcRecipeTypes.WITHERING, Blocks.WITHER_ROSE,builder -> {}));
-        categories.add(buildFanCategory("fan_purifying", CreateProcRecipeTypes.PURIFYING, Blocks.BEACON,builder -> {}));
-        categories.add(buildFanCategory("fan_sanding", CreateProcRecipeTypes.SANDING, Blocks.SAND,builder -> builder.addRecipeListConsumer(recipes -> consumeAllRecipes(holder -> {
-            if (SandingType.isPolishProcessingRecipe(holder)) {
-                @SuppressWarnings({"unchecked", "rawtypes"})
-                RecipeHolder<FanRecipe> casted = (RecipeHolder) holder;
-                recipes.add(casted);
-            }
-        }))));
-        categories.add(buildFanCategory("fan_petrifying", CreateProcRecipeTypes.PETRIFYING, AllPaletteStoneTypes.LIMESTONE.baseBlock.get(),builder -> {}));
-        categories.add(buildFanCategory("fan_enderfying", CreateProcRecipeTypes.ENDERFYING, Blocks.CHORUS_FLOWER,builder -> {}));
+        if (ModConfig.COMMON.enableWitheringFan.get()) {
+            categories.add(buildFanCategory("fan_withering", CreateProcRecipeTypes.WITHERING, Blocks.WITHER_ROSE, builder -> {}));
+        }
+
+        if (ModConfig.COMMON.enablePurifyingFan.get()) {
+            categories.add(buildFanCategory("fan_purifying", CreateProcRecipeTypes.PURIFYING, Blocks.BEACON, builder -> {}));
+        }
+
+        if (ModConfig.COMMON.enableSandingFan.get()) {
+            categories.add(buildFanCategory("fan_sanding", CreateProcRecipeTypes.SANDING, Blocks.SAND, builder -> builder.addRecipeListConsumer(recipes -> consumeAllRecipes(holder -> {
+                if (SandingType.isPolishProcessingRecipe(holder)) {
+                    @SuppressWarnings({"unchecked", "rawtypes"})
+                    RecipeHolder<FanRecipe> casted = (RecipeHolder) holder;
+                    recipes.add(casted);
+                }
+            }))));
+        }
+
+        if (ModConfig.COMMON.enablePetrifyingFan.get()) {
+            categories.add(buildFanCategory("fan_petrifying", CreateProcRecipeTypes.PETRIFYING, AllPaletteStoneTypes.LIMESTONE.baseBlock.get(), builder -> {}));
+        }
+
+        if (ModConfig.COMMON.enableEnderifyingFan.get()) {
+            categories.add(buildFanCategory("fan_enderfying", CreateProcRecipeTypes.ENDERFYING, Blocks.CHORUS_FLOWER, builder -> {}));
+        }
 
         if (ModConfig.COMMON.enableHotPressing.get()) {
             categories.add(buildCategory(
