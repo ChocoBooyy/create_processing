@@ -9,11 +9,15 @@ import com.simibubi.create.foundation.recipe.RecipeApplier;
 import dev.chocoboy.create_processing.content.recipes.ColdCondition;
 import dev.chocoboy.create_processing.content.recipes.ColdPressingRecipe;
 import dev.chocoboy.create_processing.content.recipes.HotPressingRecipe;
+import dev.chocoboy.create_processing.content.recipes.MagneticCondition;
+import dev.chocoboy.create_processing.content.recipes.MagneticPressingRecipe;
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
 import dev.chocoboy.create_processing.util.ColdPressingHelper;
 import dev.chocoboy.create_processing.util.ColdSourceHelper;
 import dev.chocoboy.create_processing.util.HeatSourceHelper;
 import dev.chocoboy.create_processing.util.HotPressingHelper;
+import dev.chocoboy.create_processing.util.MagneticPressingHelper;
+import dev.chocoboy.create_processing.util.MagneticSourceHelper;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -253,6 +257,141 @@ public abstract class MechanicalPressBlockEntityMixin {
             cir.setReturnValue(true);
         } else {
             input.grow(1);
+            cir.setReturnValue(false);
+        }
+    }
+
+    @Inject(method = "tryProcessInWorld", at = @At("HEAD"), cancellable = true, remap = false)
+    private void create_processing$tryMagneticPressingInWorld(ItemEntity itemEntity, boolean simulate,
+            CallbackInfoReturnable<Boolean> cir) {
+        MechanicalPressBlockEntity self = (MechanicalPressBlockEntity) (Object) this;
+        Level level = self.getLevel();
+        if (level == null) return;
+
+        BlockPos magnetPos = itemEntity.getOnPos().below();
+        MagneticCondition sourceLevel = MagneticSourceHelper.getMagneticConditionAt(level, magnetPos);
+        if (sourceLevel == null) return;
+
+        ItemStack item = itemEntity.getItem();
+        Optional<RecipeHolder<MagneticPressingRecipe>> recipe =
+            CreateProcRecipeTypes.MAGNETIC_PRESSING.find(new SingleRecipeInput(item), level);
+        if (recipe.isEmpty()) return;
+        if (!sourceLevel.satisfies(recipe.get().value().getMagneticCondition())) return;
+
+        if (simulate) {
+            cir.setReturnValue(true);
+            return;
+        }
+
+        pressingBehaviour.particleItems.add(item);
+        ItemStack itemCreated = ItemStack.EMPTY;
+        if (canProcessInBulk() || item.getCount() == 1) {
+            RecipeApplier.applyRecipeOn(itemEntity, recipe.get().value(), true);
+            itemCreated = itemEntity.getItem().copy();
+        } else {
+            List<ItemStack> results = RecipeApplier.applyRecipeOn(
+                level, item.copyWithCount(1), recipe.get().value(), true);
+            for (ItemStack result : results) {
+                if (itemCreated.isEmpty()) itemCreated = result.copy();
+                ItemEntity created = new ItemEntity(
+                    level, itemEntity.getX(), itemEntity.getY(), itemEntity.getZ(), result);
+                created.setDefaultPickUpDelay();
+                created.setDeltaMovement(VecHelper.offsetRandomly(Vec3.ZERO, level.random, .05f));
+                level.addFreshEntity(created);
+            }
+            item.shrink(1);
+        }
+
+        if (!itemCreated.isEmpty()) onItemPressed(itemCreated);
+        cir.setReturnValue(true);
+    }
+
+    @Inject(method = "tryProcessOnBelt", at = @At("HEAD"), cancellable = true, remap = false)
+    private void create_processing$tryMagneticPressingOnBelt(TransportedItemStack input, List<ItemStack> outputList,
+            boolean simulate, CallbackInfoReturnable<Boolean> cir) {
+        MechanicalPressBlockEntity self = (MechanicalPressBlockEntity) (Object) this;
+        Level level = self.getLevel();
+        if (level == null) return;
+
+        BlockPos magnetPos = self.getBlockPos().below(3);
+        MagneticCondition sourceLevel = MagneticSourceHelper.getMagneticConditionAt(level, magnetPos);
+        if (sourceLevel == null) return;
+
+        ItemStack item = input.stack;
+        Optional<RecipeHolder<MagneticPressingRecipe>> recipe =
+            CreateProcRecipeTypes.MAGNETIC_PRESSING.find(new SingleRecipeInput(item), level);
+        if (recipe.isEmpty()) return;
+        if (!sourceLevel.satisfies(recipe.get().value().getMagneticCondition())) return;
+
+        if (simulate) {
+            cir.setReturnValue(true);
+            return;
+        }
+
+        pressingBehaviour.particleItems.add(item);
+        List<ItemStack> results = RecipeApplier.applyRecipeOn(level,
+            canProcessInBulk() ? item : item.copyWithCount(1), recipe.get().value(), true);
+        for (ItemStack created : results) {
+            if (!created.isEmpty()) {
+                onItemPressed(created);
+                break;
+            }
+        }
+        outputList.addAll(results);
+        cir.setReturnValue(true);
+    }
+
+    @Inject(method = "tryProcessInBasin", at = @At("HEAD"), cancellable = true, remap = false)
+    private void create_processing$tryMagneticPressingInBasin(boolean simulate,
+            CallbackInfoReturnable<Boolean> cir) {
+        MechanicalPressBlockEntity self = (MechanicalPressBlockEntity) (Object) this;
+        Level level = self.getLevel();
+        if (level == null) return;
+
+        BasinOperatingBlockEntityAccessor accessor = (BasinOperatingBlockEntityAccessor) this;
+        Optional<BasinBlockEntity> basinOpt = accessor.create_processing$getBasin();
+        if (basinOpt.isEmpty()) return;
+        BasinBlockEntity basin = basinOpt.get();
+
+        MagneticCondition magnetSourceLevel = MagneticSourceHelper.getMagneticConditionAt(level, basin.getBlockPos().below());
+
+        Recipe<?> queued = accessor.create_processing$getCurrentRecipe();
+        if (queued instanceof MagneticPressingRecipe magnetRecipe) {
+            if (magnetSourceLevel == null || !magnetSourceLevel.satisfies(magnetRecipe.getMagneticCondition())) {
+                cir.setReturnValue(false);
+                return;
+            }
+        }
+
+        if (magnetSourceLevel == null) return;
+
+        var match = MagneticPressingHelper.findInBasin(basin, level, magnetSourceLevel);
+        if (match.isEmpty()) return;
+        int matchSlot = match.get().getKey();
+        RecipeHolder<MagneticPressingRecipe> recipe = match.get().getValue();
+
+        if (simulate) {
+            cir.setReturnValue(true);
+            return;
+        }
+
+        var inv = basin.getInputInventory();
+        ItemStack inputStack = inv.getStackInSlot(matchSlot);
+        pressingBehaviour.particleItems.add(inputStack.copyWithCount(1));
+        List<ItemStack> results = RecipeApplier.applyRecipeOn(
+            level, inputStack.copyWithCount(1), recipe.value(), true);
+        inputStack.shrink(1);
+
+        if (basin.acceptOutputs(results, Collections.emptyList(), false)) {
+            for (ItemStack created : results) {
+                if (!created.isEmpty()) {
+                    onItemPressed(created);
+                    break;
+                }
+            }
+            cir.setReturnValue(true);
+        } else {
+            inputStack.grow(1);
             cir.setReturnValue(false);
         }
     }
