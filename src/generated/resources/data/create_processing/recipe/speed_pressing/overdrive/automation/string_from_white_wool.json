@@ -1,0 +1,15 @@
+{
+  "type": "create_processing:speed_pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:white_wool"
+    }
+  ],
+  "results": [
+    {
+      "count": 5,
+      "id": "minecraft:string"
+    }
+  ],
+  "speed_condition": "overdrive"
+}

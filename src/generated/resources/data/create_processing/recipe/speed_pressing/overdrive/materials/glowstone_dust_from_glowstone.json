@@ -1,0 +1,15 @@
+{
+  "type": "create_processing:speed_pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:glowstone"
+    }
+  ],
+  "results": [
+    {
+      "count": 6,
+      "id": "minecraft:glowstone_dust"
+    }
+  ],
+  "speed_condition": "overdrive"
+}

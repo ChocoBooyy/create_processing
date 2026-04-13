@@ -1,0 +1,14 @@
+{
+  "type": "create_processing:speed_pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:white_wool"
+    }
+  ],
+  "results": [
+    {
+      "count": 4,
+      "id": "minecraft:string"
+    }
+  ]
+}

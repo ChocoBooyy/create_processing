@@ -5,7 +5,7 @@
       "item": "minecraft:iron_ore"
     }
   ],
-  "magnetic_condition": "magnetic",
+  "magnetic_condition": "weathered",
   "results": [
     {
       "id": "minecraft:raw_iron"

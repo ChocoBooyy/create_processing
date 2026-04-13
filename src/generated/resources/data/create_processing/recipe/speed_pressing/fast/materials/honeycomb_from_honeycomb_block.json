@@ -1,0 +1,14 @@
+{
+  "type": "create_processing:speed_pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:honeycomb_block"
+    }
+  ],
+  "results": [
+    {
+      "count": 5,
+      "id": "minecraft:honeycomb"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "type": "create_processing:speed_pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:nether_wart_block"
+    }
+  ],
+  "results": [
+    {
+      "count": 10,
+      "id": "minecraft:nether_wart"
+    }
+  ],
+  "speed_condition": "overdrive"
+}

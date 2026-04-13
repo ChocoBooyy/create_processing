@@ -1,0 +1,19 @@
+{
+  "type": "create_processing:speed_mixing",
+  "ingredients": [
+    {
+      "item": "minecraft:torchflower"
+    },
+    {
+      "type": "neoforge:single",
+      "amount": 250,
+      "fluid": "minecraft:water"
+    }
+  ],
+  "results": [
+    {
+      "count": 3,
+      "id": "minecraft:orange_dye"
+    }
+  ]
+}

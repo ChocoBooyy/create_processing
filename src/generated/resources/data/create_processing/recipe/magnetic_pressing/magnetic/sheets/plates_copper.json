@@ -5,7 +5,7 @@
       "tag": "c:plates/copper"
     }
   ],
-  "magnetic_condition": "magnetic",
+  "magnetic_condition": "oxidized",
   "results": [
     {
       "id": "minecraft:copper_ingot"

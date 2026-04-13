@@ -5,7 +5,7 @@
       "item": "minecraft:red_sand"
     }
   ],
-  "magnetic_condition": "magnetic",
+  "magnetic_condition": "exposed",
   "results": [
     {
       "count": 3,

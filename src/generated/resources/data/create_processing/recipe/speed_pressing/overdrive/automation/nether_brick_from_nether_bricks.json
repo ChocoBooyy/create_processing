@@ -1,0 +1,15 @@
+{
+  "type": "create_processing:speed_pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:nether_bricks"
+    }
+  ],
+  "results": [
+    {
+      "count": 5,
+      "id": "minecraft:nether_brick"
+    }
+  ],
+  "speed_condition": "overdrive"
+}

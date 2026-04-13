@@ -5,7 +5,7 @@
       "tag": "c:plates/gold"
     }
   ],
-  "magnetic_condition": "magnetic",
+  "magnetic_condition": "oxidized",
   "results": [
     {
       "id": "minecraft:gold_ingot"

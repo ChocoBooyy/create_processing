@@ -1,0 +1,15 @@
+{
+  "type": "create_processing:speed_pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:prismarine_bricks"
+    }
+  ],
+  "results": [
+    {
+      "count": 10,
+      "id": "minecraft:prismarine_shard"
+    }
+  ],
+  "speed_condition": "overdrive"
+}

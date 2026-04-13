@@ -5,7 +5,7 @@
       "item": "create:zinc_ore"
     }
   ],
-  "magnetic_condition": "magnetic",
+  "magnetic_condition": "weathered",
   "results": [
     {
       "count": 2,

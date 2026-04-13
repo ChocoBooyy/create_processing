@@ -13,12 +13,16 @@ import dev.chocoboy.create_processing.content.jei.ColdPressingCategory;
 import dev.chocoboy.create_processing.content.jei.HotPressingCategory;
 import dev.chocoboy.create_processing.content.jei.MagneticPressingCategory;
 import dev.chocoboy.create_processing.content.jei.ResonanceMixingCategory;
+import dev.chocoboy.create_processing.content.jei.SpeedMixingCategory;
+import dev.chocoboy.create_processing.content.jei.SpeedPressingCategory;
 import dev.chocoboy.create_processing.content.recipes.ColdMixingRecipe;
 import dev.chocoboy.create_processing.content.recipes.ColdPressingRecipe;
 import dev.chocoboy.create_processing.content.recipes.FanRecipe;
 import dev.chocoboy.create_processing.content.recipes.HotPressingRecipe;
 import dev.chocoboy.create_processing.content.recipes.MagneticPressingRecipe;
 import dev.chocoboy.create_processing.content.recipes.ResonanceMixingRecipe;
+import dev.chocoboy.create_processing.content.recipes.SpeedMixingRecipe;
+import dev.chocoboy.create_processing.content.recipes.SpeedPressingRecipe;
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import mezz.jei.api.IModPlugin;
@@ -38,6 +42,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -121,6 +126,32 @@ public final class CreateProcJeiPlugin implements IModPlugin {
                 .catalystStack(AllBlocks.MECHANICAL_PRESS::asStack)
                 .doubleItemIcon(AllBlocks.MECHANICAL_PRESS.get(), Blocks.LODESTONE)
                 .emptyBackground(177, 100)
+        ));
+
+        categories.add(buildCategory(
+            SpeedPressingRecipe.class,
+            "speed_pressing",
+            SpeedPressingCategory::new,
+            builder -> builder
+                .addTypedRecipes(CreateProcRecipeTypes.SPEED_PRESSING)
+                .catalystStack(AllBlocks.MECHANICAL_PRESS::asStack)
+                .doubleItemIcon(AllBlocks.MECHANICAL_PRESS.get(), Blocks.COMPARATOR)
+                .emptyBackground(177, 100)
+                .addRecipeListConsumer(recipes -> recipes.sort(Comparator.comparingInt(holder ->
+                    holder.value().getSpeedCondition().ordinal())))
+        ));
+
+        categories.add(buildCategory(
+            SpeedMixingRecipe.class,
+            "speed_mixing",
+            SpeedMixingCategory::new,
+            builder -> builder
+                .addTypedRecipes(CreateProcRecipeTypes.SPEED_MIXING)
+                .catalystStack(AllBlocks.MECHANICAL_MIXER::asStack)
+                .doubleItemIcon(AllBlocks.MECHANICAL_MIXER.get(), Blocks.COMPARATOR)
+                .emptyBackground(177, 120)
+                .addRecipeListConsumer(recipes -> recipes.sort(Comparator.comparingInt(holder ->
+                    holder.value().getSpeedCondition().ordinal())))
         ));
 
         registration.addRecipeCategories(categories.toArray(CreateRecipeCategory[]::new));

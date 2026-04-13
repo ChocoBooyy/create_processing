@@ -1,0 +1,15 @@
+{
+  "type": "create_processing:speed_pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:redstone_block"
+    }
+  ],
+  "results": [
+    {
+      "count": 10,
+      "id": "minecraft:redstone"
+    }
+  ],
+  "speed_condition": "overdrive"
+}

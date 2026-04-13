@@ -11,5 +11,9 @@
   "create_processing.recipe.resonance_mixing": "Resonance Mixing",
   "create_processing.cold_condition.chilling": "Chilling",
   "create_processing.cold_condition.freezing": "Freezing",
-   "create_processing.recipe.magnetic_pressing": "Magnetic Pressing"
+  "create_processing.recipe.speed_pressing": "Speed Pressing",
+  "create_processing.recipe.speed_mixing": "Speed Mixing",
+  "create_processing.speed_condition.fast": "Fast",
+  "create_processing.speed_condition.overdrive": "Overdrive",
+  "create_processing.recipe.magnetic_pressing": "Magnetic Pressing"
 }

@@ -1,0 +1,14 @@
+{
+  "type": "create_processing:speed_pressing",
+  "ingredients": [
+    {
+      "item": "minecraft:hay_block"
+    }
+  ],
+  "results": [
+    {
+      "count": 10,
+      "id": "minecraft:wheat"
+    }
+  ]
+}

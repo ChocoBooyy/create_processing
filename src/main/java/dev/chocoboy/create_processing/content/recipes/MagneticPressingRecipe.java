@@ -23,7 +23,7 @@ public class MagneticPressingRecipe extends StandardProcessingRecipe<SingleRecip
 
     public MagneticPressingRecipe(ProcessingRecipeParams params) {
         super(CreateProcRecipeTypes.MAGNETIC_PRESSING, params);
-        this.magneticCondition = MagneticCondition.MAGNETIC;
+        this.magneticCondition = MagneticCondition.EXPOSED;
     }
 
     public MagneticPressingRecipe withMagneticCondition(MagneticCondition condition) {
