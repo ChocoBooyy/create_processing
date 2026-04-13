@@ -12,8 +12,8 @@ tasks.named('wrapper', Wrapper).configure {
 version = mod_version
 group = mod_group_id
 
-base {
-    archivesName = "Create-Processing-${minecraft_version}"
+tasks.named('jar').configure {
+    archiveFileName = "${jar_base_name}-${mod_version}.jar"
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -121,7 +121,8 @@ var generateModMetadata = tasks.register('generateModMetadata', ProcessResources
         mod_license : mod_license,
         mod_version : mod_version,
         mod_authors : mod_authors,
-        mod_description : mod_description
+        mod_description : mod_description,
+        mod_display_url : mod_display_url
     ]
 
     inputs.properties replaceProperties

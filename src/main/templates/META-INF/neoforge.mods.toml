@@ -9,6 +9,8 @@ modId="${mod_id}"
 version="${mod_version}"
 displayName="${mod_name}"
 authors="${mod_authors}"
+logoFile="assets/create_processing/logo/logo.png"
+displayURL="${mod_display_url}"
 description='''${mod_description}'''
 
 [[dependencies."${mod_id}"]]
@@ -28,7 +30,7 @@ side="BOTH"
 [[dependencies."${mod_id}"]]
 modId="create"
 type="required"
-versionRange="[6.0.6,)"
+versionRange="[6.0.9,)"
 ordering="AFTER"
 side="BOTH"
 
