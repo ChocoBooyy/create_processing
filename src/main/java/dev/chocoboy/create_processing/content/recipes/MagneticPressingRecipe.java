@@ -61,7 +61,7 @@ public class MagneticPressingRecipe extends StandardProcessingRecipe<SingleRecip
     public static final class Serializer extends StandardProcessingRecipe.Serializer<MagneticPressingRecipe> {
 
         private static final MapCodec<MagneticCondition> CONDITION_CODEC =
-            MagneticCondition.CODEC.optionalFieldOf("magnetic_condition", MagneticCondition.EXPOSED);
+            MagneticCondition.CODEC.fieldOf("magnetic_condition");
 
         private final MapCodec<MagneticPressingRecipe> magneticCodec;
         private final StreamCodec<RegistryFriendlyByteBuf, MagneticPressingRecipe> magneticStreamCodec;

@@ -5,6 +5,7 @@
       "item": "minecraft:coarse_dirt"
     }
   ],
+  "magnetic_condition": "exposed",
   "results": [
     {
       "id": "minecraft:dirt"

@@ -5,6 +5,7 @@
       "item": "minecraft:gravel"
     }
   ],
+  "magnetic_condition": "exposed",
   "results": [
     {
       "id": "minecraft:flint"

@@ -5,6 +5,7 @@
       "item": "minecraft:sand"
     }
   ],
+  "magnetic_condition": "exposed",
   "results": [
     {
       "id": "minecraft:iron_nugget"
