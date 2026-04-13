@@ -1,0 +1,16 @@
+{
+  "type": "create_processing:cold_mixing",
+  "cold_condition": "freezing",
+  "ingredients": [
+    {
+      "type": "neoforge:single",
+      "amount": 1000,
+      "fluid": "minecraft:water"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:ice"
+    }
+  ]
+}

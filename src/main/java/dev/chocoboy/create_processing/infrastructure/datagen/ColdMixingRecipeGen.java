@@ -11,6 +11,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.material.Fluids;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.UnaryOperator;
@@ -25,6 +26,8 @@ public final class ColdMixingRecipeGen extends CreateProcRecipeGen<ColdMixingRec
         coldMixingChilling("magma_block_from_magma_cream", Items.MAGMA_CREAM, 4, Items.MAGMA_BLOCK);
         coldMixingChilling("slime_block_from_slimeballs", Items.SLIME_BALL, 9, Items.SLIME_BLOCK);
         coldMixingChilling("wet_sponge_from_sponge", Items.SPONGE, Items.WATER_BUCKET, Items.WET_SPONGE);
+        coldMixingChilling("mud_from_water_and_dirt", b -> b.require(Items.DIRT).require(Fluids.WATER, 250).output(Items.MUD));
+        coldMixingChilling("paper_from_sugar_cane", b -> b.require(Items.SUGAR_CANE).require(Items.SUGAR_CANE).require(Items.SUGAR_CANE).require(Fluids.WATER, 500).output(Items.PAPER, 3));
 
         coldMixingFreezing("blue_ice_from_snow", Items.SNOW_BLOCK, 4, Items.ICE, Items.BLUE_ICE);
         coldMixingFreezing("prismarine_bricks_from_shards", Items.PRISMARINE_SHARD, 9, Items.PRISMARINE_BRICKS);
@@ -32,6 +35,8 @@ public final class ColdMixingRecipeGen extends CreateProcRecipeGen<ColdMixingRec
         coldMixingFreezing("ice_from_water_and_snow", b -> b.require(Items.WATER_BUCKET).require(Items.SNOW_BLOCK).output(Items.ICE, 2).output(Items.BUCKET));
         coldMixingFreezing("powder_snow_bucket_from_snowballs", Items.SNOWBALL, 4, Items.BUCKET, Items.POWDER_SNOW_BUCKET);
         coldMixingFreezing("calcite_from_dripstone", b -> b.require(Items.POINTED_DRIPSTONE).require(Items.POINTED_DRIPSTONE).require(Items.WATER_BUCKET).output(Items.CALCITE, 2).output(Items.BUCKET));
+        coldMixingFreezing("ice_from_water", b -> b.require(Fluids.WATER, 1000).output(Items.ICE));
+        coldMixingFreezing("obsidian_from_lava_and_water", b -> b.require(Fluids.LAVA, 1000).require(Fluids.WATER, 250).output(Items.OBSIDIAN));
     }
 
     public ColdMixingRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
