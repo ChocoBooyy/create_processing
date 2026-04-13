@@ -5,6 +5,7 @@ import com.simibubi.create.content.processing.basin.BasinRecipe;
 import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
 import dev.chocoboy.create_processing.content.recipes.SpeedMixingRecipe;
 import dev.chocoboy.create_processing.content.recipes.SpeedPressingRecipe;
+import dev.chocoboy.create_processing.infrastructure.config.ModConfig;
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -22,6 +23,8 @@ public final class SpeedProcessingHelper {
     @SuppressWarnings("unchecked")
     public static Optional<RecipeHolder<SpeedPressingRecipe>> findPressing(ItemStack stack, Level level,
             float machineSpeed) {
+        if (!ModConfig.COMMON.enableSpeedPressing.get()) return Optional.empty();
+
         return level.getRecipeManager()
             .getAllRecipesFor(CreateProcRecipeTypes.SPEED_PRESSING.getType())
             .stream()
@@ -33,6 +36,7 @@ public final class SpeedProcessingHelper {
 
     public static Optional<Map.Entry<Integer, RecipeHolder<SpeedPressingRecipe>>> findPressingInBasin(
             BasinBlockEntity basin, Level level, float machineSpeed) {
+        if (!ModConfig.COMMON.enableSpeedPressing.get()) return Optional.empty();
 
         var inv = basin.getInputInventory();
         for (int slot = 0; slot < inv.getSlots(); slot++) {
@@ -53,6 +57,8 @@ public final class SpeedProcessingHelper {
     @SuppressWarnings("unchecked")
     public static Optional<RecipeHolder<SpeedMixingRecipe>> findMixing(BasinBlockEntity basin, Level level,
             float machineSpeed) {
+        if (!ModConfig.COMMON.enableSpeedMixing.get()) return Optional.empty();
+
         return level.getRecipeManager()
             .getAllRecipesFor(CreateProcRecipeTypes.SPEED_MIXING.getType())
             .stream()
@@ -62,3 +68,5 @@ public final class SpeedProcessingHelper {
             .max(Comparator.comparingInt(holder -> holder.value().getSpeedCondition().getMinimumSpeed()));
     }
 }
+
+

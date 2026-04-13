@@ -23,6 +23,7 @@ import dev.chocoboy.create_processing.content.recipes.MagneticPressingRecipe;
 import dev.chocoboy.create_processing.content.recipes.ResonanceMixingRecipe;
 import dev.chocoboy.create_processing.content.recipes.SpeedMixingRecipe;
 import dev.chocoboy.create_processing.content.recipes.SpeedPressingRecipe;
+import dev.chocoboy.create_processing.infrastructure.config.ModConfig;
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import mezz.jei.api.IModPlugin;
@@ -73,86 +74,100 @@ public final class CreateProcJeiPlugin implements IModPlugin {
         categories.add(buildFanCategory("fan_petrifying", CreateProcRecipeTypes.PETRIFYING, AllPaletteStoneTypes.LIMESTONE.baseBlock.get(),builder -> {}));
         categories.add(buildFanCategory("fan_enderfying", CreateProcRecipeTypes.ENDERFYING, Blocks.CHORUS_FLOWER,builder -> {}));
 
-        categories.add(buildCategory(
-            HotPressingRecipe.class,
-            "hot_pressing",
-            HotPressingCategory::new,
-            builder -> builder
-                .addTypedRecipes(CreateProcRecipeTypes.HOT_PRESSING)
-                .catalystStack(AllBlocks.MECHANICAL_PRESS::asStack)
-                .doubleItemIcon(AllBlocks.MECHANICAL_PRESS.get(), AllBlocks.BLAZE_BURNER.get())
-                .emptyBackground(177, 100)
-        ));
+        if (ModConfig.COMMON.enableHotPressing.get()) {
+            categories.add(buildCategory(
+                HotPressingRecipe.class,
+                "hot_pressing",
+                HotPressingCategory::new,
+                builder -> builder
+                    .addTypedRecipes(CreateProcRecipeTypes.HOT_PRESSING)
+                    .catalystStack(AllBlocks.MECHANICAL_PRESS::asStack)
+                    .doubleItemIcon(AllBlocks.MECHANICAL_PRESS.get(), AllBlocks.BLAZE_BURNER.get())
+                    .emptyBackground(177, 100)
+            ));
+        }
 
-        categories.add(buildCategory(
-            ColdPressingRecipe.class,
-            "cold_pressing",
-            ColdPressingCategory::new,
-            builder -> builder
-                .addTypedRecipes(CreateProcRecipeTypes.COLD_PRESSING)
-                .catalystStack(AllBlocks.MECHANICAL_PRESS::asStack)
-                .doubleItemIcon(AllBlocks.MECHANICAL_PRESS.get(), Blocks.PACKED_ICE)
-                .emptyBackground(177, 100)
-        ));
+        if (ModConfig.COMMON.enableColdPressing.get()) {
+            categories.add(buildCategory(
+                ColdPressingRecipe.class,
+                "cold_pressing",
+                ColdPressingCategory::new,
+                builder -> builder
+                    .addTypedRecipes(CreateProcRecipeTypes.COLD_PRESSING)
+                    .catalystStack(AllBlocks.MECHANICAL_PRESS::asStack)
+                    .doubleItemIcon(AllBlocks.MECHANICAL_PRESS.get(), Blocks.PACKED_ICE)
+                    .emptyBackground(177, 100)
+            ));
+        }
 
-        categories.add(buildCategory(
-            ColdMixingRecipe.class,
-            "cold_mixing",
-            ColdMixingCategory::new,
-            builder -> builder
-                .addTypedRecipes(CreateProcRecipeTypes.COLD_MIXING)
-                .catalystStack(AllBlocks.MECHANICAL_MIXER::asStack)
-                .doubleItemIcon(AllBlocks.MECHANICAL_MIXER.get(), Blocks.PACKED_ICE)
-                .emptyBackground(177, 120)
-        ));
+        if (ModConfig.COMMON.enableColdMixing.get()) {
+            categories.add(buildCategory(
+                ColdMixingRecipe.class,
+                "cold_mixing",
+                ColdMixingCategory::new,
+                builder -> builder
+                    .addTypedRecipes(CreateProcRecipeTypes.COLD_MIXING)
+                    .catalystStack(AllBlocks.MECHANICAL_MIXER::asStack)
+                    .doubleItemIcon(AllBlocks.MECHANICAL_MIXER.get(), Blocks.PACKED_ICE)
+                    .emptyBackground(177, 120)
+            ));
+        }
 
-        categories.add(buildCategory(
-            ResonanceMixingRecipe.class,
-            "resonance_mixing",
-            ResonanceMixingCategory::new,
-            builder -> builder
-                .addTypedRecipes(CreateProcRecipeTypes.RESONANCE_MIXING)
-                .catalystStack(AllBlocks.MECHANICAL_MIXER::asStack)
-                .doubleItemIcon(AllBlocks.MECHANICAL_MIXER.get(), Blocks.AMETHYST_BLOCK)
-                .emptyBackground(177, 120)
-        ));
+        if (ModConfig.COMMON.enableResonanceMixing.get()) {
+            categories.add(buildCategory(
+                ResonanceMixingRecipe.class,
+                "resonance_mixing",
+                ResonanceMixingCategory::new,
+                builder -> builder
+                    .addTypedRecipes(CreateProcRecipeTypes.RESONANCE_MIXING)
+                    .catalystStack(AllBlocks.MECHANICAL_MIXER::asStack)
+                    .doubleItemIcon(AllBlocks.MECHANICAL_MIXER.get(), Blocks.AMETHYST_BLOCK)
+                    .emptyBackground(177, 120)
+            ));
+        }
 
-        categories.add(buildCategory(
-            MagneticPressingRecipe.class,
-            "magnetic_pressing",
-            MagneticPressingCategory::new,
-            builder -> builder
-                .addTypedRecipes(CreateProcRecipeTypes.MAGNETIC_PRESSING)
-                .catalystStack(AllBlocks.MECHANICAL_PRESS::asStack)
-                .doubleItemIcon(AllBlocks.MECHANICAL_PRESS.get(), Blocks.LODESTONE)
-                .emptyBackground(177, 100)
-        ));
+        if (ModConfig.COMMON.enableMagneticPressing.get()) {
+            categories.add(buildCategory(
+                MagneticPressingRecipe.class,
+                "magnetic_pressing",
+                MagneticPressingCategory::new,
+                builder -> builder
+                    .addTypedRecipes(CreateProcRecipeTypes.MAGNETIC_PRESSING)
+                    .catalystStack(AllBlocks.MECHANICAL_PRESS::asStack)
+                    .doubleItemIcon(AllBlocks.MECHANICAL_PRESS.get(), Blocks.LODESTONE)
+                    .emptyBackground(177, 100)
+            ));
+        }
 
-        categories.add(buildCategory(
-            SpeedPressingRecipe.class,
-            "speed_pressing",
-            SpeedPressingCategory::new,
-            builder -> builder
-                .addTypedRecipes(CreateProcRecipeTypes.SPEED_PRESSING)
-                .catalystStack(AllBlocks.MECHANICAL_PRESS::asStack)
-                .doubleItemIcon(AllBlocks.MECHANICAL_PRESS.get(), Blocks.COMPARATOR)
-                .emptyBackground(177, 100)
-                .addRecipeListConsumer(recipes -> recipes.sort(Comparator.comparingInt(holder ->
-                    holder.value().getSpeedCondition().ordinal())))
-        ));
+        if (ModConfig.COMMON.enableSpeedPressing.get()) {
+            categories.add(buildCategory(
+                SpeedPressingRecipe.class,
+                "speed_pressing",
+                SpeedPressingCategory::new,
+                builder -> builder
+                    .addTypedRecipes(CreateProcRecipeTypes.SPEED_PRESSING)
+                    .catalystStack(AllBlocks.MECHANICAL_PRESS::asStack)
+                    .doubleItemIcon(AllBlocks.MECHANICAL_PRESS.get(), Blocks.COMPARATOR)
+                    .emptyBackground(177, 100)
+                    .addRecipeListConsumer(recipes -> recipes.sort(Comparator.comparingInt(holder ->
+                        holder.value().getSpeedCondition().ordinal())))
+            ));
+        }
 
-        categories.add(buildCategory(
-            SpeedMixingRecipe.class,
-            "speed_mixing",
-            SpeedMixingCategory::new,
-            builder -> builder
-                .addTypedRecipes(CreateProcRecipeTypes.SPEED_MIXING)
-                .catalystStack(AllBlocks.MECHANICAL_MIXER::asStack)
-                .doubleItemIcon(AllBlocks.MECHANICAL_MIXER.get(), Blocks.COMPARATOR)
-                .emptyBackground(177, 120)
-                .addRecipeListConsumer(recipes -> recipes.sort(Comparator.comparingInt(holder ->
-                    holder.value().getSpeedCondition().ordinal())))
-        ));
+        if (ModConfig.COMMON.enableSpeedMixing.get()) {
+            categories.add(buildCategory(
+                SpeedMixingRecipe.class,
+                "speed_mixing",
+                SpeedMixingCategory::new,
+                builder -> builder
+                    .addTypedRecipes(CreateProcRecipeTypes.SPEED_MIXING)
+                    .catalystStack(AllBlocks.MECHANICAL_MIXER::asStack)
+                    .doubleItemIcon(AllBlocks.MECHANICAL_MIXER.get(), Blocks.COMPARATOR)
+                    .emptyBackground(177, 120)
+                    .addRecipeListConsumer(recipes -> recipes.sort(Comparator.comparingInt(holder ->
+                        holder.value().getSpeedCondition().ordinal())))
+            ));
+        }
 
         registration.addRecipeCategories(categories.toArray(CreateRecipeCategory[]::new));
     }

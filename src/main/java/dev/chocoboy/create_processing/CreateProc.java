@@ -2,6 +2,7 @@ package dev.chocoboy.create_processing;
 
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
+import dev.chocoboy.create_processing.infrastructure.config.ModConfig;
 import dev.chocoboy.create_processing.infrastructure.datagen.CreateProcDatagen;
 import dev.chocoboy.create_processing.registry.CreateProcFanProcessingTypes;
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
@@ -28,6 +29,9 @@ public class CreateProc {
         CreateProcRecipeTypes.register(modEventBus);
         modEventBus.addListener(CreateProcDatagen::gatherData);
         modEventBus.addListener((RegisterEvent event) -> CreateProcFanProcessingTypes.init());
+
+        net.neoforged.neoforge.common.ModConfigSpec.Builder builder = new net.neoforged.neoforge.common.ModConfigSpec.Builder();
+        modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.COMMON, ModConfig.COMMON_SPEC);
     }
 
     public static ResourceLocation asResource(String path) {
