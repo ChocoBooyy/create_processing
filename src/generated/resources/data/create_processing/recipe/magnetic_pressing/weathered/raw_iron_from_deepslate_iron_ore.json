@@ -8,9 +8,11 @@
   "magnetic_condition": "weathered",
   "results": [
     {
+      "count": 2,
       "id": "minecraft:raw_iron"
     },
     {
+      "count": 2,
       "id": "minecraft:iron_nugget"
     }
   ]
