@@ -11,9 +11,7 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -42,9 +40,6 @@ public final class MagneticPressingCategory extends CreateRecipeCategory<Magneti
                     .addItemStack(output.getStack())
                     .addRichTooltipCallback(addStochasticTooltip(output));
         }
-
-        builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 134, 81)
-                .addItemStack(new ItemStack(recipe.getMagneticCondition().getBlock()));
     }
 
     @Override
@@ -53,10 +48,9 @@ public final class MagneticPressingCategory extends CreateRecipeCategory<Magneti
         AllGuiTextures.JEI_LONG_ARROW.render(graphics, 52, 54);
         press.draw(graphics, getBackground().getWidth() / 2 + 3, 22);
 
-        int bx = getBackground().getWidth() / 2 + 3;
         AllGuiTextures.JEI_SHADOW.render(graphics, 81, 86);
         graphics.pose().pushPose();
-        graphics.pose().translate(bx, 53, 200.0f);
+        graphics.pose().translate(getBackground().getWidth() / 2 + 3, 53, 200.0f);
         graphics.pose().mulPose(Axis.XP.rotationDegrees(-15.5f));
         graphics.pose().mulPose(Axis.YP.rotationDegrees(22.5f));
         AnimatedKinetics.defaultBlockElement(recipe.getMagneticCondition().getBlock().defaultBlockState())
@@ -64,8 +58,5 @@ public final class MagneticPressingCategory extends CreateRecipeCategory<Magneti
                 .scale(23)
                 .render(graphics);
         graphics.pose().popPose();
-        Component label = Component.translatable(
-                "create_processing.magnetic_condition." + recipe.getMagneticCondition().getSerializedName());
-        graphics.drawString(Minecraft.getInstance().font, label, 9, 86, 0x5BC0EB, false);
     }
 }

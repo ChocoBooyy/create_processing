@@ -2,14 +2,14 @@
   "type": "create_processing:magnetic_pressing",
   "ingredients": [
     {
-      "item": "create:crushed_raw_zinc"
+      "item": "minecraft:lodestone"
     }
   ],
-  "magnetic_condition": "weathered",
+  "magnetic_condition": "magnetic",
   "results": [
     {
       "count": 4,
-      "id": "create:zinc_nugget"
+      "id": "minecraft:compass"
     }
   ]
 }

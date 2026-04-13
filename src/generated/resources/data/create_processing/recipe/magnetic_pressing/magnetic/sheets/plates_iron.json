@@ -5,7 +5,7 @@
       "tag": "c:plates/iron"
     }
   ],
-  "magnetic_condition": "oxidized",
+  "magnetic_condition": "magnetic",
   "results": [
     {
       "id": "minecraft:iron_ingot"

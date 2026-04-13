@@ -2,13 +2,13 @@
   "type": "create_processing:magnetic_pressing",
   "ingredients": [
     {
-      "item": "create:zinc_ore"
+      "item": "create:deepslate_zinc_ore"
     }
   ],
-  "magnetic_condition": "weathered",
+  "magnetic_condition": "magnetic",
   "results": [
     {
-      "count": 2,
+      "count": 4,
       "id": "create:crushed_raw_zinc"
     }
   ]

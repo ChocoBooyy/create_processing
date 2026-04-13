@@ -17,7 +17,6 @@ import dev.chocoboy.create_processing.content.recipes.ColdMixingRecipe;
 import dev.chocoboy.create_processing.content.recipes.ColdPressingRecipe;
 import dev.chocoboy.create_processing.content.recipes.FanRecipe;
 import dev.chocoboy.create_processing.content.recipes.HotPressingRecipe;
-import dev.chocoboy.create_processing.content.recipes.MagneticCondition;
 import dev.chocoboy.create_processing.content.recipes.MagneticPressingRecipe;
 import dev.chocoboy.create_processing.content.recipes.ResonanceMixingRecipe;
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
@@ -119,14 +118,9 @@ public final class CreateProcJeiPlugin implements IModPlugin {
             MagneticPressingCategory::new,
             builder -> builder
                 .addTypedRecipes(CreateProcRecipeTypes.MAGNETIC_PRESSING)
-                .catalystStack(() -> new ItemStack(Blocks.LODESTONE.asItem()))
-                .doubleItemIcon(Blocks.LODESTONE, Blocks.LODESTONE)
+                .catalystStack(AllBlocks.MECHANICAL_PRESS::asStack)
+                .doubleItemIcon(AllBlocks.MECHANICAL_PRESS.get(), Blocks.LODESTONE)
                 .emptyBackground(177, 100)
-                .addRecipeListConsumer(recipes -> recipes.sort((a, b) -> {
-                    MagneticCondition condA = a.value().getMagneticCondition();
-                    MagneticCondition condB = b.value().getMagneticCondition();
-                    return Integer.compare(condA.ordinal(), condB.ordinal());
-                }))
         ));
 
         registration.addRecipeCategories(categories.toArray(CreateRecipeCategory[]::new));

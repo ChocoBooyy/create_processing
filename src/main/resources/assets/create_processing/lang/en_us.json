@@ -11,8 +11,5 @@
   "create_processing.recipe.resonance_mixing": "Resonance Mixing",
   "create_processing.cold_condition.chilling": "Chilling",
   "create_processing.cold_condition.freezing": "Freezing",
-  "create_processing.recipe.magnetic_pressing": "Magnetic Pressing",
-  "create_processing.magnetic_condition.exposed": "Exposed",
-  "create_processing.magnetic_condition.weathered": "Weathered",
-  "create_processing.magnetic_condition.oxidized": "Oxidized"
+   "create_processing.recipe.magnetic_pressing": "Magnetic Pressing"
 }
