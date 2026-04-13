@@ -1,0 +1,22 @@
+package dev.chocoboy.create_processing.util;
+
+import dev.chocoboy.create_processing.content.recipes.MagneticCondition;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+
+import javax.annotation.Nullable;
+
+public final class MagneticSourceHelper {
+
+    private MagneticSourceHelper() {}
+
+    @Nullable
+    public static MagneticCondition getMagneticConditionAt(Level level, BlockPos pos) {
+        var state = level.getBlockState(pos);
+        if (state.is(Blocks.OXIDIZED_COPPER) || state.is(Blocks.LODESTONE)) return MagneticCondition.OXIDIZED;
+        if (state.is(Blocks.WEATHERED_COPPER)) return MagneticCondition.WEATHERED;
+        if (state.is(Blocks.EXPOSED_COPPER)) return MagneticCondition.EXPOSED;
+        return null;
+    }
+}
