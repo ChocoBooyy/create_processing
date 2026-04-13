@@ -11,10 +11,12 @@ import dev.chocoboy.create_processing.content.fans.processing.SandingType;
 import dev.chocoboy.create_processing.content.jei.ColdMixingCategory;
 import dev.chocoboy.create_processing.content.jei.ColdPressingCategory;
 import dev.chocoboy.create_processing.content.jei.HotPressingCategory;
+import dev.chocoboy.create_processing.content.jei.ResonanceMixingCategory;
 import dev.chocoboy.create_processing.content.recipes.ColdMixingRecipe;
 import dev.chocoboy.create_processing.content.recipes.ColdPressingRecipe;
 import dev.chocoboy.create_processing.content.recipes.FanRecipe;
 import dev.chocoboy.create_processing.content.recipes.HotPressingRecipe;
+import dev.chocoboy.create_processing.content.recipes.ResonanceMixingRecipe;
 import dev.chocoboy.create_processing.registry.CreateProcRecipeTypes;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import mezz.jei.api.IModPlugin;
@@ -93,6 +95,17 @@ public final class CreateProcJeiPlugin implements IModPlugin {
                 .addTypedRecipes(CreateProcRecipeTypes.COLD_MIXING)
                 .catalystStack(AllBlocks.MECHANICAL_MIXER::asStack)
                 .doubleItemIcon(AllBlocks.MECHANICAL_MIXER.get(), Blocks.PACKED_ICE)
+                .emptyBackground(177, 120)
+        ));
+
+        categories.add(buildCategory(
+            ResonanceMixingRecipe.class,
+            "resonance_mixing",
+            ResonanceMixingCategory::new,
+            builder -> builder
+                .addTypedRecipes(CreateProcRecipeTypes.RESONANCE_MIXING)
+                .catalystStack(AllBlocks.MECHANICAL_MIXER::asStack)
+                .doubleItemIcon(AllBlocks.MECHANICAL_MIXER.get(), Blocks.AMETHYST_BLOCK)
                 .emptyBackground(177, 120)
         ));
 
