@@ -2,8 +2,10 @@ package dev.chocoboy.create_processing.mixin;
 
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import dev.chocoboy.create_processing.content.recipes.ColdCondition;
+import dev.chocoboy.create_processing.content.recipes.MagneticCondition;
 import dev.chocoboy.create_processing.util.AmethystSourceHelper;
 import dev.chocoboy.create_processing.util.ColdSourceHelper;
+import dev.chocoboy.create_processing.util.MagneticSourceHelper;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -19,6 +21,9 @@ public class BasinBlockEntityMixin {
 
     @Unique
     private boolean create_processing$prevAmethystPresent = false;
+
+    @Unique
+    private MagneticCondition create_processing$prevMagneticCondition = null;
 
     @Inject(method = "tick", at = @At("HEAD"), remap = false)
     private void create_processing$trackColdSource(CallbackInfo ci) {
@@ -37,6 +42,12 @@ public class BasinBlockEntityMixin {
         boolean amethystNow = AmethystSourceHelper.isResonantAt(level, self.getBlockPos().below());
         if (amethystNow != create_processing$prevAmethystPresent) {
             create_processing$prevAmethystPresent = amethystNow;
+            changed = true;
+        }
+
+        MagneticCondition magnetNow = MagneticSourceHelper.getMagneticConditionAt(level, self.getBlockPos().below());
+        if (magnetNow != create_processing$prevMagneticCondition) {
+            create_processing$prevMagneticCondition = magnetNow;
             changed = true;
         }
 
