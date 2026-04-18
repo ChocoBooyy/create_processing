@@ -61,6 +61,7 @@ public final class CreateProcJeiPlugin implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
+        categories.clear();
         if (ModConfig.COMMON.enableWitheringFan.get()) {
             categories.add(buildFanCategory("fan_withering", CreateProcRecipeTypes.WITHERING, Blocks.WITHER_ROSE, builder -> {}));
         }
