@@ -80,9 +80,6 @@ public final class MagneticPressingRecipeGen extends CreateProcRecipeGen<Magneti
         return CreateProcRecipeTypes.MAGNETIC_PRESSING;
     }
 
-    private void magneticPressingExposed(String name, ItemLike input, ItemLike output, int count) {
-    }
-
     private void magneticPressingMagnetic(String name, ItemLike input, ItemLike output, int count) {
         magneticPressing(name, MagneticCondition.MAGNETIC, b -> b.require(input).output(output, count));
     }

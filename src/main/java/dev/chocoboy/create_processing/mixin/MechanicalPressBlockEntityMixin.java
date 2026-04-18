@@ -357,7 +357,7 @@ public abstract class MechanicalPressBlockEntityMixin {
         MagneticCondition magnetSourceLevel = MagneticSourceHelper.getMagneticConditionAt(level, basin.getBlockPos().below());
 
         Recipe<?> queued = accessor.create_processing$getCurrentRecipe();
-        if (queued instanceof MagneticPressingRecipe magnetRecipe) {
+        if (queued instanceof MagneticPressingRecipe) {
             if (magnetSourceLevel == null) {
                 cir.setReturnValue(false);
                 return;
