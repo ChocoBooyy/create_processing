@@ -10,12 +10,16 @@ import dev.chocoboy.create_processing.content.recipes.ColdMixingRecipe;
 import dev.chocoboy.create_processing.content.recipes.ResonanceMixingRecipe;
 import dev.chocoboy.create_processing.content.recipes.SpeedCondition;
 import dev.chocoboy.create_processing.content.recipes.SpeedMixingRecipe;
+import dev.chocoboy.create_processing.content.recipes.MagneticCondition;
+import dev.chocoboy.create_processing.content.recipes.MagneticPressingRecipe;
 import dev.chocoboy.create_processing.util.AmethystSourceHelper;
 import dev.chocoboy.create_processing.util.ColdMixingHelper;
 import dev.chocoboy.create_processing.util.ColdPressingHelper;
 import dev.chocoboy.create_processing.util.ColdSourceHelper;
 import dev.chocoboy.create_processing.util.HeatSourceHelper;
 import dev.chocoboy.create_processing.util.HotPressingHelper;
+import dev.chocoboy.create_processing.util.MagneticPressingHelper;
+import dev.chocoboy.create_processing.util.MagneticSourceHelper;
 import dev.chocoboy.create_processing.util.ResonanceMixingHelper;
 import dev.chocoboy.create_processing.util.SpeedProcessingHelper;
 import net.minecraft.world.item.crafting.Recipe;
@@ -70,6 +74,26 @@ public abstract class BasinOperatingBlockEntityMixin {
         if (coldSourceLevel == null) return;
 
         ColdPressingHelper.findInBasin(basin, level, coldSourceLevel).ifPresent(entry -> {
+            List<Recipe<?>> result = new ArrayList<>(cir.getReturnValue());
+            result.add(0, entry.getValue().value());
+            cir.setReturnValue(result);
+        });
+    }
+
+    @Inject(method = "getMatchingRecipes", at = @At("RETURN"), cancellable = true, remap = false)
+    private void create_processing$addMagneticPressingCandidates(CallbackInfoReturnable<List<Recipe<?>>> cir) {
+        if (!(((Object) this) instanceof MechanicalPressBlockEntity press)) return;
+        Level level = press.getLevel();
+        if (level == null || level.isClientSide) return;
+
+        Optional<BasinBlockEntity> basinOpt = getBasin();
+        if (basinOpt.isEmpty()) return;
+        BasinBlockEntity basin = basinOpt.get();
+
+        MagneticCondition magnetSourceLevel = MagneticSourceHelper.getMagneticConditionAt(level, basin.getBlockPos().below());
+        if (magnetSourceLevel == null) return;
+
+        MagneticPressingHelper.findInBasin(basin, level, magnetSourceLevel).ifPresent(entry -> {
             List<Recipe<?>> result = new ArrayList<>(cir.getReturnValue());
             result.add(0, entry.getValue().value());
             cir.setReturnValue(result);
